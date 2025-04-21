@@ -1,3 +1,5 @@
 # Ignorar archivos ejecutables
 *.exe
 
+# Ignorar la carpeta generada por Visual Studio 
+.vs/

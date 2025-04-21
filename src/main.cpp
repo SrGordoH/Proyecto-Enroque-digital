@@ -15,8 +15,8 @@ int main(int argc,char* argv[])
 	//Inicializar el gestor de ventanas GLUT
 	//y crear la ventana
 	glutInit(&argc, argv);
-	glutInitWindowSize(800,600);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitWindowSize(800,600);
 	glutCreateWindow("MiJuego");
 
 	//habilitar luces y definir perspectiva
@@ -48,7 +48,7 @@ void OnDraw(void)
 	glMatrixMode(GL_MODELVIEW);	
 	glLoadIdentity();
 	
-
+	tablero.Draw();
 	//no borrar esta linea ni poner nada despues
 	glutSwapBuffers();
 }
