@@ -77,9 +77,9 @@ void Tablero::DrawGrid() {
 void Tablero::DrawCell(int i, int j) {
 	// Alterna color: blanco y negro
 	if ((i + j) % 2 == 0)
-		glColor3f(0.0f, 1.0f, 0.0f); // Blanco
+		glColor3f(1.0f, 1.0f, 1.0f); // Blanco
 	else
-		glColor3f(0.5f, 1.0f, 0.5f); // Negro
+		glColor3f(0.0f, 0.0f, 0.0f); // Negro
 
 	float x = j * ancho_casillas;
 	float y = -i * ancho_casillas;
