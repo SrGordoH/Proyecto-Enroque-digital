@@ -2,12 +2,26 @@
 #include "freeglut.h"
 #include <iostream>  // Impresión por pantalla para hacer pruebas y debugs
 
+void Tablero::Inicializa() {
+
+	/*DISTANCIA DE VISTA A LA PANTALLA*/
+	dist = DIST_PANTALLA;
+
+	/*ANCHO Y ALTO DE LAS CASILLAS*/
+	ancho_casillas = ANCHO_LARGO_CASILLAS;
+
+	/*FILAS Y COLUMNAS*/
+	casillas[0] = NUM_FILAS;
+	casillas[1] = NUM_COLUMNAS;
+
+	/*CENTRO PANTALLA (la queremos en el centro del tablero)*/
+	center_y = casillas[0] * ancho_casillas / 2;
+	center_x = casillas[1] * ancho_casillas / 2;
+}
+
+
 
 void Tablero::Draw() {
-
-	center_y = casillas[0] * ancho_casillas/2;
-	center_x = casillas[1] * ancho_casillas/2;
-	
 
 	// Borrado de la pantalla
 	glClearColor(1, 1, 1, 1); // fondo blanco

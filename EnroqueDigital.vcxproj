@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Callbacks.cpp" />
     <ClCompile Include="src\Pieza.cpp" />
     <ClCompile Include="src\Tablero.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Callbacks.h" />
     <ClInclude Include="src\Pieza.h" />
     <ClInclude Include="src\Posicion.h" />
     <ClInclude Include="src\Tablero.h" />
