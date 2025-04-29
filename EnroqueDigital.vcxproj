@@ -19,11 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\tablero.cpp" />
+    <ClCompile Include="src\Pieza.cpp" />
+    <ClCompile Include="src\Tablero.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\tablero.h" />
+    <ClInclude Include="src\Pieza.h" />
+    <ClInclude Include="src\Posicion.h" />
+    <ClInclude Include="src\Tablero.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

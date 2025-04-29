@@ -1,7 +1,9 @@
 #include "tablero.h"
 #include "freeglut.h"
+#include <iostream>
 
-Tablero tablero; 
+
+Tablero tablero(6, 5, 0.1);
 
 //los callback, funciones que seran llamadas automaticamente por la glut
 //cuando sucedan eventos
@@ -9,6 +11,8 @@ Tablero tablero;
 void OnDraw(void); //esta funcion sera llamada para dibujar
 void OnTimer(int value); //esta funcion sera llamada cuando transcurra una temporizacion
 void OnKeyboardDown(unsigned char key, int x, int y); //cuando se pulse una tecla	
+void OnMouseClick(int button, int state, int x, int y); // Función para el clic del mouse
+void OnReshape(int width, int height); // función para que se mantenga la ventana con las dimensiones establecidas
 
 int main(int argc,char* argv[])
 {
@@ -16,21 +20,24 @@ int main(int argc,char* argv[])
 	//y crear la ventana
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(800,600);
+	glutInitWindowSize(800,800);
 	glutCreateWindow("Enroque Digital");
+
 
 	//habilitar luces y definir perspectiva
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);	
-	glMatrixMode(GL_PROJECTION);
-	gluPerspective( 40.0, 800/600.0f, 0.1, 150);
+	glLoadIdentity(); // Siempre recomendable para limpiar la matriz anterior
+
 
 	//Registrar los callbacks
 	glutDisplayFunc(OnDraw);
 	glutTimerFunc(25,OnTimer,0);//le decimos que dentro de 25ms llame 1 vez a la funcion OnTimer()
 	glutKeyboardFunc(OnKeyboardDown);
+	glutMouseFunc(OnMouseClick); // Registrar el callback para clics del mouse
+	glutReshapeFunc(OnReshape);  //Mantener la ventana con las dimensiones dadas
 
 		
 	//pasarle el control a GLUT,que llamara a los callbacks
@@ -45,9 +52,10 @@ void OnDraw(void)
    	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Para definir el punto de vista
-	glMatrixMode(GL_MODELVIEW);	
+	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	
+
+
 	tablero.Draw();
 	//no borrar esta linea ni poner nada despues
 	glutSwapBuffers();
@@ -66,4 +74,24 @@ void OnTimer(int value)
 	//no borrar estas lineas
 	glutTimerFunc(25,OnTimer,0);
 	glutPostRedisplay();
+}
+
+void OnMouseClick(int button, int state, int x, int y) {
+
+	tablero.clicPos(button, state, x, y);
+}
+
+
+// Remodela la ventana si es necesario sin cambiar el tamaño de los objetos y manteniendo sus proporciones.
+
+void OnReshape(int width, int height) {
+	//if (width != 800 || height != 800) {
+	//	glutReshapeWindow(800, 800); // Forzar que la ventana vuelva a 800x800
+	//}
+	glViewport(0, 0, (GLsizei)width, (GLsizei)height); 
+	glMatrixMode(GL_PROJECTION); 
+	glLoadIdentity();
+	gluPerspective(60.0f, (GLfloat)width / (GLfloat)height, 1.0, 200.0); //set the perspective (angle of sight, width, height, depth)
+	glMatrixMode(GL_MODELVIEW); 
+
 }
