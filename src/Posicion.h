@@ -14,7 +14,7 @@ struct Posicion
 	}
 
 	inline int indice() const {
-		return (fil - 1) + COLUMNAS * (col - 1);  // devuelve un íncide, siendo el indice 0 la casilla (1,1) y el íncide 29 la casilla (5,6)
+		return (fil - 1) + COLUMNAS * (col - 1);  // devuelve un indice, siendo el indice 0 la casilla (1,1) y el indice 29 la casilla (5,6)
 	}
 
 };
