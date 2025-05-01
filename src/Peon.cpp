@@ -37,6 +37,6 @@ vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) const {
         }
     }
 
-    // Devolvemos el vector con todos los movimientos válidos encontrados
+    // Devolvemos el vector con todos los movimientos validos encontrados
     return movs;
 }

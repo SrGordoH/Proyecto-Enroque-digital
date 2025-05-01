@@ -1,6 +1,6 @@
 #include "Tablero_logica.h"
 
-void Tablero_logica::inicializarTablero(const Tablero& tablero) {  // Aquí agregamos el nombre de la clase
+void Tablero_logica::inicializarTablero(const Tablero& tablero) {  // Aqui agregamos el nombre de la clase
     // === PEONES ===
     for (int i = 0; i < 5; ++i) {
         piezas.push_back(new Peon(tablero, false)); // Negros
@@ -87,7 +87,7 @@ Pieza* Tablero_logica::obtenerPieza(int fil, int col) const {
             return p;
         }
     }
-    return nullptr; // No hay pieza en esa posición
+    return nullptr; // No hay pieza en esa posicion
 }
 
 
