@@ -7,15 +7,15 @@
 #include "Dama.h"
 #include "Rey.h"
 #include "Pieza.h"
-#include "Piezas.h"
-#include "tablero.h"
-
-
 
 class Tablero_logica {
-	Tablero tablero;
-	Piezas piezas(tablero); 
+	std::vector<Pieza*> piezas;  //vector de punteros a piezas para almacenar piezas
+	bool modo;                   //TRUE para petty FALSE para reyes esquinas opuestas
+
 public:
 	void inicializarTablero(const Tablero& tablero);
+	void setearPosicionesIniciales(int modo);
+	Pieza* obtenerPieza(int fil, int col) const;
+
 
 };

@@ -80,9 +80,6 @@
     <ClInclude Include="src\Torre.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\Piezas.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="src\Tablero_logica.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>

@@ -21,7 +21,12 @@ public:
 	Pieza() = default;
 	Pieza(tipo_t tipo_, const Tablero& tablero_, bool color_, unsigned char valor_)
 		: tipo(tipo_), tablero(tablero_), color(color_), valor(valor_) {}      //Constructor para inicializar pieza con argumentos
+
 	void SetPos(int fil, int col);
+	Posicion getPos() const { return pos; }
+	bool getColor() const { return color; }
+
+
 	
 };
 
