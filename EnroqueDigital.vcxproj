@@ -38,6 +38,7 @@
     <ClInclude Include="src\Dama.h" />
     <ClInclude Include="src\Peon.h" />
     <ClInclude Include="src\Pieza.h" />
+    <ClInclude Include="src\Piezas.h" />
     <ClInclude Include="src\Posicion.h" />
     <ClInclude Include="src\Rey.h" />
     <ClInclude Include="src\Tablero.h" />

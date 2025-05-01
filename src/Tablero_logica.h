@@ -7,11 +7,14 @@
 #include "Dama.h"
 #include "Rey.h"
 #include "Pieza.h"
+#include "Piezas.h"
+#include "tablero.h"
+
+
 
 class Tablero_logica {
-	std::vector<Pieza*> piezas;  //vector de punteros a piezas para almacenar piezas
-
-
+	Tablero tablero;
+	Piezas piezas(tablero); 
 public:
 	void inicializarTablero(const Tablero& tablero);
 
