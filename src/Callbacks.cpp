@@ -51,7 +51,7 @@ void OnDraw(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	mundo.displayMenuPrincipal();
+	mundo.Draw();
 
 	//tablero.Draw();
 	//no borrar esta linea ni poner nada despues
@@ -80,12 +80,16 @@ void OnTimer(int value)
 //Trackea los clics del ratón
 void OnMouseClick(int button, int state, int x, int y) {
 
-	//tablero.clicPos(button, state, x, y);
+	mundo.clicPos(button, state, x, y);
 }
 
 
 // Remodela la ventana si es necesario sin cambiar el tamaño de los objetos y manteniendo sus proporciones.
 void OnReshape(int width, int height) {
 	mundo.Reshape(width, height);
-
+	//glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
+	//gluPerspective(60.0f, (GLfloat)width / (GLfloat)height, 1.0, 200.0); //set the perspective (angle of sight, width, height, depth)
+	//glMatrixMode(GL_MODELVIEW);
 }

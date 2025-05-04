@@ -13,6 +13,7 @@ class Tablero
 public: 
 	double center_x{ }, center_y{}, dist{}, ancho_casillas{};
 	int casillas[2]; //casillas: filas x columnas
+	float dx, dy;
 	void Inicializa();
 	void Draw();
     void DrawGrid();

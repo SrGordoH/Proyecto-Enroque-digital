@@ -19,22 +19,15 @@ void Tablero::Inicializa() {
 	center_x = casillas[1] * ancho_casillas / 2;
 }
 
-
-
 void Tablero::Draw() {
 
-	// Borrado de la pantalla
 	glClearColor(1, 1, 1, 1); // fondo blanco
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Definir punto de vista (cámara)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(center_x, center_y, dist,  // posición de la cámara
-		center_x, center_y, 0, // hacia dónde mira
-		0, 1, 0); // vector "arriba"
 
-	glEnable(GL_LIGHTING);
+	glDisable(GL_LIGHTING); // Si solo hay colores planos, no hace falta luz
 
 	// Dibuja la cuadrícula y las piezas
 	DrawGrid();
@@ -43,13 +36,11 @@ void Tablero::Draw() {
 			DrawCell(i, j);
 		}
 	}
-
-
 }
 
 void Tablero::DrawGrid() {
 	glColor3f(0.0f, 0.0f, 0.0f);
-	
+
 	float ancho = casillas[1] * ancho_casillas;
 	float alto = casillas[0] * ancho_casillas;
 
@@ -58,34 +49,31 @@ void Tablero::DrawGrid() {
 	for (int i = 0; i <= casillas[1]; ++i) {
 		glLineWidth((i == 0 || i == casillas[1]) ? 3.0f : 1.0f);
 		glBegin(GL_LINES);
-		glVertex3f(i * ancho_casillas, 0.0f, 0.0f);
-		glVertex3f(i * ancho_casillas, alto, 0.0f);
+		glVertex3f(i * ancho_casillas + dx, dy, 0.0f);
+		glVertex3f(i * ancho_casillas + dx, alto + dy, 0.0f);
 		glEnd();
 	}
 
 	for (int i = 0; i <= casillas[0]; ++i) {
 		glLineWidth((i == 0 || i == casillas[0]) ? 3.0f : 1.0f);
 		glBegin(GL_LINES);
-		glVertex3f(0.0f, i * ancho_casillas, 0.0f);
-		glVertex3f(ancho, i * ancho_casillas, 0.0f);
+		glVertex3f(dx, i * ancho_casillas + dy, 0.0f);
+		glVertex3f(ancho + dx, i * ancho_casillas + dy, 0.0f);
 		glEnd();
 	}
-
 
 	glLineWidth(1.0f);
 }
 
 
-
 void Tablero::DrawCell(int i, int j) {
-	// Alterna color: blanco y negro
 	if ((i + j) % 2 == 0)
-		glColor3f(0.0f, 1.0f, 0.0f); // "Blanco" (verde claro)
+		glColor3f(0.0f, 1.0f, 0.0f); // Verde claro
 	else
-		glColor3f(0.0f, 0.5f, 0.0f); // "Negro" (verde oscuro)
+		glColor3f(0.0f, 0.5f, 0.0f); // Verde oscuro
 
-	float x = j * ancho_casillas;
-	float y = i * ancho_casillas; 
+	float x = j * ancho_casillas + dx;
+	float y = i * ancho_casillas + dy;
 
 	glBegin(GL_QUADS);
 	glVertex2f(x, y);
@@ -146,11 +134,57 @@ void Tablero::clicPos(int button, int state, int x, int y) {
 	}
 }
 
+
 void Tablero::reshape(int width, int height) {
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0f, (GLfloat)width / (GLfloat)height, 1.0, 200.0); //set the perspective (angle of sight, width, height, depth)
-	glMatrixMode(GL_MODELVIEW);
 
+	// Tamaño del tablero
+	float tableroAncho = casillas[1] * ancho_casillas;
+	float tableroAlto = casillas[0] * ancho_casillas;
+
+	// Márgenes en porcentaje
+	float margen = 0.1f; // 10% de margen
+	float worldAncho = tableroAncho * (1.0f + margen * 2.0f);
+	float worldAlto = tableroAlto * (1.0f + margen * 2.0f);
+
+	// Relación de aspecto
+	float aspectWin = (float)width / (float)height;
+	float aspectWorld = worldAncho / worldAlto;
+
+	float viewLeft, viewRight, viewBottom, viewTop;
+
+	if (aspectWin > aspectWorld) {
+		// La ventana es más ancha -> ajustamos horizontalmente
+		float visibleAncho = worldAlto * aspectWin;
+		float offsetX = (visibleAncho - worldAncho) / 2.0f;
+		viewLeft = -offsetX;
+		viewRight = worldAncho + offsetX;
+		viewBottom = 0.0f;
+		viewTop = worldAlto;
+	}
+	else {
+		// La ventana es más alta -> ajustamos verticalmente
+		float visibleAlto = worldAncho / aspectWin;
+		float offsetY = (visibleAlto - worldAlto) / 2.0f;
+		viewLeft = 0.0f;
+		viewRight = worldAncho;
+		viewBottom = -offsetY;
+		viewTop = worldAlto + offsetY;
+	}
+
+	dx = viewLeft + (viewRight - viewLeft - tableroAncho) / 2.0f;
+	dy = viewBottom + (viewTop - viewBottom - tableroAlto) / 2.0f;
+
+
+	//Centramos tablero en ambos casos
+	glOrtho(viewLeft, viewRight, viewBottom, viewTop, -1.0, 1.0);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
+
+
+
