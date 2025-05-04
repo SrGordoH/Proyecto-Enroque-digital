@@ -19,5 +19,6 @@ public:
 	void DrawCell(int i, int j);
 	bool clicDentroTablero(float ogl_x, float ogl_y);
 	void clicPos(int button, int state, int x, int y);
-	
+	void reshape(int width, int heigth);
+
 };

@@ -146,3 +146,11 @@ void Tablero::clicPos(int button, int state, int x, int y) {
 	}
 }
 
+void Tablero::reshape(int width, int height) {
+	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60.0f, (GLfloat)width / (GLfloat)height, 1.0, 200.0); //set the perspective (angle of sight, width, height, depth)
+	glMatrixMode(GL_MODELVIEW);
+
+}

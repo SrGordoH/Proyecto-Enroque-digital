@@ -1,14 +1,18 @@
 
 #include "Callbacks.h"
+#include "Mundo.h"
+#include <stdlib.h> // Necesario para exit()
+#include <iostream>
 
 Tablero tablero;
+Mundo mundo;
 
 void displayGrafico(int* argc, char** argv) {
 	//Inicializar el gestor de ventanas GLUT
 	//y crear la ventana
 	glutInit(argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(800, 800);
+	glutInitWindowSize(1920, 1080); // Pantalla completa
 	glutCreateWindow("Enroque Digital");
 
 
@@ -19,7 +23,7 @@ void displayGrafico(int* argc, char** argv) {
 	glEnable(GL_COLOR_MATERIAL);
 	glLoadIdentity();
 
-	tablero.Inicializa();
+	mundo.Inicializa();
 
 	registarCallbacks();
 
@@ -47,14 +51,19 @@ void OnDraw(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	mundo.displayMenuPrincipal();
 
-	tablero.Draw();
+	//tablero.Draw();
 	//no borrar esta linea ni poner nada despues
 	glutSwapBuffers();
 }
 void OnKeyboardDown(unsigned char key, int x_t, int y_t)
 {
 	//poner aqui el código de teclado
+	if (key == 'E' || key == 'e') {
+		std::cout << "FIN DEL PROGRAMA." << std::endl;
+		exit(0); // Cierra el programa
+	}
 
 	glutPostRedisplay();
 }
@@ -71,19 +80,12 @@ void OnTimer(int value)
 //Trackea los clics del ratón
 void OnMouseClick(int button, int state, int x, int y) {
 
-	tablero.clicPos(button, state, x, y);
+	//tablero.clicPos(button, state, x, y);
 }
 
 
 // Remodela la ventana si es necesario sin cambiar el tamaño de los objetos y manteniendo sus proporciones.
 void OnReshape(int width, int height) {
-	//if (width != 800 || height != 800) {
-	//	glutReshapeWindow(800, 800); // Forzar que la ventana vuelva a 800x800
-	//}
-	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(60.0f, (GLfloat)width / (GLfloat)height, 1.0, 200.0); //set the perspective (angle of sight, width, height, depth)
-	glMatrixMode(GL_MODELVIEW);
+	mundo.Reshape(width, height);
 
 }

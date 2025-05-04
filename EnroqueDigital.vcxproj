@@ -23,6 +23,8 @@
     <ClCompile Include="src\Caballo.cpp" />
     <ClCompile Include="src\Callbacks.cpp" />
     <ClCompile Include="src\Dama.cpp" />
+    <ClCompile Include="src\Menus.cpp" />
+    <ClCompile Include="src\Mundo.cpp" />
     <ClCompile Include="src\Peon.cpp" />
     <ClCompile Include="src\Pieza.cpp" />
     <ClCompile Include="src\Rey.cpp" />
@@ -36,6 +38,8 @@
     <ClInclude Include="src\Caballo.h" />
     <ClInclude Include="src\Callbacks.h" />
     <ClInclude Include="src\Dama.h" />
+    <ClInclude Include="src\Menus.h" />
+    <ClInclude Include="src\Mundo.h" />
     <ClInclude Include="src\Peon.h" />
     <ClInclude Include="src\Pieza.h" />
     <ClInclude Include="src\Posicion.h" />
