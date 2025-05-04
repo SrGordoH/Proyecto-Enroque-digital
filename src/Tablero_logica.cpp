@@ -80,6 +80,7 @@ void Tablero_logica::setearPosicionesIniciales(int modo) {
     }
 }
 
+
 Pieza* Tablero_logica::obtenerPieza(int fil, int col) const {
     for (Pieza* p : piezas) {
         Posicion pos = p->getPos();
@@ -91,3 +92,31 @@ Pieza* Tablero_logica::obtenerPieza(int fil, int col) const {
 }
 
 
+Posicion Tablero_logica::obtenerReyPos(bool color) {
+    // Recorremos todo el tablero para encontrar la pieza de tipo Rey con el color especificado
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 6; ++j) {
+            Pieza* pieza = obtenerPieza(i, j);  // Obtener la pieza en la posicion (i, j)
+
+            if (pieza != nullptr && pieza->getColor() == color && pieza->getTipo() == Pieza::tipo_t::REY) {
+                // Si encontramos una pieza del color buscado y es un Rey, retornamos su posicion
+                return Posicion{ i, j };  // Posicion de la pieza encontrada
+            }
+        }
+    }
+    return Posicion{ -1, -1 };  // Posicion invalida si no se encuentra el rey
+
+
+}
+
+vector<Pieza*> Tablero_logica::obtenerPiezasOponente(bool color) const {
+    vector<Pieza*> piezasOponente;
+
+    for (Pieza* p : piezas) {
+        if (p != nullptr && p->getColor() != color) {
+            piezasOponente.push_back(p);
+        }
+    }
+
+    return piezasOponente;
+}
