@@ -1,5 +1,6 @@
 #pragma once
 #include "Pieza.h"
+#pragma once
 #include "Tablero_logica.h"
 #include <vector>
 using namespace std;

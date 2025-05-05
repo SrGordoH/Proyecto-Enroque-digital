@@ -18,6 +18,6 @@ public:
 	Pieza* obtenerPieza(int fil, int col) const;
 	Posicion obtenerReyPos(bool color);
 	vector<Pieza*> obtenerPiezasOponente(bool color) const;
-
+	const vector<Pieza*>& getPiezas() const { return piezas; }
 
 };

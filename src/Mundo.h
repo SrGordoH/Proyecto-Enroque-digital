@@ -1,13 +1,14 @@
 #pragma once
 #include "Tablero.h"
 #include "Menus.h"
-
+#include "Tablero_logica.h"
 
 
 class Mundo
 {
 	Tablero tablero;
 	Menus menus;
+	Tablero_logica logica;
 	
 public:
 	

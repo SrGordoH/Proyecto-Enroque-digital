@@ -1,11 +1,15 @@
 #include "Mundo.h"
 #include "freeglut.h"
 #include "ETSIDI.h"
+#include <vector>
 #include <iostream>
+using namespace std;
 
 void Mundo::Inicializa() {
 	menus.Inicializa();
 	tablero.Inicializa();
+	tablero.setLogica(&logica);
+	logica.inicializarTablero(tablero);
 }
 
 
@@ -72,7 +76,7 @@ void Mundo::Draw() {
 	else if (menus.get_menu() == JUEGO) {
 		tablero.Draw();
 	}
-	
+
 
 }
 

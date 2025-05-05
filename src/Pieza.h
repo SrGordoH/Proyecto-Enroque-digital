@@ -28,5 +28,4 @@ public:
 	bool getColor() const { return color; }
 	tipo_t getTipo() const { return tipo; }
 
-
 };
