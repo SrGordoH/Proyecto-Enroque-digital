@@ -191,82 +191,13 @@ void Tablero::reshape(int width, int height) {
 }
 
 void Tablero::DrawPiezas() {
-	glEnable(GL_DEPTH_TEST);
-	if (logica == nullptr) {
-		std::cout << "logica es nullptr" << std::endl;
-		return;
-	}
-	if (logica != nullptr) {
-		auto piezas = logica->getPiezas();
-		std::cout << "Número de piezas: " << piezas.size() << std::endl;
+	glEnable(GL_DEPTH_TEST); // Habilita el z-buffer
+	if (!logica) return;     // No se dibuja si no hay logica
 
-		for (Pieza* p : piezas) {
-			if (!p) continue;
-
-			Posicion pos = p->getPos();
-			float x = pos.col * ancho_casillas + ancho_casillas / 2.0f + dx;
-			float y = pos.fil * ancho_casillas + ancho_casillas / 2.0f + dy;
-			float r = ancho_casillas / 3.0f;
-			float z = 0.01f;  // Altura mínima para que la pieza se vea sobre el tablero
-			std::cout << "Pieza en fila " << pos.fil << ", col " << pos.col << std::endl;
-
-			// Color según el jugador
-			if (p->getColor())
-				glColor3f(1.0f, 0.0f, 0.0f);  // Rojo para test
-			else
-				glColor3f(1.0f, 0.0f, 0.0f);  // Rojo para test
-
-			switch (p->getTipo()) {
-			case Pieza::tipo_t::PEON:
-				glBegin(GL_TRIANGLE_FAN);  // Peón: círculo
-				for (int i = 0; i <= 20; ++i) {
-					float theta = 2.0f * 3.14159f * float(i) / 20.0f;
-					glVertex3f(x + r * cosf(theta), y + r * sinf(theta), z);
-				}
-				glEnd();
-				break;
-			case Pieza::tipo_t::TORRE:
-				glBegin(GL_QUADS);  // Torre: cuadrado
-				glVertex3f(x - r, y - r, z);
-				glVertex3f(x + r, y - r, z);
-				glVertex3f(x + r, y + r, z);
-				glVertex3f(x - r, y + r, z);
-				glEnd();
-				break;
-			case Pieza::tipo_t::CABALLO:
-				glBegin(GL_POLYGON);  // Caballo: rombo
-				glVertex3f(x, y + r, z);
-				glVertex3f(x + r, y, z);
-				glVertex3f(x, y - r, z);
-				glVertex3f(x - r, y, z);
-				glEnd();
-				break;
-			case Pieza::tipo_t::ALFIL:
-				glBegin(GL_TRIANGLES);  // Alfil: triángulo
-				glVertex3f(x, y + r, z);
-				glVertex3f(x - r, y - r, z);
-				glVertex3f(x + r, y - r, z);
-				glEnd();
-				break;
-			case Pieza::tipo_t::DAMA:
-				glBegin(GL_POLYGON);  // Dama: hexágono
-				for (int i = 0; i < 6; ++i) {
-					float angle = i * 2.0f * 3.14159f / 6;
-					glVertex3f(x + r * cos(angle), y + r * sin(angle), z);
-				}
-				glEnd();
-				break;
-			case Pieza::tipo_t::REY:
-				glBegin(GL_LINES);  // Rey: cruz
-				glVertex3f(x - r, y, z);
-				glVertex3f(x + r, y, z);
-				glVertex3f(x, y - r, z);
-				glVertex3f(x, y + r, z);
-				glEnd();
-				break;
-			}
-		}
-		std::cout << "Piezas dibujadas\n";
+	auto piezas = logica->getPiezas();
+	for (Pieza* p : piezas) {
+		if (!p) continue;
+		p->Dibuja(ancho_casillas, dx, dy); // Dibuja el sprite segun posicion
 	}
 }
 

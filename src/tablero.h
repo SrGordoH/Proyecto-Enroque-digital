@@ -1,5 +1,6 @@
 #pragma once
 #include "Posicion.h"
+#include "ETSIDI.h"
 #include <iostream>
 
 constexpr const int NUM_FILAS = 6;

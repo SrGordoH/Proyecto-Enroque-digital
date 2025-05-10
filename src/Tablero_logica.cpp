@@ -120,3 +120,19 @@ vector<Pieza*> Tablero_logica::obtenerPiezasOponente(bool color) const {
 
     return piezasOponente;
 }
+
+
+bool Tablero_logica::estaEnJaqueMate(bool color) {
+    for (Pieza* p : piezas) {
+        if (p->getColor() == color) {
+            std::vector<Posicion> posibles = p->movimientosValidos(*this);
+            for (const Posicion& destino : posibles) {
+                Pieza* piezaDestino = obtenerPieza(destino.fil, destino.col);
+                if (p->esMovimientoLegalConJaque(piezaDestino, destino, *this)) {
+                    return false; // Si hay al menos un movimiento legal que evita el jaque, no es jaque mate
+                }
+            }
+        }
+    }
+    return true; 
+}
