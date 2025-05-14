@@ -1,4 +1,5 @@
 #pragma once
+#include "Boton.h"
 enum tipo_menu {MENU_PPAL, MENU_MODO, JUEGO};
 enum  rivalidad { RIV_NULA, J_VS_J, J_VS_IA };
 enum  modo { MODO_NULO, PETTY, OPUESTAS };
@@ -10,7 +11,12 @@ class Menus
 	tipo_menu menu{};
 	modo modo_juego{};
 	rivalidad riv{};
+
 public:
+
+	Boton Ppal_JvsJ{-1,1,-1.4,-1}, Ppal_JvsIA{-1.15,1.15,-2.1,-1.65};
+	Boton Modo_Petty{ -1,1,-1.9,-1.4 }, Modo_Opuestas{ -1.7,1.7,-2.6,-2.1 };
+	
 	void Inicializa();
 	void Draw();
 	void Reshape(int width, int height);

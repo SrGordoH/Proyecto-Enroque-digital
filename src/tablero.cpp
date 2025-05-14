@@ -20,9 +20,12 @@ void Tablero::Inicializa() {
 	/*CENTRO PANTALLA (la queremos en el centro del tablero)*/
 	center_y = casillas[0] * ancho_casillas / 2;
 	center_x = casillas[1] * ancho_casillas / 2;
+
+
 }
 
 void Tablero::Draw() {
+
 
 	glClearColor(1, 1, 1, 1); // fondo blanco
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -31,6 +34,8 @@ void Tablero::Draw() {
 	glLoadIdentity();
 
 	glDisable(GL_LIGHTING); // Si solo hay colores planos, no hace falta luz
+
+	glTranslatef(-center_x, -center_y, 0.0f);
 
 	// Dibuja la cuadrícula y las piezas
 	DrawGrid();
@@ -43,6 +48,8 @@ void Tablero::Draw() {
 }
 
 void Tablero::DrawGrid() {
+
+	
 	glColor3f(0.0f, 0.0f, 0.0f);
 
 	float ancho = casillas[1] * ancho_casillas;
@@ -138,7 +145,6 @@ void Tablero::clicPos(int button, int state, int x, int y) {
 	}
 }
 
-
 void Tablero::reshape(int width, int height) {
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 
@@ -184,11 +190,14 @@ void Tablero::reshape(int width, int height) {
 
 
 	//Centramos tablero en ambos casos
-	glOrtho(viewLeft, viewRight, viewBottom, viewTop, -1.0, 1.0);
+	glOrtho(viewLeft - center_x, viewRight - center_x, viewBottom - center_y, viewTop - center_y, -1.0, 1.0);
+
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
 }
+
 
 void Tablero::DrawPiezas() {
 	glEnable(GL_DEPTH_TEST); // Habilita el z-buffer

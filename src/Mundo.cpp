@@ -39,13 +39,14 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 		std::cout << "Clic 2D en: (" << posX << ", " << posY << ")\n";
 		if (menus.get_menu() == MENU_MODO) {
 			// Clic en Petty:
-			if (posX >= -1 && posX <= 1 && posY >= -1.9 && posY <= -1.4) {
+			if (posX >= menus.Modo_Petty.lim_i && posX <= menus.Modo_Petty.lim_d && posY >= menus.Modo_Petty.lim_bajo && posY <= menus.Modo_Petty.lim_alto) {
 				menus.set_modo(PETTY);
 				menus.set_menu(JUEGO);
 				// INICIALIZA TABLERO PETTY
 			}
 			// Clic en esquinas opuestas
-			if (posX >= -1.7 && posX <= 1.7 && posY >= -2.6  && posY <= -2.1) {
+			if (posX >= menus.Modo_Opuestas.lim_i && posX <= menus.Modo_Opuestas.lim_d && posY >= menus.Modo_Opuestas.lim_bajo && posY <= menus.Modo_Opuestas.lim_alto) {
+
 				menus.set_modo(OPUESTAS);
 				menus.set_menu(JUEGO);
 
@@ -53,12 +54,13 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 		}
 		if(menus.get_menu() == MENU_PPAL){
 			// Clic en 1 vs 1:
-			if (posX >= -1 && posX <= 1 && posY >= -1.4 && posY <= -1) {
+			if (posX >= menus.Ppal_JvsJ.lim_i && posX <= menus.Ppal_JvsJ.lim_d && posY >= menus.Ppal_JvsJ.lim_bajo && posY <= menus.Ppal_JvsJ.lim_alto) {
 				menus.set_riv(J_VS_J);
 				menus.set_menu(MENU_MODO);
 			}
 			// Clic en J vs IA
-			if (posX >= -1.15 && posX <= 1.15 && posY >= -2.1 && posY <= -1.65) {
+			if (posX >= menus.Ppal_JvsIA.lim_i && posX <= menus.Ppal_JvsIA.lim_d && posY >= menus.Ppal_JvsIA.lim_bajo && posY <= menus.Ppal_JvsIA.lim_alto) {
+
 				menus.set_riv(J_VS_IA);
 				menus.set_menu(MENU_MODO);
 

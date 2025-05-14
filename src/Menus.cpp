@@ -16,12 +16,6 @@ void Menus::Draw() {
 		float ancho = 10.0f; // valor arbitrario
 		float alto = ancho * (dimY / dimX); // mantener proporción de la imagen
 
-		//glMatrixMode(GL_PROJECTION);
-		//glLoadIdentity();
-		//glOrtho(-ancho, ancho, 0.0, alto, -1.0, 1.0); // Valor inicial
-		//glMatrixMode(GL_MODELVIEW);
-		//glLoadIdentity();
-
 		// Dibujo del fondo
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/MenuPpal_1920x1080.png").id);
@@ -40,12 +34,6 @@ void Menus::Draw() {
 		float ancho = 10.0f; // factor de escala
 		float alto = ancho * (dimY / dimX); // mantener proporción de la imagen
 
-		//glMatrixMode(GL_PROJECTION);
-		//glLoadIdentity();
-		//glOrtho(-ancho, ancho, 0.0, alto, -1.0, 1.0); // Valor inicial
-		//glMatrixMode(GL_MODELVIEW);
-		//glLoadIdentity();
-
 		// Dibujo del fondo
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/MenuModo_1920x1080.png").id);
@@ -61,7 +49,6 @@ void Menus::Draw() {
 		glDisable(GL_TEXTURE_2D);
 	}
 	
-	
 
 }
 
@@ -74,7 +61,7 @@ void Menus::Reshape(int width, int height) {
 	float aspectWindow = (float)width / (float)height;
 	float imageAspect = dimX / dimY;
 
-	float ZOOM_FACTOR = 0.5f; // Cuanto más pequeño, más "zoom in"
+	float ZOOM_FACTOR = 0.6f; // Cuanto más pequeño, más "zoom in"
 
 	if (aspectWindow > imageAspect) {
 		// Ajustamos altura
