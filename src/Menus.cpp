@@ -80,4 +80,35 @@ void Menus::Reshape(int width, int height) {
 	glLoadIdentity();
 }
 
+void Menus::coor_menus(float posX, float posY) {
+	if (get_menu() == MENU_MODO) {
+		// Clic en Petty:
+		if (posX >= Modo_Petty.lim_i && posX <= Modo_Petty.lim_d && posY >= Modo_Petty.lim_bajo && posY <= Modo_Petty.lim_alto) {
+			set_modo(PETTY);
+			set_menu(JUEGO);
+			// INICIALIZA TABLERO PETTY
+		}
+		// Clic en esquinas opuestas
+		if (posX >= Modo_Opuestas.lim_i && posX <= Modo_Opuestas.lim_d && posY >= Modo_Opuestas.lim_bajo && posY <= Modo_Opuestas.lim_alto) {
+
+			set_modo(OPUESTAS);
+			set_menu(JUEGO);
+
+		}
+	}
+	if (get_menu() == MENU_PPAL) {
+		// Clic en 1 vs 1:
+		if (posX >= Ppal_JvsJ.lim_i && posX <= Ppal_JvsJ.lim_d && posY >= Ppal_JvsJ.lim_bajo && posY <= Ppal_JvsJ.lim_alto) {
+			set_riv(J_VS_J);
+			set_menu(MENU_MODO);
+		}
+		// Clic en J vs IA
+		if (posX >= Ppal_JvsIA.lim_i && posX <= Ppal_JvsIA.lim_d && posY >= Ppal_JvsIA.lim_bajo && posY <= Ppal_JvsIA.lim_alto) {
+
+			set_riv(J_VS_IA);
+			set_menu(MENU_MODO);
+
+		}
+	}
+}
 

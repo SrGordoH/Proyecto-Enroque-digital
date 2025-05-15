@@ -22,6 +22,8 @@ void Tablero::Inicializa() {
 	center_x = casillas[1] * ancho_casillas / 2;
 
 
+
+
 }
 
 void Tablero::Draw() {
@@ -60,16 +62,16 @@ void Tablero::DrawGrid() {
 	for (int i = 0; i <= casillas[1]; ++i) {
 		glLineWidth((i == 0 || i == casillas[1]) ? 3.0f : 1.0f);
 		glBegin(GL_LINES);
-		glVertex3f(i * ancho_casillas + dx, dy, 0.0f);
-		glVertex3f(i * ancho_casillas + dx, alto + dy, 0.0f);
+		glVertex3f(i * ancho_casillas , 0.0f , 0.0f);
+		glVertex3f(i * ancho_casillas, alto , 0.0f);
 		glEnd();
 	}
 
 	for (int i = 0; i <= casillas[0]; ++i) {
 		glLineWidth((i == 0 || i == casillas[0]) ? 3.0f : 1.0f);
 		glBegin(GL_LINES);
-		glVertex3f(dx, i * ancho_casillas + dy, 0.0f);
-		glVertex3f(ancho + dx, i * ancho_casillas + dy, 0.0f);
+		glVertex3f(0.0f , i * ancho_casillas, 0.0f);
+		glVertex3f(ancho , i * ancho_casillas, 0.0f);
 		glEnd();
 	}
 
@@ -83,8 +85,8 @@ void Tablero::DrawCell(int i, int j) {
 	else
 		glColor3f(0.0f, 0.5f, 0.0f); // Verde oscuro
 
-	float x = j * ancho_casillas + dx;
-	float y = i * ancho_casillas + dy;
+	float x = j * ancho_casillas;
+	float y = i * ancho_casillas;
 
 	glBegin(GL_QUADS);
 	glVertex2f(x, y);
@@ -145,29 +147,44 @@ void Tablero::clicPos(int button, int state, int x, int y) {
 	}
 }
 
+Posicion Tablero::coor_to_casilla(float posX, float posY) {
+	Posicion casilla{};
+	casilla.col = int(posX / ancho_casillas);
+	casilla.fil = int(posY / ancho_casillas);
+
+	if (!casilla.esValida()) {
+		std::cout << "Fuera del tablero";
+		return casilla = { -1,-1 };
+	}
+	return casilla;
+}
+
+
 void Tablero::reshape(int width, int height) {
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	// Tamaño del tablero
+	// Tamaño del tablero (con base en el número de casillas y el tamaño de cada una)
 	float tableroAncho = casillas[1] * ancho_casillas;
 	float tableroAlto = casillas[0] * ancho_casillas;
 
-	// Márgenes en porcentaje
+	// Márgenes en porcentaje (por ejemplo, un margen del 10%)
 	float margen = 0.1f; // 10% de margen
 	float worldAncho = tableroAncho * (1.0f + margen * 2.0f);
 	float worldAlto = tableroAlto * (1.0f + margen * 2.0f);
 
-	// Relación de aspecto
+	// Relación de aspecto de la ventana
 	float aspectWin = (float)width / (float)height;
 	float aspectWorld = worldAncho / worldAlto;
 
+	// Variables para los límites de la vista
 	float viewLeft, viewRight, viewBottom, viewTop;
 
+	// Ajuste de la proyección en función de la relación de aspecto
 	if (aspectWin > aspectWorld) {
-		// La ventana es más ancha -> ajustamos horizontalmente
+		// La ventana es más ancha que el mundo -> ajustamos horizontalmente
 		float visibleAncho = worldAlto * aspectWin;
 		float offsetX = (visibleAncho - worldAncho) / 2.0f;
 		viewLeft = -offsetX;
@@ -176,7 +193,7 @@ void Tablero::reshape(int width, int height) {
 		viewTop = worldAlto;
 	}
 	else {
-		// La ventana es más alta -> ajustamos verticalmente
+		// La ventana es más alta que el mundo -> ajustamos verticalmente
 		float visibleAlto = worldAncho / aspectWin;
 		float offsetY = (visibleAlto - worldAlto) / 2.0f;
 		viewLeft = 0.0f;
@@ -185,18 +202,27 @@ void Tablero::reshape(int width, int height) {
 		viewTop = worldAlto + offsetY;
 	}
 
+	// Calculamos el centro de la ventana (esto es para ajustar el desplazamiento)
+	float centerWindowX = (viewRight + viewLeft) / 2.0f;
+	float centerWindowY = (viewTop + viewBottom) / 2.0f;
+
 	dx = viewLeft + (viewRight - viewLeft - tableroAncho) / 2.0f;
 	dy = viewBottom + (viewTop - viewBottom - tableroAlto) / 2.0f;
 
+	// Ajustamos la proyección ortográfica para centrar el tablero en la pantalla
+	//glOrtho(viewLeft, viewRight, viewBottom, viewTop, -1.0, 1.0);
+	glOrtho(viewLeft - center_x - dx, viewRight - center_x - dx, viewBottom - center_y - dy, viewTop - center_y - dy, -1.0, 1.0);
 
-	//Centramos tablero en ambos casos
-	glOrtho(viewLeft - center_x, viewRight - center_x, viewBottom - center_y, viewTop - center_y, -1.0, 1.0);
-
-
+	// Centramos el tablero usando glTranslatef
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	// Desplazamos el tablero al centro de la pantalla
+	glTranslatef(centerWindowX - center_x, centerWindowY - center_y, 0.0f);
+
+	// Aquí, el tablero se centra correctamente en la pantalla
 }
+
 
 
 void Tablero::DrawPiezas() {

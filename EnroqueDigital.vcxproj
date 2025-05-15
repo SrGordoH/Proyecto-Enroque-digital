@@ -22,6 +22,7 @@
     <ClCompile Include="src\Alfil.cpp" />
     <ClCompile Include="src\Caballo.cpp" />
     <ClCompile Include="src\Callbacks.cpp" />
+    <ClCompile Include="src\Posicion.cpp" />
     <ClCompile Include="src\Dama.cpp" />
     <ClCompile Include="src\Menus.cpp" />
     <ClCompile Include="src\ModeloPieza.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="src\Tablero.h" />
     <ClInclude Include="src\Tablero_logica.h" />
     <ClInclude Include="src\Torre.h" />
+    <ClInclude Include="src\Coords2D.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

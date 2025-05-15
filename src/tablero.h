@@ -20,7 +20,7 @@ class Tablero
 public: 
 	double center_x{ }, center_y{}, dist{}, ancho_casillas{};
 	int casillas[2]; //casillas: filas x columnas
-	float dx, dy;
+	float dx{}, dy{};
 	void Inicializa();
 	void Draw();
     void DrawGrid();
@@ -30,5 +30,7 @@ public:
 	void reshape(int width, int heigth);
 	void setLogica(Tablero_logica* log) { logica = log;    std::cout << "Logica asignada\n";}
 	void DrawPiezas();
+	Posicion coor_to_casilla(float posX, float posY);
+
 
 };

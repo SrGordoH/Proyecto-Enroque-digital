@@ -2,6 +2,8 @@
 #include "Tablero.h"
 #include "Menus.h"
 #include "Tablero_logica.h"
+#include "Coords2D.h"
+#include "Posicion.h"
 
 
 class Mundo
@@ -16,6 +18,7 @@ public:
 	void Draw();
 	void Inicializa(); 
 	void Reshape(int width, int height);
+	Coords2D coorClics_to_cords2D(int x, int y);
 
 };
 

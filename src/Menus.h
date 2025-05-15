@@ -7,10 +7,12 @@ enum  modo { MODO_NULO, PETTY, OPUESTAS };
 class Menus
 {
 	bool J_vs_J{}, J_vs_IA{};  // si vale 0: Jugador vs Jugador y si vale 1; Jugador vs IA
-	float dimX, dimY; // Dimensiones de la imagen
+	float dimX{}, dimY{}; // Dimensiones de la imagen
 	tipo_menu menu{};
 	modo modo_juego{};
 	rivalidad riv{};
+
+	friend class Mundo;
 
 public:
 
@@ -26,6 +28,7 @@ public:
 	modo get_modo() { return modo_juego; }
 	void set_riv(rivalidad rival) { riv = rival; }
 	rivalidad get_riv() { return riv; }
+	void coor_menus(float posX, float posY);
 };
 
 
