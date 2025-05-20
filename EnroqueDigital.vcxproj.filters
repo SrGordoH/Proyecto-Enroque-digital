@@ -107,8 +107,5 @@
     <ClInclude Include="src\ModeloPieza.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\Coords2D.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

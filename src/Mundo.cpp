@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <iostream>
+
 using namespace std;
 
 void Mundo::Inicializa() {
@@ -30,7 +31,7 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 		std::cout << "Que es la casilla: (" << casilla_clic.fil << ", " << casilla_clic.col << ")\n";
 		std::cout << "Cuyo centro esta en: (" << centro_casilla_clic.x << ", " << centro_casilla_clic.y << ")\n";
 		menus.coor_menus(pos_clic.x, pos_clic.y);
-		
+		logica.setearPosicionesIniciales(menus.get_modo());
 
 	}
 }

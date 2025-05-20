@@ -20,9 +20,46 @@ struct Posicion
 	}
 
 	// Función que devuelve el centro de la posición en coordenadas de la pantalla/raton
-	Coords2D centro_en_coords();
+	Coords2D centro_en_coords() const;
 
 	Posicion(int f, int c): fil{f}, col{c} {}
 	Posicion() = default;
 
 };
+
+
+struct Coords2D {
+	float x, y;
+
+
+	Coords2D operator - (const Coords2D&) const;  //resta de Coordenadas
+	Coords2D operator + (const Coords2D&) const; //suma de Coordenadas
+	Coords2D operator *(float) const; // producto por un escalar
+
+	Posicion coords_to_casilla() const {
+		Posicion casilla{ };
+		casilla.fil = int(y / TAM_CASILLA) + 1;
+		casilla.col = int(x / TAM_CASILLA) + 1;
+
+		if (!casilla.esValida()) return { -1,-1 }; // Cuando no esta dentro del tablero
+		return casilla;
+	}
+
+	Coords2D(float coorX, float coorY) : x{ coorX }, y{ coorY } {}
+	Coords2D() = default;
+};
+
+
+
+
+inline Coords2D Coords2D::operator - (const Coords2D& v) const {
+	return { x - v.x , y - v.y };
+}
+
+inline Coords2D Coords2D::operator + (const Coords2D& v) const {
+	return { x + v.x , y + v.y };
+}
+
+inline Coords2D Coords2D::operator *(float real) const {
+	return { x * real, y * real };
+}

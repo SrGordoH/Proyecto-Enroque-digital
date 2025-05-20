@@ -2,7 +2,7 @@
 #include "Tablero.h"
 #include "Menus.h"
 #include "Tablero_logica.h"
-#include "Coords2D.h"
+
 #include "Posicion.h"
 
 

@@ -21,5 +21,8 @@ public:
 	const vector<Pieza*>& getPiezas() const { return piezas; }
 	bool estaEnJaqueMate(bool color);
 
+	~Tablero_logica() {
+		for (auto p : piezas) delete p;
+	}
 
 };

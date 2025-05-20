@@ -5,6 +5,7 @@ void Pieza::SetPos(int fil, int col)
 {
     pos.fil = fil;
     pos.col = col;
+    coords = pos.centro_en_coords();
 }
 
 // PEGAR A CONTINUACIÓN:
@@ -61,14 +62,13 @@ bool Pieza::JaqueMate(Tablero_logica& tab) const {
     return true;
 }
 
-void Pieza:: Dibuja(float ancho_casilla, float dx, float dy) const {
+void Pieza:: Dibuja(float ancho_casilla) const {
     if (!sprite) return;
-
-    // Se calcula la posicion en pantalla usando la casilla del tablero y los desplazamientos
-    float x = pos.col * ancho_casilla + ancho_casilla / 2.0f + dx;
-    float y = pos.fil * ancho_casilla + ancho_casilla / 2.0f + dy;
-
-    sprite->setPos(x, y);                        // posicion central del sprite
+    //sprite->setCenter(coords.x, coords.y);         // posicion central del sprite
+    sprite->setPos(coords.x-ancho_casilla/2, coords.y - ancho_casilla / 2);
     sprite->setSize(ancho_casilla, ancho_casilla); // tamano acorde a casilla
+   /* glPushMatrix();
+    */
     sprite->draw();                              // dibuja el sprite
+    // glPopMatrix();
 }

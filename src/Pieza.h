@@ -6,7 +6,6 @@
 
 class Tablero_logica;
 
-
 class Pieza
 {
 public:
@@ -20,6 +19,7 @@ protected:                // El protected es como el private pero las clases que
 	const unsigned char valor;				//Valor de la pieza: Peón=>1, Caballo y alfil=> 3, Torre=>5 y Dama=>10.
 
 	Posicion pos;
+	Coords2D coords;
 	ETSIDI::Sprite* sprite = nullptr; // sprite de la pieza
 
 
@@ -28,9 +28,13 @@ public:
 	Pieza(tipo_t tipo_, const Tablero& tablero_, bool color_, unsigned char valor_)
 		: tipo(tipo_), tablero(tablero_), color(color_), valor(valor_) {
 	}      //Constructor para inicializar pieza con argumentos
-
+	// Destructor para el new. Hace falta?
+	/*~Pieza() {
+		delete sprite;
+	}*/
 	void SetPos(int fil, int col);
 	Posicion getPos() const { return pos; }
+	Coords2D getCoords() const { return coords; }
 	bool getColor() const { return color; }
 	tipo_t getTipo() const { return tipo; }
 
@@ -38,5 +42,5 @@ public:
 	bool estaEnJaque(Tablero_logica& tab) const;
 	bool JaqueMate(Tablero_logica& tab) const;
 
-	virtual void Dibuja(float ancho_casilla, float dx, float dy) const;
+	virtual void Dibuja(float ancho_casilla) const;
 };

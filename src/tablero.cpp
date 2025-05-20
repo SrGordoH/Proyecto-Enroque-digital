@@ -46,6 +46,8 @@ void Tablero::Draw() {
 			DrawCell(i, j);
 		}
 	}
+	glTranslatef(- ancho_casillas, -ancho_casillas, 0.2f);
+
 	DrawPiezas();
 }
 
@@ -226,13 +228,14 @@ void Tablero::reshape(int width, int height) {
 
 
 void Tablero::DrawPiezas() {
+
 	glEnable(GL_DEPTH_TEST); // Habilita el z-buffer
 	if (!logica) return;     // No se dibuja si no hay logica
 
 	auto piezas = logica->getPiezas();
 	for (Pieza* p : piezas) {
 		if (!p) continue;
-		p->Dibuja(ancho_casillas, dx, dy); // Dibuja el sprite segun posicion
+		p->Dibuja(ancho_casillas); // Dibuja el sprite segun posicion
 	}
 }
 

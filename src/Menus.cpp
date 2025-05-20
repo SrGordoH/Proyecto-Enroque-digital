@@ -86,6 +86,7 @@ void Menus::coor_menus(float posX, float posY) {
 		if (posX >= Modo_Petty.lim_i && posX <= Modo_Petty.lim_d && posY >= Modo_Petty.lim_bajo && posY <= Modo_Petty.lim_alto) {
 			set_modo(PETTY);
 			set_menu(JUEGO);
+
 			// INICIALIZA TABLERO PETTY
 		}
 		// Clic en esquinas opuestas
