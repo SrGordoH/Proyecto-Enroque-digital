@@ -26,8 +26,8 @@ protected:                // El protected es como el private pero las clases que
 public:
 	Pieza() = default;
 	Pieza(tipo_t tipo_, const Tablero& tablero_, bool color_, unsigned char valor_)
-		: tipo(tipo_), tablero(tablero_), color(color_), valor(valor_) {
-	}      //Constructor para inicializar pieza con argumentos
+		: tipo(tipo_), tablero(tablero_), color(color_), valor(valor_) {}//Constructor para inicializar pieza con argumentos
+	
 	// Destructor para el new. Hace falta? si se hace slicing en el destructor, se destruye también lo generado en la clase derivada.
 	/*~Pieza() {
 		delete sprite;
@@ -37,6 +37,8 @@ public:
 	Coords2D getCoords() const { return coords; }
 	bool getColor() const { return color; }
 	tipo_t getTipo() const { return tipo; }
+	const Tablero& getTablero() const { return tablero; }
+
 
 	bool esMovimientoLegalConJaque(Pieza* piezaDestino, Posicion destino, Tablero_logica& tab);
 	bool estaEnJaque(Tablero_logica& tab) const;

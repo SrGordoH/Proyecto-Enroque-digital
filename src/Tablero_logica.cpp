@@ -136,3 +136,98 @@ bool Tablero_logica::estaEnJaqueMate(bool color) {
     }
     return true; 
 }
+
+bool Tablero_logica::estaEnJaque(bool color) {
+    // Se obtiene la posicion del rey del jugador del color actual
+    Posicion reyPos = obtenerReyPos(color);
+
+    // Se recorre la lista de piezas del oponente
+    for (Pieza* pieza : piezas) {
+        if (!pieza || pieza->getColor() == color)
+            continue; // Se ignoran piezas del mismo color
+
+        // Se obtienen los movimientos validos de la pieza enemiga
+        vector<Posicion> amenazas = pieza->movimientosValidos(*this);
+
+        // Se verifica si alguna pieza enemiga puede atacar al rey
+        for (const Posicion& p : amenazas) {
+            if (p.fil == reyPos.fil && p.col == reyPos.col) {
+                return true; // El rey esta siendo amenazado
+            }
+        }
+    }
+
+    return false; // No hay amenazas, el rey no esta en jaque
+}
+
+
+void Tablero_logica::guardarMovimiento(Pieza* p, Posicion origen, Posicion destino, Pieza* capturada) {
+    Movimiento m;
+    m.pieza = p;
+    m.origen = origen;
+    m.destino = destino;
+    m.capturada = capturada;
+    historial.push_back(m);
+}
+
+void Tablero_logica::deshacerUltimoMovimiento() {
+    if (historial.empty()) return;
+
+    Movimiento m = historial.back();
+    historial.pop_back();
+
+    // Revertimos la pieza movida
+    m.pieza->SetPos(m.origen.fil, m.origen.col);
+
+    // Restauramos la pieza capturada si habia
+    if (m.capturada) {
+        piezas.push_back(m.capturada);
+    }
+}
+
+void Tablero_logica::verificarCoronacion() {
+    for (int i = 0; i < piezas.size(); ++i) {
+        Pieza* p = piezas[i];
+
+        // Si la pieza es un peon
+        if (p && p->getTipo() == Pieza::tipo_t::PEON) {
+            Posicion pos = p->getPos();
+
+            // Si el peon blanco llega a la fila 1 o el negro a la fila 6
+            if ((p->getColor() && pos.fil == 1) || (!p->getColor() && pos.fil == 6)) {
+                const Tablero& t = p->getTablero(); // obtener referencia al tablero
+
+                // Se elimina el peon y se sustituye por una dama
+                delete piezas[i];
+                piezas[i] = new Dama(t, p->getColor());
+                piezas[i]->SetPos(pos.fil, pos.col);
+            }
+        }
+    }
+}
+
+bool Tablero_logica::esTablasPorAhogo(bool turnoColor) {
+    if (estaEnJaque(turnoColor)) return false;
+
+    for (Pieza* p : piezas) {
+        if (p->getColor() == turnoColor) {
+            auto movs = p->movimientosValidos(*this);
+            for (Posicion& d : movs) {
+                Pieza* destino = obtenerPieza(d);
+                if (p->esMovimientoLegalConJaque(destino, d, *this)) {
+                    return false; // hay al menos un movimiento legal
+                }
+            }
+        }
+    }
+
+    return true; // no hay movimientos legales y no esta en jaque
+}
+
+void Tablero_logica::notificarMovimiento(Pieza* piezaMovida, Pieza* capturada) {
+    if (capturada || piezaMovida->getTipo() == Pieza::tipo_t::PEON)
+        movimientosSinCaptura = 0;
+    else
+        movimientosSinCaptura++;
+}
+
