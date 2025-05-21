@@ -17,7 +17,7 @@ vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab) const {
             Posicion p = { nf, nc };
             if (!p.esValida()) break; // Si no es valida, detenemos
 
-            Pieza* otra = tab.obtenerPieza(nf, nc); // Verificamos si hay pieza
+            Pieza* otra = tab.obtenerPieza(p); // Verificamos si hay pieza
 
             if (otra == nullptr) {
                 movs.push_back(p); // Casilla libre, movimiento valido

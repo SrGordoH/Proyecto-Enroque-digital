@@ -15,7 +15,7 @@ vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) const {
 
         // Si la posicion es valida dentro del tablero
         if (p.esValida()) {
-            Pieza* otra = tab.obtenerPieza(p.fil, p.col); // Obtenemos si hay una pieza
+            Pieza* otra = tab.obtenerPieza(p); // Obtenemos si hay una pieza
 
             // Si no hay pieza o hay una del color opuesto
             if (otra == nullptr || otra->getColor() != this->color)

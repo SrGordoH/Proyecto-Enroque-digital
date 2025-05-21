@@ -17,13 +17,13 @@ vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) const {
 
     
     Posicion adelante = { f + dir, c };
-    if (adelante.esValida() && tab.obtenerPieza(adelante.fil, adelante.col) == nullptr) {
+    if (adelante.esValida() && tab.obtenerPieza(adelante) == nullptr) {
         movs.push_back(adelante);  
     }
 
     Posicion diagIzq = { f + dir, c - 1 };
     if (diagIzq.esValida()) {  // Solo si la posición está dentro del tablero
-        Pieza* p = tab.obtenerPieza(diagIzq.fil, diagIzq.col);
+        Pieza* p = tab.obtenerPieza(diagIzq);
         if (p != nullptr && p->getColor() != this->color) {
             movs.push_back(diagIzq);  // Solo si pieza de color contrario
         }
@@ -31,7 +31,7 @@ vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) const {
 
     Posicion diagDer = { f + dir, c + 1 };
     if (diagDer.esValida()) {
-        Pieza* p = tab.obtenerPieza(diagDer.fil, diagDer.col);
+        Pieza* p = tab.obtenerPieza(diagDer);
         if (p != nullptr && p->getColor() != this->color) {
             movs.push_back(diagDer);  
         }

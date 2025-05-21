@@ -15,7 +15,7 @@ class Tablero_logica {
 public:
 	void inicializarTablero(const Tablero& tablero);
 	void setearPosicionesIniciales(int modo);
-	Pieza* obtenerPieza(int fil, int col) const;
+	Pieza* obtenerPieza(Posicion casilla) const;
 	Posicion obtenerReyPos(bool color);
 	vector<Pieza*> obtenerPiezasOponente(bool color) const;
 	const vector<Pieza*>& getPiezas() const { return piezas; }

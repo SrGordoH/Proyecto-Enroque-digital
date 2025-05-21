@@ -16,7 +16,7 @@ vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) const {
             Posicion p = { nf, nc };
             if (!p.esValida()) break; // Si no es valida, detenemos la busqueda
 
-            Pieza* otra = tab.obtenerPieza(nf, nc); // Verificamos si hay una pieza
+            Pieza* otra = tab.obtenerPieza(p); // Verificamos si hay una pieza
 
             if (otra == nullptr) {
                 movs.push_back(p); // Si no hay pieza movimiento valido

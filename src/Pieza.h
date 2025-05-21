@@ -28,7 +28,7 @@ public:
 	Pieza(tipo_t tipo_, const Tablero& tablero_, bool color_, unsigned char valor_)
 		: tipo(tipo_), tablero(tablero_), color(color_), valor(valor_) {
 	}      //Constructor para inicializar pieza con argumentos
-	// Destructor para el new. Hace falta?
+	// Destructor para el new. Hace falta? si se hace slicing en el destructor, se destruye también lo generado en la clase derivada.
 	/*~Pieza() {
 		delete sprite;
 	}*/

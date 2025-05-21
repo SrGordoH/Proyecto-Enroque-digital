@@ -11,7 +11,7 @@ void Pieza::SetPos(int fil, int col)
 // PEGAR A CONTINUACIÓN:
 bool Pieza::esMovimientoLegalConJaque(Pieza* piezaDestino, Posicion destino, Tablero_logica& tab) {
     Posicion posOriginal = pos;
-    Pieza* piezaCapturada = tab.obtenerPieza(destino.fil, destino.col);
+    Pieza* piezaCapturada = tab.obtenerPieza(destino);
     this->SetPos(destino.fil, destino.col);
 
     if (estaEnJaque(tab)) {
@@ -50,7 +50,7 @@ bool Pieza::JaqueMate(Tablero_logica& tab) const {
 
             Posicion p = { reyPos.fil + df, reyPos.col + dc };
             if (p.esValida()) {
-                Pieza* otraPieza = tab.obtenerPieza(p.fil, p.col);
+                Pieza* otraPieza = tab.obtenerPieza(p);
                 if (otraPieza == nullptr || otraPieza->getColor() != color) {
                     if (!estaEnJaque(tab)) {
                         return false;
@@ -67,8 +67,7 @@ void Pieza:: Dibuja(float ancho_casilla) const {
     //sprite->setCenter(coords.x, coords.y);         // posicion central del sprite
     sprite->setPos(coords.x-ancho_casilla/2, coords.y - ancho_casilla / 2);
     sprite->setSize(ancho_casilla, ancho_casilla); // tamano acorde a casilla
-   /* glPushMatrix();
-    */
+   
     sprite->draw();                              // dibuja el sprite
-    // glPopMatrix();
+   
 }
