@@ -19,6 +19,7 @@ class Tablero_logica {
 	};
 	std::vector<Movimiento> historial;
 	int movimientosSinCaptura = 0;
+	bool turno = 0;              //Turno vale 0 cuandole toca a blancas
 
 
 public:
@@ -36,8 +37,9 @@ public:
 	bool esTablasPorAhogo(bool turnoColor);
 	void notificarMovimiento(Pieza* piezaMovida, Pieza* capturada);
 	bool reglaCincuentaMovimientos() const {return movimientosSinCaptura >= 50;}
-
-
+	void eliminarPieza(Pieza* p);
+	void cambiarTurno() { turno = !turno; }
+	bool moverPieza(Pieza* pieza, Posicion destino);
 
 	~Tablero_logica() {
 		for (auto p : piezas) delete p;

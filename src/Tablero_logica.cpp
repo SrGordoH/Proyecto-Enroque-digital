@@ -233,3 +233,46 @@ void Tablero_logica::notificarMovimiento(Pieza* piezaMovida, Pieza* capturada) {
         movimientosSinCaptura++;
 }
 
+
+void Tablero_logica::eliminarPieza(Pieza* p) {
+    for (auto it = piezas.begin(); it != piezas.end(); ++it) {  //recorremos el vector con indices
+        if (*it == p) {  //Pieza encontrada
+            delete* it;
+            piezas.erase(it);  
+            break;       //Salimos tras eliminar
+        }
+    }
+}
+
+bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
+    if (!pieza ) return false; //Si no hay pieza no movemos nada
+
+    std::vector<Posicion> movs = pieza->movimientosValidos(*this);
+
+    // Verificamos si el destino esta en los movimientos validos
+    bool esMovimientoValido = false;
+    for (const Posicion& p : movs) {
+        if (p.fil == destino.fil && p.col == destino.col) {
+            esMovimientoValido = true;
+            break;
+        }
+    }
+
+    if (!esMovimientoValido) return false;
+
+    // Obtener la pieza en la posicion de destino
+    Pieza* piezaDestino = obtenerPieza(destino);
+
+    // Si hay una pieza en destino eliminarla aunque sea de su color
+    if (piezaDestino) {
+        eliminarPieza(piezaDestino);
+    }
+
+    guardarMovimiento(pieza, pieza->getPos(), destino, piezaDestino);
+
+    pieza->SetPos(destino.fil, destino.col);
+    verificarCoronacion();
+    cambiarTurno();
+
+    return true; //Devolvemos true si hacemos ese movimiento
+}
