@@ -13,13 +13,9 @@ vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) const {
         // Calculamos la nueva posicion
         Posicion p = { f + dxy[0], c + dxy[1] };
 
-        // Si la posicion es valida dentro del tablero
+        // Si la posicion esta dentro del tablero
         if (p.esValida()) {
-            Pieza* otra = tab.obtenerPieza(p); // Obtenemos si hay una pieza
-
-            // Si no hay pieza o hay una del color opuesto
-            if (otra == nullptr || otra->getColor() != this->color)
-                movs.push_back(p); // Agregamos movimiento valido
+            movs.push_back(p); //puedes capturar cualquier pieza
         }
     }
     return movs; // Devolvemos movimientos validos

@@ -22,17 +22,17 @@ vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) const {
     }
 
     Posicion diagIzq = { f + dir, c - 1 };
-    if (diagIzq.esValida()) {  // Solo si la posición está dentro del tablero
+    if (diagIzq.esValida()) {  // Solo si la posicion esta dentro del tablero
         Pieza* p = tab.obtenerPieza(diagIzq);
-        if (p != nullptr && p->getColor() != this->color) {
-            movs.push_back(diagIzq);  // Solo si pieza de color contrario
+        if (p != nullptr) {
+            movs.push_back(diagIzq);  //Puedes comerte tus piezas
         }
     }
 
     Posicion diagDer = { f + dir, c + 1 };
     if (diagDer.esValida()) {
         Pieza* p = tab.obtenerPieza(diagDer);
-        if (p != nullptr && p->getColor() != this->color) {
+        if (p != nullptr) {
             movs.push_back(diagDer);  
         }
     }

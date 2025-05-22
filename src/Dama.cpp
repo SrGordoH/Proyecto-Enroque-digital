@@ -25,10 +25,10 @@ vector<Posicion> Dama::movimientosValidos(Tablero_logica& tab) const {
                 movs.push_back(p); // Casilla libre, movimiento valido
             }
             else {
-                if (otra->getColor() != this->color)
-                    movs.push_back(p); // Captura valida
+                
+                movs.push_back(p); // Captura incluido tu color
 
-                break; // Hay pieza
+                break; // Hay pieza y no puedes saltarla
             }
 
             nf += d[0]; nc += d[1]; // Avanzamos a la siguiente casilla en esa direccion
@@ -50,8 +50,7 @@ vector<Posicion> Dama::movimientosValidos(Tablero_logica& tab) const {
                 movs.push_back(p); // Casilla libre, movimiento valido
             }
             else {
-                if (otra->getColor() != this->color)
-                    movs.push_back(p); // Captura valida
+                movs.push_back(p); // Captura cualquier color
 
                 break; // Si hay pieza, no se puede avanzar mas
             }

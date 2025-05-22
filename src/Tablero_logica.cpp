@@ -26,6 +26,8 @@ void Tablero_logica::inicializarTablero(const Tablero& tablero) {  // Aqui agreg
     // === REYES ===
     piezas.push_back(new Rey(tablero, true));
     piezas.push_back(new Rey(tablero, false));
+
+    //usamos un vector de piezas que guardamos usando memoria dinamica cada una al final de las que habia previamente
 }
 
 void Tablero_logica::setearPosicionesIniciales(int modo) {

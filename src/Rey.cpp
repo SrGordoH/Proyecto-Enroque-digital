@@ -12,11 +12,7 @@ vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) const {
             Posicion p = { f + df, c + dc }; // Nueva posicion
 
             if (p.esValida()) { // Aseguremos que este dentro del tablero
-                Pieza* otra = tab.obtenerPieza(p); // Obtenemos pieza en esa posicion
-
-                // Si no hay pieza o es del color opuesto, es valido
-                if (otra == nullptr || otra->getColor() != this->color)
-                    movs.push_back(p);
+                movs.push_back(p);
             }
         }
     }
@@ -37,8 +33,8 @@ vector<Pieza*> Rey::puedeComer(Tablero_logica& tab) const {
             if (p.esValida()) {
                 Pieza* otra = tab.obtenerPieza(p);
 
-                // Si hay una pieza del color opuesto, se puede comer
-                if (otra != nullptr && otra->getColor() != this->color)
+                // Si hay una pieza del color que sea, se puede comer
+                if (otra != nullptr)
                     comibles.push_back(otra);
             }
         }

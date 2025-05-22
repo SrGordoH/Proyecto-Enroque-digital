@@ -8,7 +8,7 @@ void Pieza::SetPos(int fil, int col)
     coords = pos.centro_en_coords();
 }
 
-// PEGAR A CONTINUACIÓN:
+
 bool Pieza::esMovimientoLegalConJaque(Pieza* piezaDestino, Posicion destino, Tablero_logica& tab) {
     Posicion posOriginal = pos;
     Pieza* piezaCapturada = tab.obtenerPieza(destino);

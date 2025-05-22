@@ -22,9 +22,7 @@ vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) const {
                 movs.push_back(p); // Si no hay pieza movimiento valido
             }
             else {
-                if (otra->getColor() != this->color)
-                    movs.push_back(p); // Si hay pieza del otro color, la podemos capturar
-
+                movs.push_back(p); // Capturamos sea cual sea el color
                 break; 
             }
 
