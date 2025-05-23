@@ -20,12 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Alfil.cpp" />
+    <ClCompile Include="src\Boton.cpp" />
     <ClCompile Include="src\Caballo.cpp" />
     <ClCompile Include="src\Callbacks.cpp" />
     <ClCompile Include="src\Posicion.cpp" />
     <ClCompile Include="src\Dama.cpp" />
     <ClCompile Include="src\Menus.cpp" />
-    <ClCompile Include="src\ModeloPieza.cpp" />
     <ClCompile Include="src\Mundo.cpp" />
     <ClCompile Include="src\Peon.cpp" />
     <ClCompile Include="src\Pieza.cpp" />
@@ -42,7 +42,6 @@
     <ClInclude Include="src\Callbacks.h" />
     <ClInclude Include="src\Dama.h" />
     <ClInclude Include="src\Menus.h" />
-    <ClInclude Include="src\ModeloPieza.h" />
     <ClInclude Include="src\Mundo.h" />
     <ClInclude Include="src\Peon.h" />
     <ClInclude Include="src\Pieza.h" />

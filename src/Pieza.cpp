@@ -64,10 +64,10 @@ bool Pieza::JaqueMate(Tablero_logica& tab) const {
 
 void Pieza:: Dibuja(float ancho_casilla) const {
     if (!sprite) return;
-    //sprite->setCenter(coords.x, coords.y);         // posicion central del sprite
     sprite->setPos(coords.x-ancho_casilla/2, coords.y - ancho_casilla / 2);
     sprite->setSize(ancho_casilla, ancho_casilla); // tamano acorde a casilla
    
     sprite->draw();                              // dibuja el sprite
+   // sprite->setCenter(0, 0);         // posicion central del sprite
    
 }

@@ -52,45 +52,38 @@ void Menus::Draw() {
 
 }
 
+
 void Menus::Reshape(int width, int height) {
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
+	// Mismo criterio que el reshape del tablero
 	float aspectWindow = (float)width / (float)height;
-	float imageAspect = dimX / dimY;
 
-	float ZOOM_FACTOR = 0.6f; // Cuanto más pequeño, más "zoom in"
+	float imageHeight = 6.5f; // define una "altura lógica" constante
+	float imageWidth = imageHeight * aspectWindow;
 
-	if (aspectWindow > imageAspect) {
-		// Ajustamos altura
-		float viewHeight = 10.0f * ZOOM_FACTOR;
-		float viewWidth = viewHeight * aspectWindow;
-		glOrtho(-viewWidth / 2.0f, viewWidth / 2.0f, -viewHeight / 2.0f, viewHeight / 2.0f, -10.0f, 10.0f);
-	}
-	else {
-		// Ajustamos ancho
-		float viewWidth = 10.0f * ZOOM_FACTOR;
-		float viewHeight = viewWidth / aspectWindow;
-		glOrtho(-viewWidth / 2.0f, viewWidth / 2.0f, -viewHeight / 2.0f, viewHeight / 2.0f, -10.0f, 10.0f);
-	}
+	glOrtho(-imageWidth / 2.0f, imageWidth / 2.0f, -imageHeight / 2.0f, imageHeight / 2.0f, -10.0, 10.0);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
 
+
+
 void Menus::coor_menus(float posX, float posY) {
 	if (get_menu() == MENU_MODO) {
 		// Clic en Petty:
-		if (posX >= Modo_Petty.lim_i && posX <= Modo_Petty.lim_d && posY >= Modo_Petty.lim_bajo && posY <= Modo_Petty.lim_alto) {
+		if (Modo_Petty.clic(posX, posY)) {
 			set_modo(PETTY);
 			set_menu(JUEGO);
 
 			// INICIALIZA TABLERO PETTY
 		}
 		// Clic en esquinas opuestas
-		if (posX >= Modo_Opuestas.lim_i && posX <= Modo_Opuestas.lim_d && posY >= Modo_Opuestas.lim_bajo && posY <= Modo_Opuestas.lim_alto) {
+		if (Modo_Opuestas.clic(posX, posY)) {
 
 			set_modo(OPUESTAS);
 			set_menu(JUEGO);
@@ -99,16 +92,14 @@ void Menus::coor_menus(float posX, float posY) {
 	}
 	if (get_menu() == MENU_PPAL) {
 		// Clic en 1 vs 1:
-		if (posX >= Ppal_JvsJ.lim_i && posX <= Ppal_JvsJ.lim_d && posY >= Ppal_JvsJ.lim_bajo && posY <= Ppal_JvsJ.lim_alto) {
+		if (Ppal_JvsJ.clic(posX, posY)) {
 			set_riv(J_VS_J);
 			set_menu(MENU_MODO);
 		}
 		// Clic en J vs IA
-		if (posX >= Ppal_JvsIA.lim_i && posX <= Ppal_JvsIA.lim_d && posY >= Ppal_JvsIA.lim_bajo && posY <= Ppal_JvsIA.lim_alto) {
-
+		if (Ppal_JvsIA.clic(posX, posY)) {
 			set_riv(J_VS_IA);
 			set_menu(MENU_MODO);
-
 		}
 	}
 }

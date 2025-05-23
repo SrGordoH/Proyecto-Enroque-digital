@@ -47,8 +47,9 @@ void Tablero::Draw() {
 		}
 	}
 	glTranslatef(- ancho_casillas, -ancho_casillas, 0.2f);
-
 	DrawPiezas();
+	glTranslatef(ancho_casillas, ancho_casillas, 0.2f);
+
 }
 
 void Tablero::DrawGrid() {

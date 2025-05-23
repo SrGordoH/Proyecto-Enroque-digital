@@ -1,8 +1,8 @@
 #pragma once
 #include "Boton.h"
-enum tipo_menu {MENU_PPAL, MENU_MODO, JUEGO};
+enum tipo_menu { MENU_PPAL, MENU_MODO, JUEGO };
 enum  rivalidad { RIV_NULA, J_VS_J, J_VS_IA };
-enum  modo {  PETTY, OPUESTAS, MODO_NULO};
+enum  modo { PETTY, OPUESTAS, MODO_NULO };
 
 class Menus
 {

@@ -16,7 +16,6 @@ public:
     }
 
     vector <Posicion> movimientosValidos(Tablero_logica& tab) const;
-    vector <Pieza*> puedeComer(Tablero_logica& tab) const;
 
 };
 

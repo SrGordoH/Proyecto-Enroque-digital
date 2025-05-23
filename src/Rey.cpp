@@ -18,27 +18,3 @@ vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) const {
     }
     return movs; // Retornamos posiciones validas
 }
-
-vector<Pieza*> Rey::puedeComer(Tablero_logica& tab) const {
-    vector<Pieza*> comibles; // Vector de punteros a piezas que puede comer
-    int f = pos.fil, c = pos.col; // Posición actual del rey
-
-    // Recorremos las 8 casillas adyacentes
-    for (int df = -1; df <= 1; ++df) {
-        for (int dc = -1; dc <= 1; ++dc) {
-            if (df == 0 && dc == 0) continue; // Ignoramos la posición actual
-
-            Posicion p = { f + df, c + dc };
-
-            if (p.esValida()) {
-                Pieza* otra = tab.obtenerPieza(p);
-
-                // Si hay una pieza del color que sea, se puede comer
-                if (otra != nullptr)
-                    comibles.push_back(otra);
-            }
-        }
-    }
-
-    return comibles; // Retornamos punteros a las piezas comestibles
-}
