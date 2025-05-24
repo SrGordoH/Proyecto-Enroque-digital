@@ -16,8 +16,8 @@ class Menus
 
 public:
 
-	Boton Ppal_JvsJ{-1,1,-1.4,-1}, Ppal_JvsIA{-1.15,1.15,-2.1,-1.65};
-	Boton Modo_Petty{ -1,1,-1.9,-1.4 }, Modo_Opuestas{ -1.7,1.7,-2.6,-2.1 };
+	Boton Ppal_JvsJ{-1.0f,1.0f,-1.4f,-1.0f}, Ppal_JvsIA{-1.15f,1.15f,-2.1f,-1.65f};
+	Boton Modo_Petty{ -1.0f,1.0f,-1.9f,-1.4f }, Modo_Opuestas{ -1.7f,1.7f,-2.6f,-2.1f };
 	
 	void Inicializa();
 	void Draw();

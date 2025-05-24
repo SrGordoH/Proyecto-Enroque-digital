@@ -264,12 +264,17 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     // Obtener la pieza en la posicion de destino
     Pieza* piezaDestino = obtenerPieza(destino);
 
+    // Guardar el movimiento antes de eliminar
+    if (piezaDestino && piezaDestino != pieza)
+        guardarMovimiento(pieza, pieza->getPos(), destino, piezaDestino);
+    else
+        guardarMovimiento(pieza, pieza->getPos(), destino, nullptr);
+
+
     // Si hay una pieza en destino eliminarla aunque sea de su color
-    if (piezaDestino) {
+    if(piezaDestino && piezaDestino != pieza) {
         eliminarPieza(piezaDestino);
     }
-
-    guardarMovimiento(pieza, pieza->getPos(), destino, piezaDestino);
 
     pieza->SetPos(destino.fil, destino.col);
     verificarCoronacion();

@@ -37,7 +37,7 @@ void Tablero::Draw() {
 
 	glDisable(GL_LIGHTING); // Si solo hay colores planos, no hace falta luz
 
-	glTranslatef(-center_x, -center_y, 0.0f);
+	glTranslatef((GLfloat) -center_x, (GLfloat) -center_y, (GLfloat) 0.0f);
 
 	// Dibuja la cuadrícula y las piezas
 	DrawGrid();
@@ -46,63 +46,63 @@ void Tablero::Draw() {
 			DrawCell(i, j);
 		}
 	}
-	glTranslatef(- ancho_casillas, -ancho_casillas, 0.2f);
+	glTranslatef((GLfloat) -ancho_casillas, (GLfloat) -ancho_casillas, (GLfloat) 0.2f);
 	DrawPiezas();
-	glTranslatef(ancho_casillas, ancho_casillas, 0.0f);
+	glTranslatef((GLfloat) ancho_casillas, (GLfloat) ancho_casillas, (GLfloat) 0.0f);
 
 }
 
 void Tablero::DrawGrid() {
 
 	
-	glColor3f(0.0f, 0.0f, 0.0f);
+	glColor3f((GLfloat) 0.0f, (GLfloat) 0.0f, (GLfloat) 0.0f);
 
-	float ancho = casillas[1] * ancho_casillas;
-	float alto = casillas[0] * ancho_casillas;
+	double ancho = casillas[1] * ancho_casillas;
+	double alto = casillas[0] * ancho_casillas;
 
 	glLineWidth(1.0f);
 
 	for (int i = 0; i <= casillas[1]; ++i) {
-		glLineWidth((i == 0 || i == casillas[1]) ? 3.0f : 1.0f);
+		glLineWidth((i == 0 || i == casillas[1]) ? (GLfloat) 3.0f : (GLfloat) 1.0f);
 		glBegin(GL_LINES);
-		glVertex3f(i * ancho_casillas , 0.0f , 0.0f);
-		glVertex3f(i * ancho_casillas, alto , 0.0f);
+		glVertex3f((GLfloat) (i * ancho_casillas), (GLfloat) 0.0f , (GLfloat) 0.0f);
+		glVertex3f((GLfloat) (i * ancho_casillas), (GLfloat) alto , (GLfloat) 0.0f);
 		glEnd();
 	}
 
 	for (int i = 0; i <= casillas[0]; ++i) {
-		glLineWidth((i == 0 || i == casillas[0]) ? 3.0f : 1.0f);
+		glLineWidth((i == 0 || i == casillas[0]) ? (GLfloat) 3.0f : (GLfloat) 1.0f);
 		glBegin(GL_LINES);
-		glVertex3f(0.0f , i * ancho_casillas, 0.0f);
-		glVertex3f(ancho , i * ancho_casillas, 0.0f);
+		glVertex3f((GLfloat)0.0f, (GLfloat) (i * ancho_casillas), (GLfloat)0.0f);
+		glVertex3f((GLfloat)ancho, (GLfloat) (i * ancho_casillas), (GLfloat)0.0f);
 		glEnd();
 	}
 
-	glLineWidth(1.0f);
+	glLineWidth((GLfloat)1.0f);
 }
 
 
 void Tablero::DrawCell(int i, int j) {
 	if ((i + j) % 2 == 0)
-		glColor3f(0.0f, 1.0f, 0.0f); // Verde claro
+		glColor3f((GLfloat)0.0f, (GLfloat)1.0f, (GLfloat)0.0f); // Verde claro
 	else
-		glColor3f(0.0f, 0.5f, 0.0f); // Verde oscuro
+		glColor3f((GLfloat)0.0f, (GLfloat)0.5f, (GLfloat)0.0f); // Verde oscuro
 
-	float x = j * ancho_casillas;
-	float y = i * ancho_casillas;
+	double x = j * ancho_casillas;
+	double y = i * ancho_casillas;
 
 	glBegin(GL_QUADS);
-	glVertex2f(x, y);
-	glVertex2f(x + ancho_casillas, y);
-	glVertex2f(x + ancho_casillas, y + ancho_casillas);
-	glVertex2f(x, y + ancho_casillas);
+	glVertex2f((GLfloat) x, (GLfloat) y);
+	glVertex2f((GLfloat) (x + ancho_casillas), (GLfloat) y);
+	glVertex2f((GLfloat)(x + ancho_casillas), (GLfloat) (y + ancho_casillas));
+	glVertex2f((GLfloat)x, (GLfloat) (y + ancho_casillas));
 	glEnd();
 }
 
 
 bool Tablero::clicDentroTablero(float posX, float posY) {
-	float ancho = casillas[1] * ancho_casillas;
-	float alto = casillas[0] * ancho_casillas;
+	double ancho = casillas[1] * ancho_casillas;
+	double alto = casillas[0] * ancho_casillas;
 
 	return (posX >= 0 && posX < ancho && posY >= 0 && posY < alto);
 }
@@ -134,8 +134,8 @@ void Tablero::clicPos(int button, int state, int x, int y) {
 		std::cout << "Clic 2D en: (" << posX << ", " << posY << ")\n"; // La coordenada 0,0 es la esquina inferior izquierda del tablero
 
 		// Comprobación de si está dentro del tablero
-		float ancho = casillas[1] * ancho_casillas;  // El tablero mide 0.5x0.6
-		float alto = casillas[0] * ancho_casillas;
+		double ancho = casillas[1] * ancho_casillas;  // El tablero mide 0.5x0.6
+		double alto = casillas[0] * ancho_casillas;
 
 		if (posX >= 0 && posX < ancho && posY >= 0 && posY < alto) {
 			// Determinar la celda en la que se ha hecho clic
@@ -170,8 +170,8 @@ void Tablero::reshape(int width, int height) {
 	glLoadIdentity();
 
 	// Tamaño del tablero (con base en el número de casillas y el tamaño de cada una)
-	float tableroAncho = casillas[1] * ancho_casillas;
-	float tableroAlto = casillas[0] * ancho_casillas;
+	float tableroAncho = (float)(casillas[1] * ancho_casillas);
+	float tableroAlto = (float)(casillas[0] * ancho_casillas);
 
 	// Márgenes en porcentaje (por ejemplo, un margen del 10%)
 	float margen = 0.1f; // 10% de margen
@@ -221,7 +221,7 @@ void Tablero::reshape(int width, int height) {
 	glLoadIdentity();
 
 	// Desplazamos el tablero al centro de la pantalla
-	glTranslatef(centerWindowX - center_x, centerWindowY - center_y, 0.0f);
+	glTranslatef((GLfloat)(centerWindowX - center_x), (GLfloat) (centerWindowY - center_y), (GLfloat) 0.0f);
 
 	// Aquí, el tablero se centra correctamente en la pantalla
 }

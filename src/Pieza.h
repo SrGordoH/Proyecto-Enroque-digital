@@ -44,7 +44,7 @@ public:
 	bool estaEnJaque(Tablero_logica& tab) const;
 	bool JaqueMate(Tablero_logica& tab) const;
 
-	virtual void Dibuja(float ancho_casilla) const;
-	void DibujaMovValidos(float ancho_casilla) const;
+	virtual void Dibuja(double ancho_casilla) const;
+	void DibujaMovValidos(double ancho_casilla) const;
 
 };

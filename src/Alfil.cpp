@@ -12,7 +12,7 @@ vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab)  {
     int dir[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
 
     // Recorremos cada direccion
-    for (auto& d : dir) {
+    for (const auto& d : dir) {
         int nf = f + d[0], nc = c + d[1];
         Posicion p = { nf, nc };
 
