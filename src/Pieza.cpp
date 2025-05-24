@@ -10,24 +10,26 @@ void Pieza::SetPos(int fil, int col)
 
 
 bool Pieza::esMovimientoLegalConJaque(Pieza* piezaDestino, Posicion destino, Tablero_logica& tab) {
-    Posicion posOriginal = pos;
-    Pieza* piezaCapturada = tab.obtenerPieza(destino);
-    this->SetPos(destino.fil, destino.col);
+    Posicion origen = getPos(); // guardamos donde esta originalmente 
+    Posicion posOriginalDestino; // por si hay una pieza en el destino
 
-    if (estaEnJaque(tab)) {
-        this->SetPos(posOriginal.fil, posOriginal.col);
-        if (piezaCapturada != nullptr) {
-            piezaCapturada->SetPos(destino.fil, destino.col);
-        }
-        return false;
-    }
+    // guardamos la posicion de la pieza que esta en destino si hay una
+    if (piezaDestino) posOriginalDestino = piezaDestino->getPos();
 
-    this->SetPos(posOriginal.fil, posOriginal.col);
-    if (piezaCapturada != nullptr) {
-        piezaCapturada->SetPos(destino.fil, destino.col);
-    }
-    return true;
+    SetPos(destino.fil, destino.col); // movemos esta pieza a la nueva posicion
+
+    if (piezaDestino) piezaDestino->SetPos(-1, -1); // quitamosla pieza capturada revisa
+
+    bool enJaque = estaEnJaque(tab); // verificamos si tras mover, nuestro rey esta en jaque
+
+    // revertimos los cambios de posicion
+    SetPos(origen.fil, origen.col);
+    if (piezaDestino) piezaDestino->SetPos(posOriginalDestino.fil, posOriginalDestino.col);
+
+    return !enJaque;
 }
+
+
 
 bool Pieza::estaEnJaque(Tablero_logica& tab) const {
     Posicion reyPos = tab.obtenerReyPos(color);

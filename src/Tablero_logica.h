@@ -9,6 +9,8 @@
 #include "Pieza.h"
 
 class Tablero_logica {
+	friend class Mundo;
+
 	std::vector<Pieza*> piezas;  //vector de punteros a piezas para almacenar piezas
 	bool modo;                   //TRUE para petty FALSE para reyes esquinas opuestas
 	struct Movimiento {
@@ -19,9 +21,7 @@ class Tablero_logica {
 	};
 	std::vector<Movimiento> historial;
 	int movimientosSinCaptura = 0;
-	bool turno = 0;              //Turno vale 0 cuandole toca a blancas
-
-
+	bool turno = 1;              //Turno vale 1 cuandole toca a blancas
 public:
 	void inicializarTablero(const Tablero& tablero);
 	void setearPosicionesIniciales(int modo);
@@ -40,6 +40,9 @@ public:
 	void eliminarPieza(Pieza* p);
 	void cambiarTurno() { turno = !turno; }
 	bool moverPieza(Pieza* pieza, Posicion destino);
+	
+
+
 
 	~Tablero_logica() {
 		for (auto p : piezas) delete p;

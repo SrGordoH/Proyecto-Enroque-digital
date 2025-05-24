@@ -2,6 +2,9 @@
 #include "Alfil.h"
 
 vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab)  {
+
+    if (!pos.esValida()) return {};//para evitar piezas fuera del tablero o cualquier otro bug
+
     vector<Posicion> movs; // Vector de movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual alfil
 

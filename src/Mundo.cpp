@@ -34,22 +34,28 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 			Pieza* seleccionada = tablero.get_pieza_selec(); // obtenemos la pieza actualmente seleccionada
 			if (seleccionada == nullptr) {
 				casilla_clic = pos_clic.coords_to_casilla();
+				if (!casilla_clic.esValida()) return;
+
 				centro_casilla_clic = casilla_clic.centro_en_coords();
 
 				std::cout << "Que es la casilla: (" << casilla_clic.fil << ", " << casilla_clic.col << ")\n";
 				std::cout << "Cuyo centro esta en: (" << centro_casilla_clic.x << ", " << centro_casilla_clic.y << ")\n";
 
 				pieza_clic = logica.obtenerPieza(casilla_clic);
-				if (pieza_clic != nullptr) {
+				if (pieza_clic != nullptr && pieza_clic->getColor() == logica.turno) {
 					pieza_clic->movimientosValidos(logica);
+					tablero.set_pieza_selec(pieza_clic); //actualizamos pieza seleccionada
+
 				}
-				tablero.set_pieza_selec(pieza_clic); //actualizamos pieza seleccionada
 			}
 			else {
-				casilla_clic = pos_clic.coords_to_casilla();
-				bool ok = logica.moverPieza(seleccionada, casilla_clic); // se intenta mover usando la logica ya implementada
-				tablero.set_pieza_selec(nullptr); // limpiamos la seleccion tras el intento
+				casilla_clic = pos_clic.coords_to_casilla(); // se calcula la casilla clicada
+				if (!casilla_clic.esValida()) return; // EVITA CLICS FUERA DEL TABLERO
+				bool ok = logica.moverPieza(seleccionada, casilla_clic); // se intenta mover directamente
+				tablero.set_pieza_selec(nullptr); // se limpia la seleccion, se haya movido o no
 			}
+
+
 
 		}
 	}

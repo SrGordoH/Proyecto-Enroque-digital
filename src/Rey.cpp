@@ -1,6 +1,8 @@
 #include "Rey.h"
 
 vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) {
+    if (!pos.esValida()) return {};//para evitar piezas fuera del tablero o cualquier otro bug
+
     vector<Posicion> movs; // Vector  movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual rey
 

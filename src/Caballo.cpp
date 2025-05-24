@@ -1,6 +1,8 @@
 #include "Caballo.h"
 
 vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) {
+    if (!pos.esValida()) return {};//para evitar piezas fuera del tablero o cualquier otro bug
+
     vector<Posicion> movs; // Vector donde guardamos los movimientos validos
     int f = pos.fil, c = pos.col; // Obtenemos la fila y columna actual 
 

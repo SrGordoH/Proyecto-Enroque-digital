@@ -2,6 +2,8 @@
 using namespace std;
 
 vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) {
+    if (!pos.esValida()) return {};//para evitar piezas fuera del tablero o cualquier otro bug
+
     vector<Posicion> movs;  // Lista de movimientos validos
 
     // La dirección del peon depende del color:

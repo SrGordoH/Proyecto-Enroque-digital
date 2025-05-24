@@ -85,6 +85,7 @@ void Tablero_logica::setearPosicionesIniciales(int modo) {
 
 Pieza* Tablero_logica::obtenerPieza(Posicion casilla) const {
     for (Pieza* p : piezas) {
+        if (!p) continue;  //verificamos que exista
         Posicion pos = p->getPos();
         if (pos.fil == casilla.fil && pos.col == casilla.col) {
             return p;
@@ -276,3 +277,4 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
 
     return true; //Devolvemos true si hacemos ese movimiento
 }
+

@@ -1,6 +1,8 @@
 
 #include "Torre.h"
 vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) {
+    if (!pos.esValida()) return {};//para evitar piezas fuera del tablero o cualquier otro bug
+
     vector<Posicion> movs; // Vector de movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual de la torre
 
