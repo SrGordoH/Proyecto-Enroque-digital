@@ -48,7 +48,7 @@ void Tablero::Draw() {
 	}
 	glTranslatef(- ancho_casillas, -ancho_casillas, 0.2f);
 	DrawPiezas();
-	glTranslatef(ancho_casillas, ancho_casillas, 0.2f);
+	glTranslatef(ancho_casillas, ancho_casillas, 0.0f);
 
 }
 
@@ -240,3 +240,6 @@ void Tablero::DrawPiezas() {
 	}
 }
 
+void Tablero::DrawMovsValidos() {
+	pieza_selec->DibujaMovValidos(ancho_casillas);
+}

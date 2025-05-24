@@ -1,6 +1,6 @@
 #include "Caballo.h"
 
-vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) const {
+vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) {
     vector<Posicion> movs; // Vector donde guardamos los movimientos validos
     int f = pos.fil, c = pos.col; // Obtenemos la fila y columna actual 
 
@@ -18,5 +18,7 @@ vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) const {
             movs.push_back(p); //puedes capturar cualquier pieza
         }
     }
+    movs_validos = movs;
+
     return movs; // Devolvemos movimientos validos
 }

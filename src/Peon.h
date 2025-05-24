@@ -16,7 +16,7 @@ public:
             sprite = new ETSIDI::Sprite("imagenes/Chess_pdt60.png"); // peon negro
     }
 
-    vector <Posicion> movimientosValidos(Tablero_logica &tab) const;
+    vector <Posicion> movimientosValidos(Tablero_logica &tab);
 
 };
 

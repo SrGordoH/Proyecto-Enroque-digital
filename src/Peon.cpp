@@ -1,7 +1,7 @@
 #include "Peon.h"
 using namespace std;
 
-vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) const {
+vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) {
     vector<Posicion> movs;  // Lista de movimientos validos
 
     // La dirección del peon depende del color:
@@ -36,6 +36,7 @@ vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) const {
             movs.push_back(diagDer);  
         }
     }
+    movs_validos = movs; 
 
     // Devolvemos el vector con todos los movimientos validos encontrados
     return movs;

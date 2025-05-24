@@ -5,7 +5,13 @@ Coords2D Posicion::centro_en_coords() const {
 	 float coorX = float(col - 0.5) * TAM_CASILLA;
 	 float coorY = float(fil - 0.5) * TAM_CASILLA;
 	 return { coorX, coorY };
-	}
+}
+
+Coords2D Posicion::esquinainf_en_coords() const {
+	float coorX = float(col - 1) * TAM_CASILLA;
+	float coorY = float(fil - 1) * TAM_CASILLA;
+	return { coorX, coorY };
+}
 
 Posicion Posicion::notacionToPosicion(const std::string& casilla) {
 	if (casilla.length() != 2 || !isalpha(casilla[0]) || !isdigit(casilla[1])) {

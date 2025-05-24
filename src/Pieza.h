@@ -10,7 +10,7 @@ class Pieza
 {
 public:
 	enum class tipo_t { PEON, CABALLO, ALFIL, TORRE, DAMA, REY, NULA };
-	virtual std::vector<Posicion> movimientosValidos(Tablero_logica& tab) const = 0;
+	virtual std::vector<Posicion> movimientosValidos(Tablero_logica& tab) = 0;
 
 protected:                // El protected es como el private pero las clases que hereden de esta conservan las propiedades protected.
 	const tipo_t tipo;						//Nombre para identificar a la pieza
@@ -21,7 +21,7 @@ protected:                // El protected es como el private pero las clases que
 	Posicion pos;
 	Coords2D coords;
 	ETSIDI::Sprite* sprite = nullptr; // sprite de la pieza
-
+	std::vector<Posicion> movs_validos;  // La pieza almacena sus movimientos validos
 
 public:
 	Pieza() = default;
@@ -45,4 +45,6 @@ public:
 	bool JaqueMate(Tablero_logica& tab) const;
 
 	virtual void Dibuja(float ancho_casilla) const;
+	void DibujaMovValidos(float ancho_casilla) const;
+
 };

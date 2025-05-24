@@ -15,7 +15,7 @@ public:
             sprite = new ETSIDI::Sprite("imagenes/Chess_rdt60.png"); // torre negra
     }
 
-    vector <Posicion> movimientosValidos(Tablero_logica& tab) const;
+    vector <Posicion> movimientosValidos(Tablero_logica& tab);
 
 
 };

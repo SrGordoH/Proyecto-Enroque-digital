@@ -17,7 +17,7 @@ public:
             sprite = new ETSIDI::Sprite("imagenes/Chess_bdt60.png"); // alfil negro
     }
 
-    vector <Posicion> movimientosValidos(Tablero_logica& tab) const;
+    vector <Posicion> movimientosValidos(Tablero_logica& tab);
 
 };
 

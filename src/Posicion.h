@@ -23,6 +23,8 @@ struct Posicion
 
 	// Función que devuelve el centro de la posición en coordenadas de la pantalla/raton
 	Coords2D centro_en_coords() const;
+	Coords2D esquinainf_en_coords() const;  // Igual pero recibe la esquina inferior izquierda
+
 	// Dado un string te devuelve la posición. Ej: b3 es la fila 3 columna 2
 	Posicion notacionToPosicion(const std::string& casilla);
 

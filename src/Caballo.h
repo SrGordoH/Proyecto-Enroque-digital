@@ -15,7 +15,7 @@ public:
             sprite = new ETSIDI::Sprite("imagenes/Chess_ndt60.png"); // caballo negro
     }
 
-    vector <Posicion> movimientosValidos(Tablero_logica& tab) const;
+    vector <Posicion> movimientosValidos(Tablero_logica& tab);
 
 };
 

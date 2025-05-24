@@ -1,6 +1,6 @@
 
 #include "Torre.h"
-vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) const {
+vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) {
     vector<Posicion> movs; // Vector de movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual de la torre
 
@@ -29,5 +29,7 @@ vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) const {
             nf += d[0]; nc += d[1]; // Avanzamos en la misma direccion la siguiente casilla
         }
     }
+    movs_validos = movs;
+
     return movs; // Retornamos movimientos validos
 }

@@ -80,7 +80,6 @@ void Menus::coor_menus(float posX, float posY) {
 			set_modo(PETTY);
 			set_menu(JUEGO);
 
-			// INICIALIZA TABLERO PETTY
 		}
 		// Clic en esquinas opuestas
 		if (Modo_Opuestas.clic(posX, posY)) {

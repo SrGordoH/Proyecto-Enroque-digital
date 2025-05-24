@@ -21,17 +21,32 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 
 		Coords2D pos_clic{}, centro_casilla_clic{};
 		Posicion casilla_clic{};
-
+		Pieza* pieza_clic = nullptr;
 		pos_clic = coorClics_to_cords2D(x, y);
 		
-		casilla_clic = pos_clic.coords_to_casilla();
-		centro_casilla_clic = casilla_clic.centro_en_coords();
 
-		std::cout << "Clic 2D en: (" << pos_clic.x << ", " << pos_clic.y << ")\n";
-		std::cout << "Que es la casilla: (" << casilla_clic.fil << ", " << casilla_clic.col << ")\n";
-		std::cout << "Cuyo centro esta en: (" << centro_casilla_clic.x << ", " << centro_casilla_clic.y << ")\n";
-		menus.coor_menus(pos_clic.x, pos_clic.y);
-		logica.setearPosicionesIniciales(menus.get_modo());
+		if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO) {
+			std::cout << "Clic 2D en: (" << pos_clic.x << ", " << pos_clic.y << ")\n";
+			menus.coor_menus(pos_clic.x, pos_clic.y);
+			logica.setearPosicionesIniciales(menus.get_modo());
+		}
+		else if (menus.get_menu() == JUEGO) {
+			casilla_clic = pos_clic.coords_to_casilla();
+			centro_casilla_clic = casilla_clic.centro_en_coords();
+
+			std::cout << "Que es la casilla: (" << casilla_clic.fil << ", " << casilla_clic.col << ")\n";
+			std::cout << "Cuyo centro esta en: (" << centro_casilla_clic.x << ", " << centro_casilla_clic.y << ")\n";
+			
+			pieza_clic = logica.obtenerPieza(casilla_clic);
+			if (pieza_clic != nullptr)
+				pieza_clic->movimientosValidos(logica);
+			tablero.set_pieza_selec(pieza_clic);
+
+		}
+		
+		
+
+		
 
 	}
 }
@@ -68,6 +83,8 @@ void Mundo::Draw() {
 	}
 	else if (menus.get_menu() == JUEGO) {
 		tablero.Draw();
+		if(tablero.get_pieza_selec()!=nullptr)
+			tablero.DrawMovsValidos();
 	}
 
 

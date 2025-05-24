@@ -1,6 +1,6 @@
 #include "Rey.h"
 
-vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) const {
+vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) {
     vector<Posicion> movs; // Vector  movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual rey
 
@@ -16,5 +16,6 @@ vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) const {
             }
         }
     }
+    movs_validos = movs;
     return movs; // Retornamos posiciones validas
 }

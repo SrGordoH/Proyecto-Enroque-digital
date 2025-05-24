@@ -62,7 +62,7 @@ bool Pieza::JaqueMate(Tablero_logica& tab) const {
     return true;
 }
 
-void Pieza:: Dibuja(float ancho_casilla) const {
+void Pieza::Dibuja(float ancho_casilla) const {
     if (!sprite) return;
     sprite->setPos(coords.x-ancho_casilla/2, coords.y - ancho_casilla / 2);
     sprite->setSize(ancho_casilla, ancho_casilla); // tamano acorde a casilla
@@ -71,3 +71,27 @@ void Pieza:: Dibuja(float ancho_casilla) const {
    // sprite->setCenter(0, 0);         // posicion central del sprite
    
 }
+
+void Pieza::DibujaMovValidos(float ancho_casilla) const {
+    std::vector<ETSIDI::Sprite*> sprites_mov;
+    std::vector<Coords2D> coordsValidas;
+
+    for (const auto& m : movs_validos) {
+        coordsValidas.push_back(m.esquinainf_en_coords());
+        sprites_mov.push_back(new ETSIDI::Sprite("imagenes/MovimientosValidos.png"));
+    }
+
+    for (int i = 0; i < movs_validos.size(); i++) {
+        sprites_mov[i]->setCenter(0, 0);
+        sprites_mov[i]->setPos(coordsValidas[i].x, coordsValidas[i].y);
+        sprites_mov[i]->setSize(ancho_casilla, ancho_casilla);
+        sprites_mov[i]->draw();
+    }
+
+    for (auto s : sprites_mov) delete s;
+
+}
+
+
+
+

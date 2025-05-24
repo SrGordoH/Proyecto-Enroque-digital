@@ -15,7 +15,7 @@ public:
             sprite = new ETSIDI::Sprite("imagenes/Chess_kdt60.png"); // rey negro
     }
 
-    vector <Posicion> movimientosValidos(Tablero_logica& tab) const;
+    vector <Posicion> movimientosValidos(Tablero_logica& tab);
 
 };
 

@@ -1,6 +1,6 @@
 #include "Dama.h"
 
-vector<Posicion> Dama::movimientosValidos(Tablero_logica& tab) const {
+vector<Posicion> Dama::movimientosValidos(Tablero_logica& tab) {
     vector<Posicion> movs; // Vector de movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual de la Dama
 
@@ -58,6 +58,7 @@ vector<Posicion> Dama::movimientosValidos(Tablero_logica& tab) const {
             nf += d[0]; nc += d[1]; // Avanzamos en la diagonal siguiente casilla posible
         }
     }
+    movs_validos = movs;
 
     return movs; // Devolvemos los movimientos validos
 }

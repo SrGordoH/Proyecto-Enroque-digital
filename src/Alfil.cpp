@@ -1,7 +1,7 @@
 
 #include "Alfil.h"
 
-vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab) const {
+vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab)  {
     vector<Posicion> movs; // Vector de movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual alfil
 
@@ -29,5 +29,6 @@ vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab) const {
             }
         }
     }
+    movs_validos = movs;
     return movs;
 }

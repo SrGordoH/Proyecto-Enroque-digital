@@ -17,7 +17,7 @@ public:
             sprite = new ETSIDI::Sprite("imagenes/Chess_qdt60.png"); // dama negra
     }
 
-    vector <Posicion> movimientosValidos(Tablero_logica& tab) const;
+    vector <Posicion> movimientosValidos(Tablero_logica& tab);
 
 };
 
