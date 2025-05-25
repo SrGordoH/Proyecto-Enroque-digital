@@ -16,9 +16,9 @@ bool Pieza::esMovimientoLegalConJaque(Pieza* piezaDestino, Posicion destino, Tab
     // guardamos la posicion de la pieza que esta en destino si hay una
     if (piezaDestino) posOriginalDestino = piezaDestino->getPos();
 
-    SetPos(destino.fil, destino.col); // movemos esta pieza a la nueva posicion
+    if (piezaDestino) piezaDestino->SetPos(-11, -111); // quitamosla pieza capturada 
 
-    if (piezaDestino) piezaDestino->SetPos(-1, -1); // quitamosla pieza capturada revisa
+    SetPos(destino.fil, destino.col); // movemos esta pieza a la nueva posicion
 
     bool enJaque = estaEnJaque(tab); // verificamos si tras mover, nuestro rey esta en jaque
 

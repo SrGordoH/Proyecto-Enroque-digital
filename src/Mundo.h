@@ -11,6 +11,8 @@ class Mundo
 	Tablero tablero;
 	Menus menus;
 	Tablero_logica logica;
+	bool mostrarMensajeJaque = false;  // si true mostramos texto de aviso
+
 	
 public:
 	

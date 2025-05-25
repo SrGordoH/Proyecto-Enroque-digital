@@ -96,15 +96,12 @@ Pieza* Tablero_logica::obtenerPieza(Posicion casilla) const {
 
 
 Posicion Tablero_logica::obtenerReyPos(bool color) {
-    // Recorremos todo el tablero para encontrar la pieza de tipo Rey con el color especificado
-    for (int i = 0; i < 5; ++i) {
-        for (int j = 0; j < 6; ++j) {
-            Pieza* pieza = obtenerPieza(Posicion(i, j));  // Obtener la pieza en la posicion (i, j)
-
-            if (pieza != nullptr && pieza->getColor() == color && pieza->getTipo() == Pieza::tipo_t::REY) {
-                // Si encontramos una pieza del color buscado y es un Rey, retornamos su posicion
-                return Posicion{ i, j };  // Posicion de la pieza encontrada
-            }
+    // Recorremos todas las piezas para encontrar la pieza de tipo Rey con el color especificado
+    for (Pieza* p : piezas) {
+        if (!p) continue;
+        // Si es rey del color dado, devolvemos su posición
+        if (p->getTipo() == Pieza::tipo_t::REY && p->getColor() == color) {
+            return p->getPos();
         }
     }
     return Posicion{ -1, -1 };  // Posicion invalida si no se encuentra el rey
@@ -263,6 +260,11 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
 
     // Obtener la pieza en la posicion de destino
     Pieza* piezaDestino = obtenerPieza(destino);
+
+    //Comprobacion jaque
+    bool legalconJaque = (pieza->esMovimientoLegalConJaque(piezaDestino, destino, *this));
+    if (!legalconJaque) return false;
+
 
     // Guardar el movimiento antes de eliminar
     guardarMovimiento(pieza, pieza->getPos(), destino,
