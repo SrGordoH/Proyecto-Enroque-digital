@@ -241,5 +241,7 @@ void Tablero::DrawPiezas() {
 }
 
 void Tablero::DrawMovsValidos() {
-	pieza_selec->DibujaMovValidos(ancho_casillas);
+	if (pieza_selec) {
+		pieza_selec->DibujaMovValidos(ancho_casillas);
+	}
 }

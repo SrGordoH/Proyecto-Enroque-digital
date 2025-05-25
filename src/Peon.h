@@ -17,6 +17,7 @@ public:
     }
 
     vector <Posicion> movimientosValidos(Tablero_logica &tab);
+    Pieza* clonar() const override;
 
 };
 

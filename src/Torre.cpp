@@ -35,3 +35,7 @@ vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) {
 
     return movs; // Retornamos movimientos validos
 }
+
+Pieza* Torre::clonar() const {
+    return new Torre(*this);
+}

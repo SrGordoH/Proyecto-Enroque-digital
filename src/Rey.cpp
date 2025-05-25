@@ -21,3 +21,8 @@ vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) {
     movs_validos = movs;
     return movs; // Retornamos posiciones validas
 }
+
+Pieza* Rey::clonar() const {
+    return new Rey(*this);
+}
+

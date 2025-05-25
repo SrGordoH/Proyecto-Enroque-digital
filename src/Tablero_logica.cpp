@@ -265,10 +265,9 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     Pieza* piezaDestino = obtenerPieza(destino);
 
     // Guardar el movimiento antes de eliminar
-    if (piezaDestino && piezaDestino != pieza)
-        guardarMovimiento(pieza, pieza->getPos(), destino, piezaDestino);
-    else
-        guardarMovimiento(pieza, pieza->getPos(), destino, nullptr);
+    guardarMovimiento(pieza, pieza->getPos(), destino,
+        piezaDestino ? piezaDestino->clonar() : nullptr); // Si el movimiento es válido se guarda una copia y si no nullptr
+
 
 
     // Si hay una pieza en destino eliminarla aunque sea de su color
@@ -277,9 +276,10 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     }
 
     pieza->SetPos(destino.fil, destino.col);
-    verificarCoronacion();
+    // verificarCoronacion();
     cambiarTurno();
 
     return true; //Devolvemos true si hacemos ese movimiento
 }
+
 

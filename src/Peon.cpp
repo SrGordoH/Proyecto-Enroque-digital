@@ -43,3 +43,7 @@ vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) {
     // Devolvemos el vector con todos los movimientos validos encontrados
     return movs;
 }
+
+Pieza* Peon::clonar() const {
+    return new Peon(*this);
+}

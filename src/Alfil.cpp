@@ -11,27 +11,34 @@ vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab)  {
     // Direcciones diagonales
     int dir[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
 
-    // Recorremos cada direccion
+    // Procesamos movimientos en diagonal
     for (const auto& d : dir) {
         int nf = f + d[0], nc = c + d[1];
-        Posicion p = { nf, nc };
 
         // Mientras casilla valida
-        while (p.esValida()) {
+        while (true) {
+            Posicion p = { nf, nc };
+            if (!p.esValida()) break; // Si no es valida, detenemos
 
             Pieza* otra = tab.obtenerPieza(p); // Verificamos si hay pieza
 
             if (otra == nullptr) {
                 movs.push_back(p); // Casilla libre, movimiento valido
-                nf += d[0]; nc += d[1]; // Avanzamos en la diagonal siguiente casilla posible
             }
             else {
-                    movs.push_back(p);
-                    break;   //No puedes capturar y seguir en esa misma direccion
+                movs.push_back(p); // Captura cualquier color
 
+                break; // Si hay pieza, no se puede avanzar mas
             }
+
+            nf += d[0]; nc += d[1]; // Avanzamos en la diagonal siguiente casilla posible
         }
     }
     movs_validos = movs;
     return movs;
 }
+
+Pieza* Alfil::clonar() const {
+    return new Alfil(*this);
+}
+

@@ -41,7 +41,7 @@ public:
 	void cambiarTurno() { turno = !turno; }
 	bool moverPieza(Pieza* pieza, Posicion destino);
 	
-
+	
 
 
 	~Tablero_logica() {

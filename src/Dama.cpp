@@ -38,13 +38,13 @@ vector<Posicion> Dama::movimientosValidos(Tablero_logica& tab) {
     }
 
     // Procesamos movimientos en diagonal
-    for (auto& d : dirDiagonal) {
+    for (const auto& d : dirDiagonal) {
         int nf = f + d[0], nc = c + d[1];
 
-        // Mientras casilla vlida
+        // Mientras casilla valida
         while (true) {
             Posicion p = { nf, nc };
-            if (!p.esValida()) break; // Si no es vlida, detenemos
+            if (!p.esValida()) break; // Si no es valida, detenemos
 
             Pieza* otra = tab.obtenerPieza(p); // Verificamos si hay pieza
 
@@ -64,3 +64,8 @@ vector<Posicion> Dama::movimientosValidos(Tablero_logica& tab) {
 
     return movs; // Devolvemos los movimientos validos
 }
+
+Pieza* Dama::clonar() const {
+    return new Dama(*this);
+}
+

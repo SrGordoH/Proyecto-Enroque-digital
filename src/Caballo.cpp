@@ -24,3 +24,7 @@ vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) {
 
     return movs; // Devolvemos movimientos validos
 }
+
+Pieza* Caballo::clonar() const {
+    return new Caballo(*this);
+}

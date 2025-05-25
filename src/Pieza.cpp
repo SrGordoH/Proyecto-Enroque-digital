@@ -75,23 +75,16 @@ void Pieza::Dibuja(double ancho_casilla) const {
 }
 
 void Pieza::DibujaMovValidos(double ancho_casilla) const {
-    std::vector<ETSIDI::Sprite*> sprites_mov;
-    std::vector<Coords2D> coordsValidas;
+    
 
     for (const auto& m : movs_validos) {
-        coordsValidas.push_back(m.esquinainf_en_coords());
-        sprites_mov.push_back(new ETSIDI::Sprite("imagenes/MovimientosValidos.png"));
+        Coords2D coord = m.esquinainf_en_coords();
+        ETSIDI::Sprite sprite("imagenes/MovimientosValidos.png");
+        sprite.setCenter(0, 0);
+        sprite.setPos(coord.x, coord.y);
+        sprite.setSize(ancho_casilla, ancho_casilla);
+        sprite.draw();
     }
-
-    for (int i = 0; i < movs_validos.size(); i++) {
-        sprites_mov[i]->setCenter(0, 0);
-        sprites_mov[i]->setPos(coordsValidas[i].x, coordsValidas[i].y);
-        sprites_mov[i]->setSize(ancho_casilla, ancho_casilla);
-        sprites_mov[i]->draw();
-    }
-
-    for (auto s : sprites_mov) delete s;
-
 }
 
 

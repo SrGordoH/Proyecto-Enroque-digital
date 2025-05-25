@@ -23,6 +23,7 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 		Posicion casilla_clic{};
 		Pieza* pieza_clic = nullptr;
 		pos_clic = coorClics_to_cords2D(x, y);
+		casilla_clic = pos_clic.coords_to_casilla();
 		
 
 		if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO) {
@@ -33,7 +34,6 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 		else if (menus.get_menu() == JUEGO) {
 			Pieza* seleccionada = tablero.get_pieza_selec(); // obtenemos la pieza actualmente seleccionada
 			if (seleccionada == nullptr) {
-				casilla_clic = pos_clic.coords_to_casilla();
 				if (!casilla_clic.esValida()) return;
 
 				centro_casilla_clic = casilla_clic.centro_en_coords();
@@ -49,10 +49,12 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 				}
 			}
 			else {
-				casilla_clic = pos_clic.coords_to_casilla(); // se calcula la casilla clicada
 				if (!casilla_clic.esValida()) return; // EVITA CLICS FUERA DEL TABLERO
 				bool ok = logica.moverPieza(seleccionada, casilla_clic); // se intenta mover directamente
 				tablero.set_pieza_selec(nullptr); // se limpia la seleccion, se haya movido o no
+				// if(!ok) std::cout << "No se ha movido ninguna pieza.\n";
+			
+			
 			}
 
 
