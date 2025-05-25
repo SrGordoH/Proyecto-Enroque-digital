@@ -23,7 +23,7 @@ class Tablero_logica {
 	int movimientosSinCaptura = 0;
 	bool turno = 1;              //Turno vale 1 cuandole toca a blancas
 public:
-	void inicializarTablero(const Tablero& tablero);
+	void inicializarTablero();
 	void setearPosicionesIniciales(int modo);
 	Pieza* obtenerPieza(Posicion casilla) const;
 	Posicion obtenerReyPos(bool color);
@@ -40,7 +40,7 @@ public:
 	void eliminarPieza(Pieza* p);
 	void cambiarTurno() { turno = !turno; }
 	bool moverPieza(Pieza* pieza, Posicion destino);
-	
+	void printHistorial() const;
 	
 
 

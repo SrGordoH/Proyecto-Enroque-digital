@@ -8,6 +8,18 @@ void Pieza::SetPos(int fil, int col)
     coords = pos.centro_en_coords();
 }
 
+std::string Pieza::nombrePieza(Pieza::tipo_t tipo) const {
+    switch (tipo) {
+    case Pieza::tipo_t::PEON: return "Peon";
+    case Pieza::tipo_t::CABALLO: return "Caballo";
+    case Pieza::tipo_t::ALFIL: return "Alfil";
+    case Pieza::tipo_t::TORRE: return "Torre";
+    case Pieza::tipo_t::DAMA: return "Dama";
+    case Pieza::tipo_t::REY: return "Rey";
+    default: return "Desconocida";
+    }
+}
+
 
 bool Pieza::esMovimientoLegalConJaque(Pieza* piezaDestino, Posicion destino, Tablero_logica& tab) {
     Posicion origen = getPos(); // guardamos donde esta originalmente 

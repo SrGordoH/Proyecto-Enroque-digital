@@ -1,31 +1,31 @@
 #include "Tablero_logica.h"
 
-void Tablero_logica::inicializarTablero(const Tablero& tablero) {  // Aqui agregamos el nombre de la clase
+void Tablero_logica::inicializarTablero() {  // Aqui agregamos el nombre de la clase
     // === PEONES ===
     for (int i = 0; i < 5; ++i) {
-        piezas.push_back(new Peon(tablero, true));  // Blancos
-        piezas.push_back(new Peon(tablero, false)); // Negros
+        piezas.push_back(new Peon(true));  // Blancos
+        piezas.push_back(new Peon( false)); // Negros
     }
 
     // === TORRES ===
-    piezas.push_back(new Torre(tablero, true));  // Blanca
-    piezas.push_back(new Torre(tablero, false)); // Negra
+    piezas.push_back(new Torre(true));  // Blanca
+    piezas.push_back(new Torre(false)); // Negra
 
     // === CABALLOS ===
-    piezas.push_back(new Caballo(tablero, true));
-    piezas.push_back(new Caballo(tablero, false));
+    piezas.push_back(new Caballo(true));
+    piezas.push_back(new Caballo(false));
 
     // === ALFILES ===
-    piezas.push_back(new Alfil(tablero, true));
-    piezas.push_back(new Alfil(tablero, false));
+    piezas.push_back(new Alfil(true));
+    piezas.push_back(new Alfil(false));
 
     // === DAMAS ===
-    piezas.push_back(new Dama(tablero, true));
-    piezas.push_back(new Dama(tablero, false));
+    piezas.push_back(new Dama(true));
+    piezas.push_back(new Dama(false));
 
     // === REYES ===
-    piezas.push_back(new Rey(tablero, true));
-    piezas.push_back(new Rey(tablero, false));
+    piezas.push_back(new Rey( true));
+    piezas.push_back(new Rey( false));
 
     //usamos un vector de piezas que guardamos usando memoria dinamica cada una al final de las que habia previamente
 }
@@ -198,11 +198,10 @@ void Tablero_logica::verificarCoronacion() {
 
             // Si el peon blanco llega a la fila 1 o el negro a la fila 6
             if ((p->getColor() && pos.fil == 1) || (!p->getColor() && pos.fil == 6)) {
-                const Tablero& t = p->getTablero(); // obtener referencia al tablero
 
                 // Se elimina el peon y se sustituye por una dama
                 delete piezas[i];
-                piezas[i] = new Dama(t, p->getColor());
+                piezas[i] = new Dama(p->getColor());
                 piezas[i]->SetPos(pos.fil, pos.col);
             }
         }
@@ -280,6 +279,29 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     cambiarTurno();
 
     return true; //Devolvemos true si hacemos ese movimiento
+}
+
+
+void Tablero_logica::printHistorial() const {
+    std::cout << "=== Historial de movimientos ===\n";
+
+    for (size_t i = 0; i < historial.size(); ++i) {
+        const Movimiento& m = historial[i];
+        std::string tipo = m.pieza->nombrePieza(m.pieza->getTipo());
+        std::string color = m.pieza->getColor() ? "Blanca" : "Negra";
+
+        std::cout << i + 1 << ". " << tipo << " " << color
+            << " de (" << m.origen.fil << "," << m.origen.col << ")"
+            << " a (" << m.destino.fil << "," << m.destino.col << ")";
+
+        if (m.capturada) {
+            std::string tipoCapt = m.pieza->nombrePieza(m.capturada->getTipo());
+            std::string colorCapt = m.capturada->getColor() ? "Blanca" : "Negra";
+            std::cout << " [Captura: " << tipoCapt << " " << colorCapt << "]";
+        }
+
+        std::cout << "\n";
+    }
 }
 
 

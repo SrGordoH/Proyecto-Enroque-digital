@@ -7,8 +7,8 @@ class Tablero_logica;
 
 class Caballo : public Pieza {
 public:
-    Caballo(const Tablero& t, bool color)
-        : Pieza(tipo_t::CABALLO, t, color, 3) {
+    Caballo(bool color)
+        : Pieza(tipo_t::CABALLO, color, 3) {
         if (color)
             sprite = new ETSIDI::Sprite("imagenes/Chess_nlt60.png"); // caballo blanco
         else

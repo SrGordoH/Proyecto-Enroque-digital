@@ -9,8 +9,8 @@ class Tablero_logica;
 class Alfil : public Pieza {
 
 public:
-    Alfil(const Tablero& t, bool color)
-        : Pieza(tipo_t::ALFIL, t, color, 3) {
+    Alfil(bool color)
+        : Pieza(tipo_t::ALFIL, color, 3) {
         if (color)
             sprite = new ETSIDI::Sprite("imagenes/Chess_blt60.png"); // alfil blanco
         else
