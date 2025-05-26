@@ -1,6 +1,8 @@
 #include "Tablero_logica.h"
 
 void Tablero_logica::inicializarTablero() {  // Aqui agregamos el nombre de la clase
+    finPartida = false; // Reinicializar partida
+    
     // === PEONES ===
     for (int i = 0; i < 5; ++i) {
         piezas.push_back(new Peon(true));  // Blancos
@@ -188,17 +190,17 @@ void Tablero_logica::deshacerUltimoMovimiento() {
 void Tablero_logica::verificarCoronacion() {
     for (int i = 0; i < piezas.size(); ++i) {
         Pieza* p = piezas[i];
-
+        
         // Si la pieza es un peon
         if (p && p->getTipo() == Pieza::tipo_t::PEON) {
             Posicion pos = p->getPos();
-
+            bool color = p->getColor();
             // Si el peon blanco llega a la fila 1 o el negro a la fila 6
-            if ((p->getColor() && pos.fil == 1) || (!p->getColor() && pos.fil == 6)) {
+            if ((!p->getColor() && pos.fil == 1) || (p->getColor() && pos.fil == 6)) {
 
                 // Se elimina el peon y se sustituye por una dama
                 delete piezas[i];
-                piezas[i] = new Dama(p->getColor());
+                piezas[i] = new Dama(color);
                 piezas[i]->SetPos(pos.fil, pos.col);
             }
         }
@@ -277,8 +279,16 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     }
 
     pieza->SetPos(destino.fil, destino.col);
-    // verificarCoronacion();
+    verificarCoronacion();
     cambiarTurno();
+
+    // Evaluamos si el nuevo jugador está en jaque mate
+    if (estaEnJaqueMate(turno)) {
+        finPartida = true;
+        ganador = !turno; // Gana el jugador que acaba de mover
+        std::cout << "¡Jaque mate! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
+        piezas.clear();
+    }
 
     return true; //Devolvemos true si hacemos ese movimiento
 }

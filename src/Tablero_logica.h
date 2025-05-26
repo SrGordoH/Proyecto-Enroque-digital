@@ -21,7 +21,10 @@ class Tablero_logica {
 	};
 	std::vector<Movimiento> historial;
 	int movimientosSinCaptura = 0;
-	bool turno = 1;              //Turno vale 1 cuandole toca a blancas
+	bool turno = true;              //Turno vale 1 cuandole toca a blancas
+	bool finPartida = false;
+	bool ganador;
+
 public:
 	void inicializarTablero();
 	void setearPosicionesIniciales(int modo);

@@ -115,5 +115,5 @@ int IA::AnalisisBasico() const {
 int IA::AnalisisProfundo(bool turno, int profundidad) {
    
         //2iteraciones de analisis basico
-    
+    return 0;
 }

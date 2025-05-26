@@ -46,9 +46,11 @@ void Tablero::Draw() {
 			DrawCell(i, j);
 		}
 	}
+
 	glTranslatef((GLfloat) -ancho_casillas, (GLfloat) -ancho_casillas, (GLfloat) 0.2f);
 	DrawPiezas();
 	glTranslatef((GLfloat) ancho_casillas, (GLfloat) ancho_casillas, (GLfloat) 0.0f);
+	if (get_pieza_selec() != nullptr) DrawMovsValidos();
 
 }
 
@@ -243,4 +245,46 @@ void Tablero::DrawMovsValidos() {
 	if (pieza_selec) {
 		pieza_selec->DibujaMovValidos(ancho_casillas);
 	}
+}
+
+void Tablero::DrawFinPorJaqueMate(bool ganador) {
+	if (ganador) {
+		// Ancho y alto iniciales:
+		float ancho = 10.0f; // valor arbitrario
+		float alto = ancho * (1024.0f / 1350.0f); // mantener proporción de la imagen
+
+		// Dibujo del fondo
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/JAQUEMATE_Blancas_1.png").id);
+		glDisable(GL_LIGHTING);
+		glColor3f(1, 1, 1);
+		glBegin(GL_POLYGON);
+		glTexCoord2d(0, 1);  glVertex3d(-ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 1);  glVertex3d(ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 0);  glVertex3d(ancho / 2, alto / 2, 0);
+		glTexCoord2d(0, 0);  glVertex3d(-ancho / 2, alto / 2, 0);
+		glEnd();
+		glEnable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+	}
+	else {
+		// Ancho y alto iniciales:
+		float ancho = 10.0f; // valor arbitrario
+		float alto = ancho * (1024.0f / 1408.0f); // mantener proporción de la imagen
+
+		// Dibujo del fondo
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/JAQUEMATE_Negras_1.png").id);
+		glDisable(GL_LIGHTING);
+		glColor3f(1, 1, 1);
+		glBegin(GL_POLYGON);
+		glTexCoord2d(0, 1);  glVertex3d(-ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 1);  glVertex3d(ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 0);  glVertex3d(ancho / 2, alto / 2, 0);
+		glTexCoord2d(0, 0);  glVertex3d(-ancho / 2, alto / 2, 0);
+		glEnd();
+		glEnable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+	}
+
 }

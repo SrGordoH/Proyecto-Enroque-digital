@@ -31,6 +31,11 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 			logica.setearPosicionesIniciales(menus.get_modo());
 		}
 		else if (menus.get_menu() == JUEGO) {
+			if (logica.finPartida) {
+				std::cout << "El juego ha terminado. Reinicia para jugar de nuevo.\n";
+				return;
+			}
+
 			Pieza* seleccionada = tablero.get_pieza_selec(); // obtenemos la pieza actualmente seleccionada
 			if (seleccionada == nullptr) {
 				if (!casilla_clic.esValida()) return;
@@ -93,9 +98,12 @@ void Mundo::Draw() {
 		menus.Draw();
 	}
 	else if (menus.get_menu() == JUEGO) {
-		tablero.Draw();
-		if(tablero.get_pieza_selec()!=nullptr)
-			tablero.DrawMovsValidos();
+		if (!logica.finPartida) {
+			tablero.Draw();
+		}
+		else if (logica.finPartida) {
+			tablero.DrawFinPorJaqueMate(logica.ganador);
+		}
 	}
 
 
@@ -116,5 +124,9 @@ void Mundo::OnKeyboardDown(unsigned char key) {
 	if (key == 'H' || key == 'h') {
 		logica.printHistorial();
 	}
+	if (logica.finPartida && key == 'r') {
+		Inicializa();
+	}
+
 }
 

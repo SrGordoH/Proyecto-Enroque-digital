@@ -21,6 +21,7 @@ class Tablero
 	float dx{}, dy{};
 	bool turno = 1;              //Turno vale 1 cuandole toca a blancas
 	Pieza* pieza_selec = nullptr;
+
 public: 
 	void Inicializa();
 	void Draw();
@@ -32,6 +33,7 @@ public:
 	void setLogica(Tablero_logica* log) { logica = log;    std::cout << "Logica asignada\n";}
 	void DrawPiezas();
 	void DrawMovsValidos();
+	void DrawFinPorJaqueMate(bool ganador);
 	double get_anchocas() const { return ancho_casillas; }
 	Pieza* get_pieza_selec() const { return pieza_selec; }
 	void set_pieza_selec(Pieza* p) { pieza_selec = p; }
