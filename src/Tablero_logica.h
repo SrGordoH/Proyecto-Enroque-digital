@@ -23,7 +23,7 @@ class Tablero_logica {
 	int movimientosSinCaptura = 0;
 	bool turno = true;              //Turno vale 1 cuandole toca a blancas
 	bool finPartida = false;
-	bool ganador;
+	bool ganador;   // True cuando gana blancas y false cuando gana negras
 
 public:
 	void inicializarTablero();

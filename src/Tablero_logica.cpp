@@ -271,7 +271,16 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     guardarMovimiento(pieza, pieza->getPos(), destino,
         piezaDestino ? piezaDestino->clonar() : nullptr); // Si el movimiento es válido se guarda una copia y si no nullptr
 
-
+    //Comprobar si es el rey del mismo color
+    if (piezaDestino->getTipo() == Pieza::tipo_t::REY && piezaDestino->getColor() == pieza->getColor()) {
+        eliminarPieza(piezaDestino);
+        finPartida = true;
+        ganador = !pieza->getColor();
+        std::cout << "¡Te comiste a tu propio rey! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
+        for (auto& p : piezas) delete p;
+        piezas.clear();
+        return true; // Puede o no mover, pero termina
+    }
 
     // Si hay una pieza en destino eliminarla aunque sea de su color
     if(piezaDestino && piezaDestino != pieza) {
@@ -287,6 +296,7 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
         finPartida = true;
         ganador = !turno; // Gana el jugador que acaba de mover
         std::cout << "¡Jaque mate! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
+        for (auto& p : piezas) delete p;
         piezas.clear();
     }
 
