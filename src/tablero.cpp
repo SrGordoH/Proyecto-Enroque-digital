@@ -46,6 +46,7 @@ void Tablero::Draw() {
 			DrawCell(i, j);
 		}
 	}
+
 	glTranslatef((GLfloat) -ancho_casillas, (GLfloat) -ancho_casillas, (GLfloat) 0.2f);
 	DrawPiezas();
 	glTranslatef((GLfloat) ancho_casillas, (GLfloat) ancho_casillas, (GLfloat) 0.0f);

@@ -40,7 +40,7 @@ public:
 	void eliminarPieza(Pieza* p);
 	void cambiarTurno() { turno = !turno; }
 	bool moverPieza(Pieza* pieza, Posicion destino);
-	
+	bool getTurno() const { return turno; } //Para despues imprimir por pantalla el turno
 	
 
 
