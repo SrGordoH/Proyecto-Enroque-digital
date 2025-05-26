@@ -8,10 +8,9 @@
 using namespace std;
 
 void Mundo::Inicializa() {
-	menus.Inicializa();
 	tablero.Inicializa();
 	tablero.setLogica(&logica);
-	logica.inicializarTablero(tablero);
+	logica.inicializarTablero();
 }
 
 
@@ -112,3 +111,10 @@ void Mundo::Reshape(int width, int height) {
 	}
 
 }
+
+void Mundo::OnKeyboardDown(unsigned char key) {
+	if (key == 'H' || key == 'h') {
+		logica.printHistorial();
+	}
+}
+

@@ -2,7 +2,6 @@
 #include "Tablero.h"
 #include "Menus.h"
 #include "Tablero_logica.h"
-
 #include "Posicion.h"
 
 
@@ -20,6 +19,8 @@ public:
 	void Draw();
 	void Inicializa(); 
 	void Reshape(int width, int height);
+	void OnKeyboardDown(unsigned char key);
+
 	Coords2D coorClics_to_cords2D(int x, int y);
 
 };
