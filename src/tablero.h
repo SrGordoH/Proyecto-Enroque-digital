@@ -19,6 +19,7 @@ class Tablero
 	double center_x{ }, center_y{}, dist{}, ancho_casillas{};
 	int casillas[2]; //casillas: filas x columnas
 	float dx{}, dy{};
+	bool turno = 1;              //Turno vale 1 cuandole toca a blancas
 	Pieza* pieza_selec = nullptr;
 public: 
 	void Inicializa();

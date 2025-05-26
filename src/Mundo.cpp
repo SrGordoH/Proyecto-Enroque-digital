@@ -8,7 +8,6 @@
 using namespace std;
 
 void Mundo::Inicializa() {
-	menus.Inicializa();
 	tablero.Inicializa();
 	tablero.setLogica(&logica);
 	logica.inicializarTablero();

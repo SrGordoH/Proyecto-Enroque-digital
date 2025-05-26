@@ -227,7 +227,6 @@ void Tablero::reshape(int width, int height) {
 }
 
 
-
 void Tablero::DrawPiezas() {
 
 	glEnable(GL_DEPTH_TEST); // Habilita el z-buffer
