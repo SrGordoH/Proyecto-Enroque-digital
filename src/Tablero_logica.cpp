@@ -346,6 +346,21 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     return true; //Devolvemos true si hacemos ese movimiento
 }
 
+void Tablero::DrawTurno() {
+    std::string textoTurno = logica->getTurno() ? "TURNO: BLANCAS" : "TURNO: NEGRAS";
+
+    if (logica->getTurno())
+        ETSIDI::setTextColor(1, 1, 1); // texto blancas para blancas
+    else
+        ETSIDI::setTextColor(0, 0, 0); // texto negro para negras
+
+    ETSIDI::setFont("fuentes/Bitwise.ttf", 18);
+    glPushMatrix();
+    glTranslatef(0.7f, -0.3f, 0.f);
+    ETSIDI::printxy(textoTurno.c_str(), 2.0f, 3.f); // Posición en la esquina superior derecha
+    glPopMatrix();
+}
+
 
 void Tablero_logica::printHistorial() const {
     std::cout << "=== Historial de movimientos ===\n";

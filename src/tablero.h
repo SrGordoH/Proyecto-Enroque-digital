@@ -26,6 +26,8 @@ public:
 	void Inicializa();
 	void Draw();
     void DrawGrid();
+	void DrawIndices();
+	void DrawTurno();
 	void DrawCell(int i, int j);
 	bool clicDentroTablero(float ogl_x, float ogl_y);
 	void clicPos(int button, int state, int x, int y);

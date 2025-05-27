@@ -46,7 +46,7 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 				std::cout << "Cuyo centro esta en: (" << centro_casilla_clic.x << ", " << centro_casilla_clic.y << ")\n";
 
 				if (logica.coronacion.activa) {
-					std::cout << "Esperando elección de pieza para coronación.\n";
+					std::cout << "Esperando elecciÃ³n de pieza para coronaciÃ³n.\n";
 					return;
 				}
 
@@ -91,7 +91,7 @@ Coords2D Mundo::coorClics_to_cords2D(int x, int y) {
 
 	// Coordenadas del mundo
 	GLdouble posX, posY, posZ;
-	gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ); // Conversión coordenadas de la pantalla a coordenadas del mundo
+	gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ); // ConversiÃ³n coordenadas de la pantalla a coordenadas del mundo
 	Coords2D pos_actual{};
 	return pos_actual = { (float)posX, (float)posY };
 }
@@ -103,6 +103,13 @@ void Mundo::Draw() {
 		menus.Draw();
 	}
 	else if (menus.get_menu() == JUEGO) {
+
+		tablero.Draw();
+		tablero.DrawTurno();
+		tablero.DrawIndices();
+		if(tablero.get_pieza_selec()!=nullptr)
+			tablero.DrawMovsValidos();
+
 		if (!logica.finPartida) {
 			tablero.Draw();
 			if (logica.coronacion.activa) {
@@ -116,7 +123,9 @@ void Mundo::Draw() {
 		else if (logica.finPartida) {
 			tablero.DrawFinPartida(logica.ganador, logica.tablas);
 		}
+
 	}
+
 
 
 }

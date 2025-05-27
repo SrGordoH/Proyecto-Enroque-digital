@@ -22,10 +22,10 @@ class Tablero_logica {
 	std::vector<Movimiento> historial;
 
 	struct CoronacionPendiente {
-		int indexPieza;       // índice en el vector piezas
-		Posicion pos;         // posición de coronación
+		int indexPieza;       // Ã­ndice en el vector piezas
+		Posicion pos;         // posiciÃ³n de coronaciÃ³n
 		bool color;           // color del jugador que corona
-		bool activa = false;  // si hay una coronación pendiente
+		bool activa = false;  // si hay una coronaciÃ³n pendiente
 	};
 	CoronacionPendiente coronacion;
 
@@ -54,7 +54,10 @@ public:
 	void eliminarPieza(Pieza* p);
 	void cambiarTurno() { turno = !turno; }
 	bool moverPieza(Pieza* pieza, Posicion destino);
+
+	bool getTurno() const { return turno; } //Para despues imprimir por pantalla el turno
 	void printHistorial() const;
+
 	
 
 

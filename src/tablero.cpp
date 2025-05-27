@@ -3,7 +3,7 @@
 #include "Tablero_logica.h"
 
 #include "freeglut.h"
-#include <iostream>  // ImpresiÛn por pantalla para hacer pruebas y debugs
+#include <iostream>  // Impresi√≥n por pantalla para hacer pruebas y debugs
 
 void Tablero::Inicializa() {
 
@@ -29,7 +29,7 @@ void Tablero::Inicializa() {
 void Tablero::Draw() {
 
 
-	glClearColor(1, 1, 1, 1); // fondo blanco
+	glClearColor(0.82f, 0.71f, 0.55f, 1.0f); // fondo marron (madera)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -39,7 +39,7 @@ void Tablero::Draw() {
 
 	glTranslatef((GLfloat) -center_x, (GLfloat) -center_y, (GLfloat) 0.0f);
 
-	// Dibuja la cuadrÌcula y las piezas
+	// Dibuja la cuadr√≠cula y las piezas
 	DrawGrid();
 	for (int i = 0; i < casillas[0]; i++) {
 		for (int j = 0; j < casillas[1]; j++) {
@@ -86,9 +86,9 @@ void Tablero::DrawGrid() {
 
 void Tablero::DrawCell(int i, int j) {
 	if ((i + j) % 2 == 0)
-		glColor3f((GLfloat)0.0f, (GLfloat)1.0f, (GLfloat)0.0f); // Verde claro
+		glColor3f((GLfloat)0.82f, (GLfloat)0.71f, (GLfloat)0.55f); // Marron claro casi beige
 	else
-		glColor3f((GLfloat)0.0f, (GLfloat)0.5f, (GLfloat)0.0f); // Verde oscuro
+		glColor3f((GLfloat)0.40f, (GLfloat)0.26f, (GLfloat)0.13f); // Marron oscuro
 
 	double x = j * ancho_casillas;
 	double y = i * ancho_casillas;
@@ -130,12 +130,12 @@ void Tablero::clicPos(int button, int state, int x, int y) {
 
 		// Coordenadas del mundo
 		GLdouble posX, posY, posZ;
-		gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ); // ConversiÛn coordenadas de la pantalla a coordenadas del mundo
+		gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ); // Conversi√≥n coordenadas de la pantalla a coordenadas del mundo
 
 		// Mostrar coordenadas en consola
 		std::cout << "Clic 2D en: (" << posX << ", " << posY << ")\n"; // La coordenada 0,0 es la esquina inferior izquierda del tablero
 
-		// ComprobaciÛn de si est· dentro del tablero
+		// Comprobaci√≥n de si est√° dentro del tablero
 		double ancho = casillas[1] * ancho_casillas;  // El tablero mide 0.5x0.6
 		double alto = casillas[0] * ancho_casillas;
 
@@ -171,25 +171,25 @@ void Tablero::reshape(int width, int height) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	// TamaÒo del tablero (con base en el n˙mero de casillas y el tamaÒo de cada una)
+	// Tama√±o del tablero (con base en el n√∫mero de casillas y el tama√±o de cada una)
 	float tableroAncho = (float)(casillas[1] * ancho_casillas);
 	float tableroAlto = (float)(casillas[0] * ancho_casillas);
 
-	// M·rgenes en porcentaje (por ejemplo, un margen del 10%)
+	// M√°rgenes en porcentaje (por ejemplo, un margen del 10%)
 	float margen = 0.1f; // 10% de margen
 	float worldAncho = tableroAncho * (1.0f + margen * 2.0f);
 	float worldAlto = tableroAlto * (1.0f + margen * 2.0f);
 
-	// RelaciÛn de aspecto de la ventana
+	// Relaci√≥n de aspecto de la ventana
 	float aspectWin = (float)width / (float)height;
 	float aspectWorld = worldAncho / worldAlto;
 
-	// Variables para los lÌmites de la vista
+	// Variables para los l√≠mites de la vista
 	float viewLeft, viewRight, viewBottom, viewTop;
 
-	// Ajuste de la proyecciÛn en funciÛn de la relaciÛn de aspecto
+	// Ajuste de la proyecci√≥n en funci√≥n de la relaci√≥n de aspecto
 	if (aspectWin > aspectWorld) {
-		// La ventana es m·s ancha que el mundo -> ajustamos horizontalmente
+		// La ventana es m√°s ancha que el mundo -> ajustamos horizontalmente
 		float visibleAncho = worldAlto * aspectWin;
 		float offsetX = (visibleAncho - worldAncho) / 2.0f;
 		viewLeft = -offsetX;
@@ -198,7 +198,7 @@ void Tablero::reshape(int width, int height) {
 		viewTop = worldAlto;
 	}
 	else {
-		// La ventana es m·s alta que el mundo -> ajustamos verticalmente
+		// La ventana es m√°s alta que el mundo -> ajustamos verticalmente
 		float visibleAlto = worldAncho / aspectWin;
 		float offsetY = (visibleAlto - worldAlto) / 2.0f;
 		viewLeft = 0.0f;
@@ -214,7 +214,7 @@ void Tablero::reshape(int width, int height) {
 	dx = viewLeft + (viewRight - viewLeft - tableroAncho) / 2.0f;
 	dy = viewBottom + (viewTop - viewBottom - tableroAlto) / 2.0f;
 
-	// Ajustamos la proyecciÛn ortogr·fica para centrar el tablero en la pantalla
+	// Ajustamos la proyecci√≥n ortogr√°fica para centrar el tablero en la pantalla
 	//glOrtho(viewLeft, viewRight, viewBottom, viewTop, -1.0, 1.0);
 	glOrtho(viewLeft - center_x - dx, viewRight - center_x - dx, viewBottom - center_y - dy, viewTop - center_y - dy, -1.0, 1.0);
 
@@ -225,7 +225,7 @@ void Tablero::reshape(int width, int height) {
 	// Desplazamos el tablero al centro de la pantalla
 	glTranslatef((GLfloat)(centerWindowX - center_x), (GLfloat) (centerWindowY - center_y), (GLfloat) 0.0f);
 
-	// AquÌ, el tablero se centra correctamente en la pantalla
+	// Aqu√≠, el tablero se centra correctamente en la pantalla
 }
 
 
@@ -247,11 +247,41 @@ void Tablero::DrawMovsValidos() {
 	}
 }
 
+
+void Tablero::DrawIndices() {
+	
+
+	ETSIDI::setTextColor(0, 0, 0); // Negro
+	ETSIDI::setFont("fuentes/Bitwise.ttf", 12);
+
+	glPushMatrix(); // Evita que el translate afecte a otras partes, guarda lo que ya hay
+	
+	glTranslatef(0.2f, -0.2f, 0.f); // Baja el texto debajo del tablero
+	ETSIDI::printxy("a", 0.0f, 0.0f);
+	ETSIDI::printxy("c", 1.0f, 0.0f);
+	ETSIDI::printxy("e", 2.0f, 0.0f);
+	glTranslatef(0.5f, 0.f, 0.f);
+	ETSIDI::printxy("b", 0.0f, 0.0f);
+	ETSIDI::printxy("d", 1.0f, 0.0f);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.2f, 0.2f, 0.f);   //Afecta a todos los numeros
+	ETSIDI::printxy("1", 0.0f, 0.0f);
+	ETSIDI::printxy("3", 0.0f, 1.0f);
+	ETSIDI::printxy("5", 0.0f, 2.0f);
+	glTranslatef(0.f, 0.5f, 0.f);     //Afecta solo a los tres numeros de debajo se suma al otro glTranslatef
+	ETSIDI::printxy("2", 0.0f, 0.0f);
+	ETSIDI::printxy("4", 0.0f, 1.0f);
+	ETSIDI::printxy("6", 0.0f, 2.0f);
+	glPopMatrix();
+}
+
 void Tablero::DrawFinPartida(bool ganador, bool tablas) {
 	if (tablas) {
 		// Ancho y alto iniciales:
 		float ancho = 9.0f; // valor arbitrario
-		float alto = ancho * (1024.0f / 1536.0f); // mantener proporciÛn de la imagen
+		float alto = ancho * (1024.0f / 1536.0f); // mantener proporci√≥n de la imagen
 
 		// Dibujo del fondo
 		glEnable(GL_TEXTURE_2D);
@@ -270,7 +300,7 @@ void Tablero::DrawFinPartida(bool ganador, bool tablas) {
 	} else if (ganador) {
 		// Ancho y alto iniciales:
 		float ancho = 9.0f; // valor arbitrario
-		float alto = ancho * (1024.0f / 1350.0f); // mantener proporciÛn de la imagen
+		float alto = ancho * (1024.0f / 1350.0f); // mantener proporci√≥n de la imagen
 
 		// Dibujo del fondo
 		glEnable(GL_TEXTURE_2D);
@@ -288,7 +318,7 @@ void Tablero::DrawFinPartida(bool ganador, bool tablas) {
 	} else if (!ganador) {
 		// Ancho y alto iniciales:
 		float ancho = 9.0f; // valor arbitrario
-		float alto = ancho * (1024.0f / 1408.0f); // mantener proporciÛn de la imagen
+		float alto = ancho * (1024.0f / 1408.0f); // mantener proporci√≥n de la imagen
 
 		// Dibujo del fondo
 		glEnable(GL_TEXTURE_2D);
@@ -306,3 +336,4 @@ void Tablero::DrawFinPartida(bool ganador, bool tablas) {
 	}
 
 }
+
