@@ -250,7 +250,7 @@ void Tablero::DrawMovsValidos() {
 void Tablero::DrawFinPorJaqueMate(bool ganador) {
 	if (ganador) {
 		// Ancho y alto iniciales:
-		float ancho = 10.0f; // valor arbitrario
+		float ancho = 9.0f; // valor arbitrario
 		float alto = ancho * (1024.0f / 1350.0f); // mantener proporción de la imagen
 
 		// Dibujo del fondo
@@ -269,7 +269,7 @@ void Tablero::DrawFinPorJaqueMate(bool ganador) {
 	}
 	else {
 		// Ancho y alto iniciales:
-		float ancho = 10.0f; // valor arbitrario
+		float ancho = 9.0f; // valor arbitrario
 		float alto = ancho * (1024.0f / 1408.0f); // mantener proporción de la imagen
 
 		// Dibujo del fondo

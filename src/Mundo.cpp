@@ -45,6 +45,11 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 				std::cout << "Que es la casilla: (" << casilla_clic.fil << ", " << casilla_clic.col << ")\n";
 				std::cout << "Cuyo centro esta en: (" << centro_casilla_clic.x << ", " << centro_casilla_clic.y << ")\n";
 
+				if (logica.coronacion.activa) {
+					std::cout << "Esperando elección de pieza para coronación.\n";
+					return;
+				}
+
 				pieza_clic = logica.obtenerPieza(casilla_clic);
 				if (pieza_clic != nullptr && pieza_clic->getColor() == logica.turno) {
 					pieza_clic->movimientosValidos(logica);
@@ -100,6 +105,13 @@ void Mundo::Draw() {
 	else if (menus.get_menu() == JUEGO) {
 		if (!logica.finPartida) {
 			tablero.Draw();
+			if (logica.coronacion.activa) {
+
+			//	ETSIDI::setTextColor(1, 0, 0); // rojo
+			//	ETSIDI::printxy("Elija una pieza a la que coronar:", 1.5f, 3.0f, 2.0f);
+			//	ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo(c)", 1.5f, 2.0f, 2.0f);
+			}
+
 		}
 		else if (logica.finPartida) {
 			tablero.DrawFinPorJaqueMate(logica.ganador);
@@ -127,6 +139,13 @@ void Mundo::OnKeyboardDown(unsigned char key) {
 	if (logica.finPartida && key == 'r') {
 		Inicializa();
 	}
-
+	if (logica.coronacion.activa) {
+		switch (key) {
+		case 'd': logica.realizarCoronacion(Pieza::tipo_t::DAMA); break;
+		case 't': logica.realizarCoronacion(Pieza::tipo_t::TORRE); break;
+		case 'a': logica.realizarCoronacion(Pieza::tipo_t::ALFIL); break;
+		case 'c': logica.realizarCoronacion(Pieza::tipo_t::CABALLO); break;
+		}
+	}
 }
 

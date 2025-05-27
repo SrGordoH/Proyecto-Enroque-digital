@@ -125,6 +125,8 @@ vector<Pieza*> Tablero_logica::obtenerPiezasOponente(bool color) const {
 
 
 bool Tablero_logica::estaEnJaqueMate(bool color) {
+    if (!estaEnJaque(color)) return false;
+
     for (Pieza* p : piezas) {
         if (p->getColor() == color) {
             std::vector<Posicion> posibles = p->movimientosValidos(*this);
@@ -136,7 +138,7 @@ bool Tablero_logica::estaEnJaqueMate(bool color) {
             }
         }
     }
-    return true; 
+    return true; // NO hay ningún movmiento legal y está en jaque
 }
 
 bool Tablero_logica::estaEnJaque(bool color) {
@@ -198,14 +200,42 @@ void Tablero_logica::verificarCoronacion() {
             // Si el peon blanco llega a la fila 1 o el negro a la fila 6
             if ((!p->getColor() && pos.fil == 1) || (p->getColor() && pos.fil == 6)) {
 
-                // Se elimina el peon y se sustituye por una dama
-                delete piezas[i];
-                piezas[i] = new Dama(color);
-                piezas[i]->SetPos(pos.fil, pos.col);
+                // Guardamos la coronación pendiente
+                coronacion = { i, pos, p->getColor(), true };
+                return;
+                //// Se elimina el peon y se sustituye por una dama
+                //delete piezas[i];
+                //piezas[i] = new Dama(color);
+                //piezas[i]->SetPos(pos.fil, pos.col);
             }
         }
     }
 }
+
+void Tablero_logica::realizarCoronacion(Pieza::tipo_t tipo) {
+    if (!coronacion.activa) return;
+
+    int i = coronacion.indexPieza;
+    delete piezas[i];
+
+    switch (tipo) {
+    case Pieza::tipo_t::DAMA:
+        piezas[i] = new Dama(coronacion.color); break;
+    case Pieza::tipo_t::TORRE:
+        piezas[i] = new Torre(coronacion.color); break;
+    case Pieza::tipo_t::ALFIL:
+        piezas[i] = new Alfil(coronacion.color); break;
+    case Pieza::tipo_t::CABALLO:
+        piezas[i] = new Caballo(coronacion.color); break;
+    default:
+        piezas[i] = new Dama(coronacion.color); // Por defecto una dama
+    }
+
+    piezas[i]->SetPos(coronacion.pos.fil, coronacion.pos.col);
+    coronacion.activa = false;  // Reseteo 
+}
+
+
 
 bool Tablero_logica::esTablasPorAhogo(bool turnoColor) {
     if (estaEnJaque(turnoColor)) return false;
@@ -272,7 +302,7 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
         piezaDestino ? piezaDestino->clonar() : nullptr); // Si el movimiento es válido se guarda una copia y si no nullptr
 
     //Comprobar si es el rey del mismo color
-    if (piezaDestino->getTipo() == Pieza::tipo_t::REY && piezaDestino->getColor() == pieza->getColor()) {
+    if (piezaDestino != nullptr && piezaDestino->getTipo() == Pieza::tipo_t::REY && piezaDestino->getColor() == pieza->getColor()) {
         eliminarPieza(piezaDestino);
         finPartida = true;
         ganador = !pieza->getColor();
