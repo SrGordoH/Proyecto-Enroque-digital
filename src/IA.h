@@ -10,11 +10,8 @@ private:
     bool iaColor = 0;
     int valorPieza(Pieza::tipo_t tipo) const;
     float distancia(Posicion a, Posicion b) const;
-    int evaluarMovimiento(Pieza* pieza, Posicion destino, bool color) const;
     bool esMovimientoDeCaptura(Pieza* pieza, Posicion destino) const;
     int AnalisisBasico() const;
-    int AnalisisProfundo(bool turno, int profundidad);
-
 
 public:
     void elegirMejorMovimientoFacil(bool color, Pieza*& mejorPieza, Posicion& mejorDestino);

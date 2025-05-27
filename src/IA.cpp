@@ -15,39 +15,10 @@ int IA::valorPieza(Pieza::tipo_t tipo) const {
 }
 
 
-
 float IA::distancia(Posicion a, Posicion b) const {
     int df = a.fil - b.fil;
     int dc = a.col - b.col;
     return std::sqrt(df * df + dc * dc);
-}
-
-bool IA::esMovimientoDeCaptura(Pieza* pieza, Posicion destino) const {
-    Pieza* objetivo = logica->obtenerPieza(destino);
-    return objetivo && objetivo->getColor() != pieza->getColor();
-}
-
-int IA::evaluarMovimiento(Pieza* pieza, Posicion destino, bool color) const {
-    int puntaje = 0;
-
-    Pieza* enDestino = logica->obtenerPieza(destino);
-    if (enDestino && enDestino->getColor() != color) {
-        puntaje += valorPieza(enDestino->getTipo()) * 10;
-    }
-
-    for (Pieza* otra : logica->getPiezas()) {
-        if (!otra || otra->getColor() == color || !otra->getPos().esValida()) continue;
-        float d = distancia(destino, otra->getPos());
-        if (valorPieza(otra->getTipo()) >= 5 && d <= 3.0f) {
-            puntaje += 5;
-        }
-    }
-
-    if (!enDestino && valorPieza(pieza->getTipo()) >= 5) {
-        puntaje -= 3;
-    }
-
-    return puntaje;
 }
 
 void IA::elegirMejorMovimientoFacil(bool color, Pieza*& mejorPieza, Posicion& mejorDestino) {
@@ -70,20 +41,6 @@ void IA::elegirMejorMovimientoFacil(bool color, Pieza*& mejorPieza, Posicion& me
         }
     }
     if (mejorP) logica->moverPieza(mejorP, mejorD);    //Devolvemos lo mejor
-}
-
-
-bool IA::hayCapturasDisponibles(bool color) const {
-    for (Pieza* pieza : logica->getPiezas()) {
-        if (!pieza || pieza->getColor() != color || !pieza->getPos().esValida()) continue;
-
-        std::vector<Posicion> movs = pieza->movimientosValidos(*logica);
-
-        for (const Posicion& p : movs) {
-            if (esMovimientoDeCaptura(pieza, p)) return true;
-        }
-    }
-    return false;
 }
 
 int IA::AnalisisBasico() const {
@@ -112,8 +69,57 @@ int IA::AnalisisBasico() const {
     return score;
 }
 
-int IA::AnalisisProfundo(bool turno, int profundidad) {
-   
-        //2iteraciones de analisis basico
-    return 0;
+void IA::elegirMejorMovimientoDificil(bool iaColor, Pieza*& mejorPieza, Posicion& mejorDestino) {
+    int mejorScoreGlobal = -1000000;
+    Pieza* mejorP = nullptr;
+    Posicion mejorD{ -1, -1 };
+
+    // Para cada jugada posible de la IA
+    for (Pieza* p : logica->getPiezas()) {
+        if (!p || p->getColor() != iaColor) continue;  //Evitamos punteros vacios o piezas rivales
+        auto movs = p->movimientosValidos(*logica);    //Guardamos movimientos
+
+        for (auto& d1 : movs) {
+            // Simular primer movimiento
+            if (!logica->moverPieza(p, d1)) continue;
+            int score1 = AnalisisBasico();
+
+            // Evaluar la mejor respuesta del oponente
+            int peorScoreParaIA = 1000000;
+            for (Pieza* q : logica->getPiezas()) {
+                if (!q || q->getColor() == iaColor) continue;    //evitamos piezas ia o punteros sin pieza
+                auto respuestas = q->movimientosValidos(*logica); 
+                for (auto& d2 : respuestas) {
+                    if (!logica->moverPieza(q, d2)) continue;   //salimos si no hay tablero logico y si si lo hay movemos
+                    int score2 = AnalisisBasico();
+                    logica->deshacerUltimoMovimiento();
+                    logica->cambiarTurno();  // volver al turno del rival
+
+                    // Suponemos que el oponente hace el mejor movimiento para si mismo
+                    if (score2 < peorScoreParaIA) {
+                        peorScoreParaIA = score2;
+                    }
+                }
+            }
+
+            // Sumamos ambas jugadas
+            int scoreGlobal = score1 + peorScoreParaIA;
+
+            // Deshacemos jugada
+            logica->deshacerUltimoMovimiento();
+            logica->cambiarTurno();
+
+            // Guardamos si es la mejor secuencia
+            if (scoreGlobal > mejorScoreGlobal) {
+                mejorScoreGlobal = scoreGlobal;
+                mejorP = p;
+                mejorD = d1;
+            }
+        }
+    }
+
+    // Ejecutamos la mejor jugada
+    if (mejorP) {
+        logica->moverPieza(mejorP, mejorD);
+    }
 }
