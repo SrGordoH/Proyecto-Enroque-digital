@@ -10,12 +10,10 @@ private:
     bool iaColor = 0;
     int valorPieza(Pieza::tipo_t tipo) const;
     float distancia(Posicion a, Posicion b) const;
-    bool esMovimientoDeCaptura(Pieza* pieza, Posicion destino) const;
     int AnalisisBasico() const;
 
 public:
-    void elegirMejorMovimientoFacil(bool color, Pieza*& mejorPieza, Posicion& mejorDestino);
-    void elegirMejorMovimientoDificil(bool color, Pieza*& mejorPieza, Posicion& mejorDestino);
-
-    bool hayCapturasDisponibles(bool color) const;
+    void setLogica(Tablero_logica* log) { logica = log; }
+    void elegirMejorMovimientoFacil(bool color);
+    void elegirMejorMovimientoDificil(bool color);
 };

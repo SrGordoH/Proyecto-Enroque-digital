@@ -37,5 +37,7 @@ vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) {
 }
 
 Pieza* Torre::clonar() const {
-    return new Torre(*this);
+    Torre* copia = new Torre(color);
+    copia->SetPos(pos.fil, pos.col);
+    return copia;
 }

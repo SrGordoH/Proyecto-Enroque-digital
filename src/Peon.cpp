@@ -45,5 +45,8 @@ vector<Posicion> Peon::movimientosValidos(Tablero_logica &tab) {
 }
 
 Pieza* Peon::clonar() const {
-    return new Peon(*this);
+    Peon* copia = new Peon(color);
+    copia->SetPos(pos.fil, pos.col);
+    return copia;
 }
+

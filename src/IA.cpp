@@ -21,7 +21,7 @@ float IA::distancia(Posicion a, Posicion b) const {
     return std::sqrt(df * df + dc * dc);
 }
 
-void IA::elegirMejorMovimientoFacil(bool color, Pieza*& mejorPieza, Posicion& mejorDestino) {
+void IA::elegirMejorMovimientoFacil(bool color) {
     int mejorPuntaje = -1000000;
     Pieza* mejorP = nullptr;
     Posicion mejorD{ -1, -1 };
@@ -69,24 +69,25 @@ int IA::AnalisisBasico() const {
     return score;
 }
 
-void IA::elegirMejorMovimientoDificil(bool iaColor, Pieza*& mejorPieza, Posicion& mejorDestino) {
+void IA::elegirMejorMovimientoDificil(bool iaColor) {
     int mejorScoreGlobal = -1000000;
     Pieza* mejorP = nullptr;
     Posicion mejorD{ -1, -1 };
+    auto piezas1 = logica->getPiezas();  //guardamos piezas
 
     // Para cada jugada posible de la IA
-    for (Pieza* p : logica->getPiezas()) {
+    for (Pieza* p : piezas1) {
         if (!p || p->getColor() != iaColor) continue;  //Evitamos punteros vacios o piezas rivales
         auto movs = p->movimientosValidos(*logica);    //Guardamos movimientos
-
         for (auto& d1 : movs) {
             // Simular primer movimiento
             if (!logica->moverPieza(p, d1)) continue;
             int score1 = AnalisisBasico();
+            auto piezas2 = logica->getPiezas();
 
             // Evaluar la mejor respuesta del oponente
             int peorScoreParaIA = 1000000;
-            for (Pieza* q : logica->getPiezas()) {
+            for (Pieza* q : piezas2) {
                 if (!q || q->getColor() == iaColor) continue;    //evitamos piezas ia o punteros sin pieza
                 auto respuestas = q->movimientosValidos(*logica); 
                 for (auto& d2 : respuestas) {

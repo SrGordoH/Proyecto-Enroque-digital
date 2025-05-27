@@ -26,5 +26,7 @@ vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) {
 }
 
 Pieza* Caballo::clonar() const {
-    return new Caballo(*this);
+    Caballo* copia = new Caballo(color);
+    copia->SetPos(pos.fil, pos.col);
+    return copia;
 }

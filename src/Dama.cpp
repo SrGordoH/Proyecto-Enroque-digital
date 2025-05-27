@@ -66,6 +66,9 @@ vector<Posicion> Dama::movimientosValidos(Tablero_logica& tab) {
 }
 
 Pieza* Dama::clonar() const {
-    return new Dama(*this);
+    Dama* copia = new Dama(color);
+    copia->SetPos(pos.fil, pos.col);
+    return copia;
 }
+
 

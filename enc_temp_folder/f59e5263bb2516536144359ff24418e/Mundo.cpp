@@ -62,12 +62,12 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 				if (!casilla_clic.esValida()) return; // EVITA CLICS FUERA DEL TABLERO
 				bool ok = logica.moverPieza(seleccionada, casilla_clic); // se intenta mover directamente
 				tablero.set_pieza_selec(nullptr); // se limpia la seleccion, se haya movido o no
-				/*if (ok && mododificil) {
+				if (ok && mododificil) {
 					ia.elegirMejorMovimientoDificil(logica.getTurno());
 				}
 				else if(ok)ia.elegirMejorMovimientoFacil(logica.getTurno());
 
-			}*/
+			}
 
 			
 

@@ -39,6 +39,7 @@ vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab)  {
 }
 
 Pieza* Alfil::clonar() const {
-    return new Alfil(*this);
+    Alfil* copia = new Alfil(color);
+    copia->SetPos(pos.fil, pos.col);
+    return copia;
 }
-

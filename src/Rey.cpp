@@ -23,6 +23,8 @@ vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) {
 }
 
 Pieza* Rey::clonar() const {
-    return new Rey(*this);
+    Rey* copia = new Rey(color);
+    copia->SetPos(pos.fil, pos.col);
+    return copia;
 }
 
