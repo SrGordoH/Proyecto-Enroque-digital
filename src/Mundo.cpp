@@ -105,20 +105,19 @@ void Mundo::Draw() {
 	else if (menus.get_menu() == JUEGO) {
 
 		tablero.Draw();
-		tablero.DrawTurno();
-		tablero.DrawIndices();
+		/*tablero.DrawTurno();
+		tablero.DrawIndices();*/
 		if(tablero.get_pieza_selec()!=nullptr)
 			tablero.DrawMovsValidos();
 
 		if (!logica.finPartida) {
 			tablero.Draw();
 			if (logica.coronacion.activa) {
-
-			//	ETSIDI::setTextColor(1, 0, 0); // rojo
-			//	ETSIDI::printxy("Elija una pieza a la que coronar:", 1.5f, 3.0f, 2.0f);
-			//	ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo(c)", 1.5f, 2.0f, 2.0f);
+				ETSIDI::setTextColor(1, 0, 0); // rojo
+				ETSIDI::printxy("Elija una pieza a la que coronar:", 1.5f, 3.0f, 2.0f);
+				ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo (c)", 1.5f, 2.0f, 2.0f);
 			}
-
+		
 		}
 		else if (logica.finPartida) {
 			tablero.DrawFinPartida(logica.ganador, logica.tablas);

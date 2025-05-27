@@ -51,7 +51,8 @@ void Tablero::Draw() {
 	DrawPiezas();
 	glTranslatef((GLfloat) ancho_casillas, (GLfloat) ancho_casillas, (GLfloat) 0.0f);
 	if (get_pieza_selec() != nullptr) DrawMovsValidos();
-
+	DrawIndices();
+	DrawTurno();
 }
 
 void Tablero::DrawGrid() {
