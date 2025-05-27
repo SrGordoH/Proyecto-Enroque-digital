@@ -41,4 +41,9 @@ public:
 	void set_pieza_selec(Pieza* p) { pieza_selec = p; }
 	Posicion coor_to_casilla(float posX, float posY);
 
+	Tablero(); //Declaro el constructor 
+	//Pantallas finales:
+	ETSIDI::Sprite victoriaBlancas;  //Las nuevas imagenes las voy a considerar objetos con el Sprite
+	ETSIDI::Sprite victoriaNegras;
+	ETSIDI::Sprite tablasSprite;
 };
