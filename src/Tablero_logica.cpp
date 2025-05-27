@@ -1,8 +1,11 @@
 #include "Tablero_logica.h"
 
 void Tablero_logica::inicializarTablero() {  // Aqui agregamos el nombre de la clase
-    finPartida = false; // Reinicializar partida
-    
+    // Reinicializar partida
+    finPartida = false; 
+    tablas = false;
+    turno = true;
+
     // === PEONES ===
     for (int i = 0; i < 5; ++i) {
         piezas.push_back(new Peon(true));  // Blancos
@@ -329,6 +332,16 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
         for (auto& p : piezas) delete p;
         piezas.clear();
     }
+
+    // Evaluamos si hay tablas por ahogado
+    if (esTablasPorAhogo(turno)) {
+        finPartida = true;
+        tablas = true;
+        std::cout << "TABLAS. Por rey ahogado." << "\n";
+        for (auto& p : piezas) delete p;
+        piezas.clear();
+    }
+
 
     return true; //Devolvemos true si hacemos ese movimiento
 }

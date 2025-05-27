@@ -114,7 +114,7 @@ void Mundo::Draw() {
 
 		}
 		else if (logica.finPartida) {
-			tablero.DrawFinPorJaqueMate(logica.ganador);
+			tablero.DrawFinPartida(logica.ganador, logica.tablas);
 		}
 	}
 
@@ -137,6 +137,7 @@ void Mundo::OnKeyboardDown(unsigned char key) {
 		logica.printHistorial();
 	}
 	if (logica.finPartida && key == 'r') {
+		menus.set_menu(MENU_PPAL);
 		Inicializa();
 	}
 	if (logica.coronacion.activa) {

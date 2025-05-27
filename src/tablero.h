@@ -33,7 +33,7 @@ public:
 	void setLogica(Tablero_logica* log) { logica = log;    std::cout << "Logica asignada\n";}
 	void DrawPiezas();
 	void DrawMovsValidos();
-	void DrawFinPorJaqueMate(bool ganador);
+	void DrawFinPartida(bool ganador, bool tablas);
 	double get_anchocas() const { return ancho_casillas; }
 	Pieza* get_pieza_selec() const { return pieza_selec; }
 	void set_pieza_selec(Pieza* p) { pieza_selec = p; }

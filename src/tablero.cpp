@@ -247,8 +247,27 @@ void Tablero::DrawMovsValidos() {
 	}
 }
 
-void Tablero::DrawFinPorJaqueMate(bool ganador) {
-	if (ganador) {
+void Tablero::DrawFinPartida(bool ganador, bool tablas) {
+	if (tablas) {
+		// Ancho y alto iniciales:
+		float ancho = 9.0f; // valor arbitrario
+		float alto = ancho * (1024.0f / 1536.0f); // mantener proporción de la imagen
+
+		// Dibujo del fondo
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/Tablas_Ahogado.png").id);
+		glDisable(GL_LIGHTING);
+		glColor3f(1, 1, 1);
+		glBegin(GL_POLYGON);
+		glTexCoord2d(0, 1);  glVertex3d(-ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 1);  glVertex3d(ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 0);  glVertex3d(ancho / 2, alto / 2, 0);
+		glTexCoord2d(0, 0);  glVertex3d(-ancho / 2, alto / 2, 0);
+		glEnd();
+		glEnable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+
+	} else if (ganador) {
 		// Ancho y alto iniciales:
 		float ancho = 9.0f; // valor arbitrario
 		float alto = ancho * (1024.0f / 1350.0f); // mantener proporción de la imagen
@@ -266,8 +285,7 @@ void Tablero::DrawFinPorJaqueMate(bool ganador) {
 		glEnd();
 		glEnable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D);
-	}
-	else {
+	} else if (!ganador) {
 		// Ancho y alto iniciales:
 		float ancho = 9.0f; // valor arbitrario
 		float alto = ancho * (1024.0f / 1408.0f); // mantener proporción de la imagen
