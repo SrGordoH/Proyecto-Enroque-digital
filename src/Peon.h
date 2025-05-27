@@ -8,8 +8,8 @@ class Tablero_logica;
 class Peon : public Pieza {
 public:
 
-    Peon(const Tablero& t, bool color)
-        : Pieza(tipo_t::PEON, t, color, 1) {
+    Peon(bool color)
+        : Pieza(tipo_t::PEON, color, 1) {
         if (color)
             sprite = new ETSIDI::Sprite("imagenes/Chess_plt60.png"); // peon blanco
         else

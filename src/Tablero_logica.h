@@ -20,10 +20,23 @@ class Tablero_logica {
 		Pieza* capturada;
 	};
 	std::vector<Movimiento> historial;
+
+	struct CoronacionPendiente {
+		int indexPieza;       // índice en el vector piezas
+		Posicion pos;         // posición de coronación
+		bool color;           // color del jugador que corona
+		bool activa = false;  // si hay una coronación pendiente
+	};
+	CoronacionPendiente coronacion;
+
 	int movimientosSinCaptura = 0;
-	bool turno = 1;              //Turno vale 1 cuandole toca a blancas
+	bool turno = true;              //Turno vale 1 cuandole toca a blancas
+	bool finPartida = false;
+	bool ganador;   // True cuando gana blancas y false cuando gana negras
+	bool tablas = false;
+
 public:
-	void inicializarTablero(const Tablero& tablero);
+	void inicializarTablero();
 	void setearPosicionesIniciales(int modo);
 	Pieza* obtenerPieza(Posicion casilla) const;
 	Posicion obtenerReyPos(bool color);
@@ -34,13 +47,17 @@ public:
 	void guardarMovimiento(Pieza* p, Posicion origen, Posicion destino, Pieza* capturada);
 	void deshacerUltimoMovimiento();
 	void verificarCoronacion();
+	void realizarCoronacion(Pieza::tipo_t tipo);
 	bool esTablasPorAhogo(bool turnoColor);
 	void notificarMovimiento(Pieza* piezaMovida, Pieza* capturada);
 	bool reglaCincuentaMovimientos() const {return movimientosSinCaptura >= 50;}
 	void eliminarPieza(Pieza* p);
 	void cambiarTurno() { turno = !turno; }
 	bool moverPieza(Pieza* pieza, Posicion destino);
+
 	bool getTurno() const { return turno; } //Para despues imprimir por pantalla el turno
+	void printHistorial() const;
+
 	
 
 

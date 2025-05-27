@@ -8,10 +8,9 @@
 using namespace std;
 
 void Mundo::Inicializa() {
-	menus.Inicializa();
 	tablero.Inicializa();
 	tablero.setLogica(&logica);
-	logica.inicializarTablero(tablero);
+	logica.inicializarTablero();
 }
 
 
@@ -32,6 +31,11 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 			logica.setearPosicionesIniciales(menus.get_modo());
 		}
 		else if (menus.get_menu() == JUEGO) {
+			if (logica.finPartida) {
+				std::cout << "El juego ha terminado. Reinicia para jugar de nuevo.\n";
+				return;
+			}
+
 			Pieza* seleccionada = tablero.get_pieza_selec(); // obtenemos la pieza actualmente seleccionada
 			if (seleccionada == nullptr) {
 				if (!casilla_clic.esValida()) return;
@@ -40,6 +44,11 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 
 				std::cout << "Que es la casilla: (" << casilla_clic.fil << ", " << casilla_clic.col << ")\n";
 				std::cout << "Cuyo centro esta en: (" << centro_casilla_clic.x << ", " << centro_casilla_clic.y << ")\n";
+
+				if (logica.coronacion.activa) {
+					std::cout << "Esperando elección de pieza para coronación.\n";
+					return;
+				}
 
 				pieza_clic = logica.obtenerPieza(casilla_clic);
 				if (pieza_clic != nullptr && pieza_clic->getColor() == logica.turno) {
@@ -82,7 +91,7 @@ Coords2D Mundo::coorClics_to_cords2D(int x, int y) {
 
 	// Coordenadas del mundo
 	GLdouble posX, posY, posZ;
-	gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ); // Conversi�n coordenadas de la pantalla a coordenadas del mundo
+	gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ); // Conversión coordenadas de la pantalla a coordenadas del mundo
 	Coords2D pos_actual{};
 	return pos_actual = { (float)posX, (float)posY };
 }
@@ -94,11 +103,27 @@ void Mundo::Draw() {
 		menus.Draw();
 	}
 	else if (menus.get_menu() == JUEGO) {
+
 		tablero.Draw();
 		tablero.DrawTurno();
 		tablero.DrawIndices();
 		if(tablero.get_pieza_selec()!=nullptr)
 			tablero.DrawMovsValidos();
+
+		if (!logica.finPartida) {
+			tablero.Draw();
+			if (logica.coronacion.activa) {
+
+			//	ETSIDI::setTextColor(1, 0, 0); // rojo
+			//	ETSIDI::printxy("Elija una pieza a la que coronar:", 1.5f, 3.0f, 2.0f);
+			//	ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo(c)", 1.5f, 2.0f, 2.0f);
+			}
+
+		}
+		else if (logica.finPartida) {
+			tablero.DrawFinPartida(logica.ganador, logica.tablas);
+		}
+
 	}
 
 
@@ -115,3 +140,22 @@ void Mundo::Reshape(int width, int height) {
 	}
 
 }
+
+void Mundo::OnKeyboardDown(unsigned char key) {
+	if (key == 'H' || key == 'h') {
+		logica.printHistorial();
+	}
+	if (logica.finPartida && key == 'r') {
+		menus.set_menu(MENU_PPAL);
+		Inicializa();
+	}
+	if (logica.coronacion.activa) {
+		switch (key) {
+		case 'd': logica.realizarCoronacion(Pieza::tipo_t::DAMA); break;
+		case 't': logica.realizarCoronacion(Pieza::tipo_t::TORRE); break;
+		case 'a': logica.realizarCoronacion(Pieza::tipo_t::ALFIL); break;
+		case 'c': logica.realizarCoronacion(Pieza::tipo_t::CABALLO); break;
+		}
+	}
+}
+

@@ -3,7 +3,7 @@
 #include "Tablero_logica.h"
 
 #include "freeglut.h"
-#include <iostream>  // ImpresiÛn por pantalla para hacer pruebas y debugs
+#include <iostream>  // Impresi√≥n por pantalla para hacer pruebas y debugs
 
 void Tablero::Inicializa() {
 
@@ -39,7 +39,7 @@ void Tablero::Draw() {
 
 	glTranslatef((GLfloat) -center_x, (GLfloat) -center_y, (GLfloat) 0.0f);
 
-	// Dibuja la cuadrÌcula y las piezas
+	// Dibuja la cuadr√≠cula y las piezas
 	DrawGrid();
 	for (int i = 0; i < casillas[0]; i++) {
 		for (int j = 0; j < casillas[1]; j++) {
@@ -50,6 +50,7 @@ void Tablero::Draw() {
 	glTranslatef((GLfloat) -ancho_casillas, (GLfloat) -ancho_casillas, (GLfloat) 0.2f);
 	DrawPiezas();
 	glTranslatef((GLfloat) ancho_casillas, (GLfloat) ancho_casillas, (GLfloat) 0.0f);
+	if (get_pieza_selec() != nullptr) DrawMovsValidos();
 
 }
 
@@ -129,12 +130,12 @@ void Tablero::clicPos(int button, int state, int x, int y) {
 
 		// Coordenadas del mundo
 		GLdouble posX, posY, posZ;
-		gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ); // ConversiÛn coordenadas de la pantalla a coordenadas del mundo
+		gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ); // Conversi√≥n coordenadas de la pantalla a coordenadas del mundo
 
 		// Mostrar coordenadas en consola
 		std::cout << "Clic 2D en: (" << posX << ", " << posY << ")\n"; // La coordenada 0,0 es la esquina inferior izquierda del tablero
 
-		// ComprobaciÛn de si est· dentro del tablero
+		// Comprobaci√≥n de si est√° dentro del tablero
 		double ancho = casillas[1] * ancho_casillas;  // El tablero mide 0.5x0.6
 		double alto = casillas[0] * ancho_casillas;
 
@@ -170,25 +171,25 @@ void Tablero::reshape(int width, int height) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	// TamaÒo del tablero (con base en el n˙mero de casillas y el tamaÒo de cada una)
+	// Tama√±o del tablero (con base en el n√∫mero de casillas y el tama√±o de cada una)
 	float tableroAncho = (float)(casillas[1] * ancho_casillas);
 	float tableroAlto = (float)(casillas[0] * ancho_casillas);
 
-	// M·rgenes en porcentaje (por ejemplo, un margen del 10%)
+	// M√°rgenes en porcentaje (por ejemplo, un margen del 10%)
 	float margen = 0.1f; // 10% de margen
 	float worldAncho = tableroAncho * (1.0f + margen * 2.0f);
 	float worldAlto = tableroAlto * (1.0f + margen * 2.0f);
 
-	// RelaciÛn de aspecto de la ventana
+	// Relaci√≥n de aspecto de la ventana
 	float aspectWin = (float)width / (float)height;
 	float aspectWorld = worldAncho / worldAlto;
 
-	// Variables para los lÌmites de la vista
+	// Variables para los l√≠mites de la vista
 	float viewLeft, viewRight, viewBottom, viewTop;
 
-	// Ajuste de la proyecciÛn en funciÛn de la relaciÛn de aspecto
+	// Ajuste de la proyecci√≥n en funci√≥n de la relaci√≥n de aspecto
 	if (aspectWin > aspectWorld) {
-		// La ventana es m·s ancha que el mundo -> ajustamos horizontalmente
+		// La ventana es m√°s ancha que el mundo -> ajustamos horizontalmente
 		float visibleAncho = worldAlto * aspectWin;
 		float offsetX = (visibleAncho - worldAncho) / 2.0f;
 		viewLeft = -offsetX;
@@ -197,7 +198,7 @@ void Tablero::reshape(int width, int height) {
 		viewTop = worldAlto;
 	}
 	else {
-		// La ventana es m·s alta que el mundo -> ajustamos verticalmente
+		// La ventana es m√°s alta que el mundo -> ajustamos verticalmente
 		float visibleAlto = worldAncho / aspectWin;
 		float offsetY = (visibleAlto - worldAlto) / 2.0f;
 		viewLeft = 0.0f;
@@ -213,7 +214,7 @@ void Tablero::reshape(int width, int height) {
 	dx = viewLeft + (viewRight - viewLeft - tableroAncho) / 2.0f;
 	dy = viewBottom + (viewTop - viewBottom - tableroAlto) / 2.0f;
 
-	// Ajustamos la proyecciÛn ortogr·fica para centrar el tablero en la pantalla
+	// Ajustamos la proyecci√≥n ortogr√°fica para centrar el tablero en la pantalla
 	//glOrtho(viewLeft, viewRight, viewBottom, viewTop, -1.0, 1.0);
 	glOrtho(viewLeft - center_x - dx, viewRight - center_x - dx, viewBottom - center_y - dy, viewTop - center_y - dy, -1.0, 1.0);
 
@@ -224,9 +225,8 @@ void Tablero::reshape(int width, int height) {
 	// Desplazamos el tablero al centro de la pantalla
 	glTranslatef((GLfloat)(centerWindowX - center_x), (GLfloat) (centerWindowY - center_y), (GLfloat) 0.0f);
 
-	// AquÌ, el tablero se centra correctamente en la pantalla
+	// Aqu√≠, el tablero se centra correctamente en la pantalla
 }
-
 
 
 void Tablero::DrawPiezas() {
@@ -246,6 +246,7 @@ void Tablero::DrawMovsValidos() {
 		pieza_selec->DibujaMovValidos(ancho_casillas);
 	}
 }
+
 
 void Tablero::DrawIndices() {
 	
@@ -275,3 +276,64 @@ void Tablero::DrawIndices() {
 	ETSIDI::printxy("6", 0.0f, 2.0f);
 	glPopMatrix();
 }
+
+void Tablero::DrawFinPartida(bool ganador, bool tablas) {
+	if (tablas) {
+		// Ancho y alto iniciales:
+		float ancho = 9.0f; // valor arbitrario
+		float alto = ancho * (1024.0f / 1536.0f); // mantener proporci√≥n de la imagen
+
+		// Dibujo del fondo
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/Tablas_Ahogado.png").id);
+		glDisable(GL_LIGHTING);
+		glColor3f(1, 1, 1);
+		glBegin(GL_POLYGON);
+		glTexCoord2d(0, 1);  glVertex3d(-ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 1);  glVertex3d(ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 0);  glVertex3d(ancho / 2, alto / 2, 0);
+		glTexCoord2d(0, 0);  glVertex3d(-ancho / 2, alto / 2, 0);
+		glEnd();
+		glEnable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+
+	} else if (ganador) {
+		// Ancho y alto iniciales:
+		float ancho = 9.0f; // valor arbitrario
+		float alto = ancho * (1024.0f / 1350.0f); // mantener proporci√≥n de la imagen
+
+		// Dibujo del fondo
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/JAQUEMATE_Blancas_1.png").id);
+		glDisable(GL_LIGHTING);
+		glColor3f(1, 1, 1);
+		glBegin(GL_POLYGON);
+		glTexCoord2d(0, 1);  glVertex3d(-ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 1);  glVertex3d(ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 0);  glVertex3d(ancho / 2, alto / 2, 0);
+		glTexCoord2d(0, 0);  glVertex3d(-ancho / 2, alto / 2, 0);
+		glEnd();
+		glEnable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+	} else if (!ganador) {
+		// Ancho y alto iniciales:
+		float ancho = 9.0f; // valor arbitrario
+		float alto = ancho * (1024.0f / 1408.0f); // mantener proporci√≥n de la imagen
+
+		// Dibujo del fondo
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/JAQUEMATE_Negras_1.png").id);
+		glDisable(GL_LIGHTING);
+		glColor3f(1, 1, 1);
+		glBegin(GL_POLYGON);
+		glTexCoord2d(0, 1);  glVertex3d(-ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 1);  glVertex3d(ancho / 2, -alto / 2, 0);
+		glTexCoord2d(1, 0);  glVertex3d(ancho / 2, alto / 2, 0);
+		glTexCoord2d(0, 0);  glVertex3d(-ancho / 2, alto / 2, 0);
+		glEnd();
+		glEnable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+	}
+
+}
+

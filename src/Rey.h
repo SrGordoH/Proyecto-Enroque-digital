@@ -7,8 +7,8 @@ class Tablero_logica;
 
 class Rey : public Pieza {
 public:
-    Rey(const Tablero& t, bool color)
-        : Pieza(tipo_t::REY, t, color, 0) {
+    Rey(bool color)
+        : Pieza(tipo_t::REY, color, 0) {
         if (color)
             sprite = new ETSIDI::Sprite("imagenes/Chess_klt60.png"); // rey blanco
         else

@@ -1,31 +1,36 @@
 #include "Tablero_logica.h"
 
-void Tablero_logica::inicializarTablero(const Tablero& tablero) {  // Aqui agregamos el nombre de la clase
+void Tablero_logica::inicializarTablero() {  // Aqui agregamos el nombre de la clase
+    // Reinicializar partida
+    finPartida = false; 
+    tablas = false;
+    turno = true;
+
     // === PEONES ===
     for (int i = 0; i < 5; ++i) {
-        piezas.push_back(new Peon(tablero, true));  // Blancos
-        piezas.push_back(new Peon(tablero, false)); // Negros
+        piezas.push_back(new Peon(true));  // Blancos
+        piezas.push_back(new Peon( false)); // Negros
     }
 
     // === TORRES ===
-    piezas.push_back(new Torre(tablero, true));  // Blanca
-    piezas.push_back(new Torre(tablero, false)); // Negra
+    piezas.push_back(new Torre(true));  // Blanca
+    piezas.push_back(new Torre(false)); // Negra
 
     // === CABALLOS ===
-    piezas.push_back(new Caballo(tablero, true));
-    piezas.push_back(new Caballo(tablero, false));
+    piezas.push_back(new Caballo(true));
+    piezas.push_back(new Caballo(false));
 
     // === ALFILES ===
-    piezas.push_back(new Alfil(tablero, true));
-    piezas.push_back(new Alfil(tablero, false));
+    piezas.push_back(new Alfil(true));
+    piezas.push_back(new Alfil(false));
 
     // === DAMAS ===
-    piezas.push_back(new Dama(tablero, true));
-    piezas.push_back(new Dama(tablero, false));
+    piezas.push_back(new Dama(true));
+    piezas.push_back(new Dama(false));
 
     // === REYES ===
-    piezas.push_back(new Rey(tablero, true));
-    piezas.push_back(new Rey(tablero, false));
+    piezas.push_back(new Rey( true));
+    piezas.push_back(new Rey( false));
 
     //usamos un vector de piezas que guardamos usando memoria dinamica cada una al final de las que habia previamente
 }
@@ -123,6 +128,8 @@ vector<Pieza*> Tablero_logica::obtenerPiezasOponente(bool color) const {
 
 
 bool Tablero_logica::estaEnJaqueMate(bool color) {
+    if (!estaEnJaque(color)) return false;
+
     for (Pieza* p : piezas) {
         if (p->getColor() == color) {
             std::vector<Posicion> posibles = p->movimientosValidos(*this);
@@ -134,7 +141,7 @@ bool Tablero_logica::estaEnJaqueMate(bool color) {
             }
         }
     }
-    return true; 
+    return true; // NO hay ningún movmiento legal y está en jaque
 }
 
 bool Tablero_logica::estaEnJaque(bool color) {
@@ -188,23 +195,50 @@ void Tablero_logica::deshacerUltimoMovimiento() {
 void Tablero_logica::verificarCoronacion() {
     for (int i = 0; i < piezas.size(); ++i) {
         Pieza* p = piezas[i];
-
+        
         // Si la pieza es un peon
         if (p && p->getTipo() == Pieza::tipo_t::PEON) {
             Posicion pos = p->getPos();
-
+            bool color = p->getColor();
             // Si el peon blanco llega a la fila 1 o el negro a la fila 6
-            if ((p->getColor() && pos.fil == 1) || (!p->getColor() && pos.fil == 6)) {
-                const Tablero& t = p->getTablero(); // obtener referencia al tablero
+            if ((!p->getColor() && pos.fil == 1) || (p->getColor() && pos.fil == 6)) {
 
-                // Se elimina el peon y se sustituye por una dama
-                delete piezas[i];
-                piezas[i] = new Dama(t, p->getColor());
-                piezas[i]->SetPos(pos.fil, pos.col);
+                // Guardamos la coronación pendiente
+                coronacion = { i, pos, p->getColor(), true };
+                return;
+                //// Se elimina el peon y se sustituye por una dama
+                //delete piezas[i];
+                //piezas[i] = new Dama(color);
+                //piezas[i]->SetPos(pos.fil, pos.col);
             }
         }
     }
 }
+
+void Tablero_logica::realizarCoronacion(Pieza::tipo_t tipo) {
+    if (!coronacion.activa) return;
+
+    int i = coronacion.indexPieza;
+    delete piezas[i];
+
+    switch (tipo) {
+    case Pieza::tipo_t::DAMA:
+        piezas[i] = new Dama(coronacion.color); break;
+    case Pieza::tipo_t::TORRE:
+        piezas[i] = new Torre(coronacion.color); break;
+    case Pieza::tipo_t::ALFIL:
+        piezas[i] = new Alfil(coronacion.color); break;
+    case Pieza::tipo_t::CABALLO:
+        piezas[i] = new Caballo(coronacion.color); break;
+    default:
+        piezas[i] = new Dama(coronacion.color); // Por defecto una dama
+    }
+
+    piezas[i]->SetPos(coronacion.pos.fil, coronacion.pos.col);
+    coronacion.activa = false;  // Reseteo 
+}
+
+
 
 bool Tablero_logica::esTablasPorAhogo(bool turnoColor) {
     if (estaEnJaque(turnoColor)) return false;
@@ -270,7 +304,16 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     guardarMovimiento(pieza, pieza->getPos(), destino,
         piezaDestino ? piezaDestino->clonar() : nullptr); // Si el movimiento es válido se guarda una copia y si no nullptr
 
-
+    //Comprobar si es el rey del mismo color
+    if (piezaDestino != nullptr && piezaDestino->getTipo() == Pieza::tipo_t::REY && piezaDestino->getColor() == pieza->getColor()) {
+        eliminarPieza(piezaDestino);
+        finPartida = true;
+        ganador = !pieza->getColor();
+        std::cout << "¡Te comiste a tu propio rey! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
+        for (auto& p : piezas) delete p;
+        piezas.clear();
+        return true; // Puede o no mover, pero termina
+    }
 
     // Si hay una pieza en destino eliminarla aunque sea de su color
     if(piezaDestino && piezaDestino != pieza) {
@@ -278,8 +321,27 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     }
 
     pieza->SetPos(destino.fil, destino.col);
-    // verificarCoronacion();
+    verificarCoronacion();
     cambiarTurno();
+
+    // Evaluamos si el nuevo jugador está en jaque mate
+    if (estaEnJaqueMate(turno)) {
+        finPartida = true;
+        ganador = !turno; // Gana el jugador que acaba de mover
+        std::cout << "¡Jaque mate! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
+        for (auto& p : piezas) delete p;
+        piezas.clear();
+    }
+
+    // Evaluamos si hay tablas por ahogado
+    if (esTablasPorAhogo(turno)) {
+        finPartida = true;
+        tablas = true;
+        std::cout << "TABLAS. Por rey ahogado." << "\n";
+        for (auto& p : piezas) delete p;
+        piezas.clear();
+    }
+
 
     return true; //Devolvemos true si hacemos ese movimiento
 }
@@ -297,6 +359,29 @@ void Tablero::DrawTurno() {
     glTranslatef(0.7f, -0.3f, 0.f);
     ETSIDI::printxy(textoTurno.c_str(), 2.0f, 3.f); // Posición en la esquina superior derecha
     glPopMatrix();
+}
+
+
+void Tablero_logica::printHistorial() const {
+    std::cout << "=== Historial de movimientos ===\n";
+
+    for (size_t i = 0; i < historial.size(); ++i) {
+        const Movimiento& m = historial[i];
+        std::string tipo = m.pieza->nombrePieza(m.pieza->getTipo());
+        std::string color = m.pieza->getColor() ? "Blanca" : "Negra";
+
+        std::cout << i + 1 << ". " << tipo << " " << color
+            << " de (" << m.origen.fil << "," << m.origen.col << ")"
+            << " a (" << m.destino.fil << "," << m.destino.col << ")";
+
+        if (m.capturada) {
+            std::string tipoCapt = m.pieza->nombrePieza(m.capturada->getTipo());
+            std::string colorCapt = m.capturada->getColor() ? "Blanca" : "Negra";
+            std::cout << " [Captura: " << tipoCapt << " " << colorCapt << "]";
+        }
+
+        std::cout << "\n";
+    }
 }
 
 

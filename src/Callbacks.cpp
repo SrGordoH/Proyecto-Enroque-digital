@@ -65,6 +65,8 @@ void OnKeyboardDown(unsigned char key, int x_t, int y_t)
 		exit(0); // Cierra el programa
 	}
 
+	mundo.OnKeyboardDown(key);
+
 	glutPostRedisplay();
 }
 
