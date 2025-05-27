@@ -95,15 +95,13 @@ void Mundo::Draw() {
 	}
 	else if (menus.get_menu() == JUEGO) {
 		tablero.Draw();
+		tablero.DrawTurno();
+		tablero.DrawIndices();
 		if(tablero.get_pieza_selec()!=nullptr)
 			tablero.DrawMovsValidos();
 	}
-	// Mostrar de quién es el turno
-	std::string textoTurno = logica.getTurno() ? "Turno: BLANCAS" : "Turno: NEGRAS";
 
-	ETSIDI::setTextColor(1, 0, 0); // Rojo
-	ETSIDI::setFont("fuentes/bitwise.ttf", 20); // Usa una fuente que tengas, cambia el nombre si usas otra
-	ETSIDI::printxy(textoTurno.c_str(), -1.0f, 3.0f); // Coordenadas ajustables
+
 
 }
 

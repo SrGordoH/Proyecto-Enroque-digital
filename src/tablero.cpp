@@ -29,7 +29,7 @@ void Tablero::Inicializa() {
 void Tablero::Draw() {
 
 
-	glClearColor(1, 1, 1, 1); // fondo blanco
+	glClearColor(0.82f, 0.71f, 0.55f, 1.0f); // fondo marron (madera)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -85,9 +85,9 @@ void Tablero::DrawGrid() {
 
 void Tablero::DrawCell(int i, int j) {
 	if ((i + j) % 2 == 0)
-		glColor3f((GLfloat)0.0f, (GLfloat)1.0f, (GLfloat)0.0f); // Verde claro
+		glColor3f((GLfloat)0.82f, (GLfloat)0.71f, (GLfloat)0.55f); // Marron claro casi beige
 	else
-		glColor3f((GLfloat)0.0f, (GLfloat)0.5f, (GLfloat)0.0f); // Verde oscuro
+		glColor3f((GLfloat)0.40f, (GLfloat)0.26f, (GLfloat)0.13f); // Marron oscuro
 
 	double x = j * ancho_casillas;
 	double y = i * ancho_casillas;
@@ -245,4 +245,33 @@ void Tablero::DrawMovsValidos() {
 	if (pieza_selec) {
 		pieza_selec->DibujaMovValidos(ancho_casillas);
 	}
+}
+
+void Tablero::DrawIndices() {
+	
+
+	ETSIDI::setTextColor(0, 0, 0); // Negro
+	ETSIDI::setFont("fuentes/Bitwise.ttf", 12);
+
+	glPushMatrix(); // Evita que el translate afecte a otras partes, guarda lo que ya hay
+	
+	glTranslatef(0.2f, -0.2f, 0.f); // Baja el texto debajo del tablero
+	ETSIDI::printxy("a", 0.0f, 0.0f);
+	ETSIDI::printxy("c", 1.0f, 0.0f);
+	ETSIDI::printxy("e", 2.0f, 0.0f);
+	glTranslatef(0.5f, 0.f, 0.f);
+	ETSIDI::printxy("b", 0.0f, 0.0f);
+	ETSIDI::printxy("d", 1.0f, 0.0f);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.2f, 0.2f, 0.f);   //Afecta a todos los numeros
+	ETSIDI::printxy("1", 0.0f, 0.0f);
+	ETSIDI::printxy("3", 0.0f, 1.0f);
+	ETSIDI::printxy("5", 0.0f, 2.0f);
+	glTranslatef(0.f, 0.5f, 0.f);     //Afecta solo a los tres numeros de debajo se suma al otro glTranslatef
+	ETSIDI::printxy("2", 0.0f, 0.0f);
+	ETSIDI::printxy("4", 0.0f, 1.0f);
+	ETSIDI::printxy("6", 0.0f, 2.0f);
+	glPopMatrix();
 }
