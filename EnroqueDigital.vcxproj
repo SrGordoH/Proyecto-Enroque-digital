@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sonidos.cpp" />
     <ClCompile Include="src\Alfil.cpp" />
     <ClCompile Include="src\Caballo.cpp" />
     <ClCompile Include="src\Callbacks.cpp" />
@@ -32,13 +31,13 @@
     <ClCompile Include="src\Peon.cpp" />
     <ClCompile Include="src\Pieza.cpp" />
     <ClCompile Include="src\Rey.cpp" />
+    <ClCompile Include="src\Sonido.cpp" />
     <ClCompile Include="src\Tablero.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Tablero_logica.cpp" />
     <ClCompile Include="src\Torre.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sonidos.h" />
     <ClInclude Include="src\Alfil.h" />
     <ClInclude Include="src\Boton.h" />
     <ClInclude Include="src\Caballo.h" />
@@ -52,6 +51,7 @@
     <ClInclude Include="src\Pieza.h" />
     <ClInclude Include="src\Posicion.h" />
     <ClInclude Include="src\Rey.h" />
+    <ClInclude Include="src\Sonido.h" />
     <ClInclude Include="src\Tablero.h" />
     <ClInclude Include="src\Tablero_logica.h" />
     <ClInclude Include="src\Torre.h" />

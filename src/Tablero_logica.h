@@ -34,6 +34,7 @@ class Tablero_logica {
 	bool finPartida = false;
 	bool ganador;   // True cuando gana blancas y false cuando gana negras
 	bool tablas = false;
+	
 
 public:
 	void inicializarTablero();
@@ -54,6 +55,7 @@ public:
 	void eliminarPieza(Pieza* p);
 	void cambiarTurno() { turno = !turno; }
 	bool moverPieza(Pieza* pieza, Posicion destino);
+	
 
 	bool getTurno() const { return turno; } //Para despues imprimir por pantalla el turno
 	void printHistorial() const;

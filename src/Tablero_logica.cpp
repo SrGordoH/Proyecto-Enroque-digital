@@ -1,4 +1,5 @@
 #include "Tablero_logica.h"
+#include "Sonido.h"
 
 
 void Tablero_logica::inicializarTablero() {  // Aqui agregamos el nombre de la clase
@@ -142,6 +143,7 @@ bool Tablero_logica::estaEnJaqueMate(bool color) {
             }
         }
     }
+    Sonido::reproducirJaqueMate();
     return true; // NO hay ningún movmiento legal y está en jaque
 }
 
@@ -313,6 +315,7 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
         std::cout << "¡Te comiste a tu propio rey! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
         for (auto& p : piezas) delete p;
         piezas.clear();
+        Sonido::reproducirJaqueMate();                //SONIDO DE JAQUE MATE
         return true; // Puede o no mover, pero termina
     }
 
@@ -326,24 +329,23 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
     cambiarTurno();
 
     // Evaluamos si el nuevo jugador está en jaque mate
-    if (estaEnJaqueMate(turno)) {
+    if (estaEnJaqueMate(turno)) {    
         finPartida = true;
         ganador = !turno; // Gana el jugador que acaba de mover
         std::cout << "¡Jaque mate! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
         for (auto& p : piezas) delete p;
         piezas.clear();
     }
-
-    // Evaluamos si hay tablas por ahogado
-    if (esTablasPorAhogo(turno)) {
+    else if (esTablasPorAhogo(turno)) {    // Evaluamos si hay tablas por ahogado
         finPartida = true;
         tablas = true;
         std::cout << "TABLAS. Por rey ahogado." << "\n";
         for (auto& p : piezas) delete p;
         piezas.clear();
     }
-
+    Sonido::reproducirMovimiento();
     
+
     return true; //Devolvemos true si hacemos ese movimiento
 }
 

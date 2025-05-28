@@ -1,6 +1,7 @@
 #include "tablero.h"
 #include "Pieza.h"
 #include "Tablero_logica.h"
+#include "Sonido.h"
 
 #include "freeglut.h"
 #include <iostream>  // Impresión por pantalla para hacer pruebas y debugs
@@ -375,6 +376,7 @@ void Tablero::DrawFinPartida(bool ganador, bool tablas) {
 			victoriaNegras.draw();
 		}
 	}
+
 
 }
 
