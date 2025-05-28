@@ -67,8 +67,8 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 				}
 				else if(ok)ia.elegirMejorMovimientoFacil(logica.getTurno());
 
-			}*/
-
+			*/
+			}
 			
 
 		}
