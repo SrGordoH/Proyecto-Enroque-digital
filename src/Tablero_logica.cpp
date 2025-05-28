@@ -1,5 +1,6 @@
 #include "Tablero_logica.h"
 
+
 void Tablero_logica::inicializarTablero() {  // Aqui agregamos el nombre de la clase
     // Reinicializar partida
     finPartida = false; 
@@ -342,7 +343,7 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
         piezas.clear();
     }
 
-
+    
     return true; //Devolvemos true si hacemos ese movimiento
 }
 

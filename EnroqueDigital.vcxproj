@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sonidos.cpp" />
     <ClCompile Include="src\Alfil.cpp" />
     <ClCompile Include="src\Caballo.cpp" />
     <ClCompile Include="src\Callbacks.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="src\Torre.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="sonidos.h" />
     <ClInclude Include="src\Alfil.h" />
     <ClInclude Include="src\Boton.h" />
     <ClInclude Include="src\Caballo.h" />

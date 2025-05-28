@@ -5,7 +5,7 @@
 #include "freeglut.h"
 #include <iostream>  // Impresión por pantalla para hacer pruebas y debugs
 
-Tablero::Tablero():
+Tablero::Tablero():  //CONSTRUCTOR DE LA CALSE TABLERO
 	victoriaBlancas("imagenes/JAQUEMATE_Blancas_1.png"), // asignación de las imagenes al nombre del sprite
 	victoriaNegras("imagenes/JAQUEMATE_Negras_1.png"),
 	tablasSprite("imagenes/TABLAS.png")
@@ -353,7 +353,7 @@ void Tablero::DrawFinPartida(bool ganador, bool tablas) {
 							   //consigo no tener problemas en Z
 	//glEnable(GL_BLEND);        //Para transparencia u opcaidad
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor3f(0.0f, 0.0f, 0.0f); //4ta coordenada para opacidad
+	glColor3f(0.0f, 0.0f, 0.0f); //4ta "coordenada" para opacidad
 	glBegin(GL_QUADS);
 	glVertex2f(-8.0f, -8.0f);
 	glVertex2f(8.0f, -8.0);
