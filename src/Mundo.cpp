@@ -102,7 +102,7 @@ Coords2D Mundo::coorClics_to_cords2D(int x, int y) {
 
 
 void Mundo::Draw() {
-	if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO) {
+	if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO || menus.get_menu() == MENU_IA) {
 		menus.Draw();
 		Sonido::iniciarMusicaMenu();
 	}

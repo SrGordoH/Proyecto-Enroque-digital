@@ -3,9 +3,11 @@
 #include "Pantalla.h"
 
 
-enum tipo_menu { MENU_PPAL, MENU_MODO, JUEGO};
+enum tipo_menu { MENU_PPAL, MENU_MODO, MENU_IA, JUEGO};
 enum  rivalidad { RIV_NULA, J_VS_J, J_VS_IA };
 enum  modo { PETTY, OPUESTAS, MODO_NULO };
+enum dificultad {FACIL, DIFICIL, DIF_NULA};
+
 
 class Menus
 {
@@ -13,6 +15,7 @@ class Menus
 	tipo_menu t_menu{};
 	modo modo_juego{};
 	rivalidad riv{};
+	dificultad modo_dif{};
 
 	friend class Mundo;
 
@@ -28,6 +31,8 @@ public:
 	void set_riv(rivalidad rival) { riv = rival; }
 	rivalidad get_riv() { return riv; }
 	void coor_menus(float posX, float posY);
+	dificultad get_dificultad() { return modo_dif; }
+	void set_dif(dificultad dificultad) {modo_dif = dificultad; }
 };
 
 
