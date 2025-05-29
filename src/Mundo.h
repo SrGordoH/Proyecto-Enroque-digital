@@ -12,7 +12,7 @@ class Mundo
 	Tablero tablero;
 	Menus menus;
 	Tablero_logica logica;
-	bool mododificil=1; //==1 si es dificil
+	bool modoia=1; //==1 si es dificil
 	IA ia;
 	
 public:

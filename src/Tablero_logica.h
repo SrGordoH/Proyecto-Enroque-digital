@@ -10,6 +10,8 @@
 
 class Tablero_logica {
 	friend class Mundo;
+	friend class IA;
+
 
 	std::vector<Pieza*> piezas;  //vector de punteros a piezas para almacenar piezas
 	bool modo;                   //TRUE para petty FALSE para reyes esquinas opuestas
@@ -18,6 +20,7 @@ class Tablero_logica {
 		Posicion origen;
 		Posicion destino;
 		Pieza* capturada;
+		int indiceCapturada;
 	};
 	std::vector<Movimiento> historial;
 
@@ -60,8 +63,7 @@ public:
 	bool getTurno() const { return turno; } //Para despues imprimir por pantalla el turno
 	void printHistorial() const;
 
-	
-
+	void agregarPieza(Pieza* p) {piezas.push_back(p);}
 
 	~Tablero_logica() {
 		for (auto p : piezas) delete p;
