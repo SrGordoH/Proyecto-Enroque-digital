@@ -1,9 +1,21 @@
 #include "tablero.h"
 #include "Pieza.h"
 #include "Tablero_logica.h"
+#include "Sonido.h"
 
 #include "freeglut.h"
 #include <iostream>  // Impresión por pantalla para hacer pruebas y debugs
+
+Tablero::Tablero():  //CONSTRUCTOR DE LA CALSE TABLERO
+	victoriaBlancas("imagenes/JAQUEMATE_Blancas_1.png"), // asignación de las imagenes al nombre del sprite
+	victoriaNegras("imagenes/JAQUEMATE_Negras_1.png"),
+	tablasSprite("imagenes/TABLAS.png")
+{
+	victoriaBlancas.setSize(7.5f,5.5f);  //Tamanño de los objetos
+	victoriaNegras.setSize(7.5f, 5.5f);
+	tablasSprite.setSize(7.5f, 5.5f);
+}
+
 
 void Tablero::Inicializa() {
 
@@ -279,7 +291,7 @@ void Tablero::DrawIndices() {
 }
 
 void Tablero::DrawFinPartida(bool ganador, bool tablas) {
-	if (tablas) {
+	/*if (tablas) {
 		// Ancho y alto iniciales:
 		float ancho = 9.0f; // valor arbitrario
 		float alto = ancho * (1024.0f / 1536.0f); // mantener proporción de la imagen
@@ -334,7 +346,38 @@ void Tablero::DrawFinPartida(bool ganador, bool tablas) {
 		glEnd();
 		glEnable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D);
+	}*/
+
+	//Aquí creo un fondo de color negro para diferenciarlo del fondo de la partida
+
+	glDisable(GL_DEPTH_TEST);  //Al hacer tests me aparecia el cuadrado negro encima de los sprites, con esto
+							   //consigo no tener problemas en Z
+	//glEnable(GL_BLEND);        //Para transparencia u opcaidad
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColor3f(0.0f, 0.0f, 0.0f); //4ta "coordenada" para opacidad
+	glBegin(GL_QUADS);
+	glVertex2f(-8.0f, -8.0f);
+	glVertex2f(8.0f, -8.0);
+	glVertex2f(8.0f, 8.0f);
+	glVertex2f(-8.0f, 8.0f);
+	glEnd();
+
+	if (tablas) {
+		tablasSprite.setPos(-2.75f,-1.8f);  //Las coordenadas las he ido probando a mano
+		tablasSprite.draw();
+	}
+	else {
+		if (ganador) {
+			victoriaBlancas.setPos(-2.75f, -1.8f);
+			victoriaBlancas.draw();
+		}
+		else {
+			victoriaNegras.setPos(-2.75f, -1.8f);
+			victoriaNegras.draw();
+		}
 	}
 
+
 }
+
 

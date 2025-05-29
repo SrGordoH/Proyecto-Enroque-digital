@@ -21,6 +21,11 @@ class Tablero
 	float dx{}, dy{};
 	bool turno = 1;              //Turno vale 1 cuandole toca a blancas
 	Pieza* pieza_selec = nullptr;
+	bool sonidoFinReproducido = false;
+	//Pantallas finales:
+	ETSIDI::Sprite victoriaBlancas;  //Las nuevas imagenes las voy a considerar objetos con el Sprite
+	ETSIDI::Sprite victoriaNegras;
+	ETSIDI::Sprite tablasSprite;
 
 public: 
 	void Inicializa();
@@ -41,4 +46,8 @@ public:
 	void set_pieza_selec(Pieza* p) { pieza_selec = p; }
 	Posicion coor_to_casilla(float posX, float posY);
 
+
+	Tablero(); //Declaro el constructor carga de sprites
+	
+	
 };
