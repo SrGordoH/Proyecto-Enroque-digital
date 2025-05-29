@@ -1,7 +1,7 @@
 #include "Mundo.h"
 #include "freeglut.h"
 #include "ETSIDI.h"
-
+#include "Sonido.h"
 #include <vector>
 #include <iostream>
 
@@ -104,21 +104,27 @@ Coords2D Mundo::coorClics_to_cords2D(int x, int y) {
 void Mundo::Draw() {
 	if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO) {
 		menus.Draw();
+		Sonido::iniciarMusicaMenu();
 	}
 	else if (menus.get_menu() == JUEGO) {
 
 		tablero.Draw();
 		/*tablero.DrawTurno();
 		tablero.DrawIndices();*/
+		Sonido::detenerMusica();
 		if(tablero.get_pieza_selec()!=nullptr)
 			tablero.DrawMovsValidos();
 
 		if (!logica.finPartida) {
 			tablero.Draw();
 			if (logica.coronacion.activa) {
-				ETSIDI::setTextColor(1, 0, 0); // rojo
-				ETSIDI::printxy("Elija una pieza a la que coronar:", 1.5f, 3.0f, 2.0f);
-				ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo (c)", 1.5f, 2.0f, 2.0f);
+				ETSIDI::setTextColor(0, 0, 0); 
+				glPushMatrix();
+				glTranslatef(0.0f, -0.2f, 0.f);
+				ETSIDI::printxy("Elija una pieza a la que coronar:", -5.0f, 3.0f, 2.0f);
+				glTranslatef(0.0f, -0.3f, 0.f);
+				ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo (c)", -5.0f, 3.0f, 2.0f);
+				glPopMatrix();
 			}
 		
 		}
