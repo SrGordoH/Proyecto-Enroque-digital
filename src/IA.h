@@ -10,10 +10,13 @@ private:
     bool iaColor = 0;
     int valorPieza(Pieza::tipo_t tipo) const;
     float distancia(Posicion a, Posicion b) const;
-    int AnalisisBasico() const;
 
 public:
     void setLogica(Tablero_logica* log) { logica = log; }
-    void elegirMejorMovimientoFacil(bool color);
-    void elegirMejorMovimientoDificil(bool color);
+    void elegirMejorMovimiento(bool color);
+    void Movimiento(bool color);
+    Tablero_logica* crearTableroSimulado(Pieza* piezaOriginal, Posicion destino) const;
+    int AnalisisBasico(Pieza* p, Posicion b, Tablero_logica* log) const;
+
+
 };

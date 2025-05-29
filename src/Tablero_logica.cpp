@@ -179,6 +179,19 @@ void Tablero_logica::guardarMovimiento(Pieza* p, Posicion origen, Posicion desti
     m.origen = origen;
     m.destino = destino;
     m.capturada = capturada;
+    if (capturada) {
+        for (int i = 0; i < (int)piezas.size(); ++i) {
+            if (piezas[i] == capturada) {
+                m.indiceCapturada = i;
+                piezas[i] = nullptr;      
+                break;
+            }
+        }
+    }
+    else {
+        m.indiceCapturada = -1;
+    }
+
     historial.push_back(m);
 }
 
@@ -193,7 +206,13 @@ void Tablero_logica::deshacerUltimoMovimiento() {
 
     // Restauramos la pieza capturada si habia
     if (m.capturada) {
-        piezas.push_back(m.capturada);
+        // Insertar en el indice original, o al final si algo raro pasara
+        if (m.indiceCapturada >= 0 && m.indiceCapturada <= (int)piezas.size()) {
+            piezas.insert(piezas.begin() + m.indiceCapturada, m.capturada);
+        }
+        else {
+            piezas.push_back(m.capturada);
+        }
     }
 }
 
@@ -282,73 +301,75 @@ void Tablero_logica::eliminarPieza(Pieza* p) {
 }
 
 bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
-    if (!pieza ) return false; //Si no hay pieza no movemos nada
+    if (pieza) {
 
-    std::vector<Posicion> movs = pieza->movimientosValidos(*this);
+        std::vector<Posicion> movs = pieza->movimientosValidos(*this);
 
-    // Verificamos si el destino esta en los movimientos validos
-    bool esMovimientoValido = false;
-    for (const Posicion& p : movs) {
-        if (p.fil == destino.fil && p.col == destino.col) {
-            esMovimientoValido = true;
-            break;
+        // Verificamos si el destino esta en los movimientos validos
+        bool esMovimientoValido = false;
+        for (const Posicion& p : movs) {
+            if (p.fil == destino.fil && p.col == destino.col) {
+                esMovimientoValido = true;
+                break;
+            }
         }
+
+        if (!esMovimientoValido) return false;
+
+        // Obtener la pieza en la posicion de destino
+        Pieza* piezaDestino = obtenerPieza(destino);
+
+        //Comprobacion jaque
+        bool legalconJaque = (pieza->esMovimientoLegalConJaque(piezaDestino, destino, *this));
+        if (!legalconJaque) return false;
+
+
+        // Guardar el movimiento antes de eliminar
+        guardarMovimiento(pieza, pieza->getPos(), destino,
+            piezaDestino ? piezaDestino->clonar() : nullptr); // Si el movimiento es válido se guarda una copia y si no nullptr
+
+        //Comprobar si es el rey del mismo color
+        if (piezaDestino != nullptr && piezaDestino->getTipo() == Pieza::tipo_t::REY && piezaDestino->getColor() == pieza->getColor()) {
+            eliminarPieza(piezaDestino);
+            finPartida = true;
+            ganador = !pieza->getColor();
+            std::cout << "¡Te comiste a tu propio rey! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
+            for (auto& p : piezas) delete p;
+            piezas.clear();
+            Sonido::reproducirJaqueMate();                //SONIDO DE JAQUE MATE
+            return true; // Puede o no mover, pero termina
+        }
+
+        // Si hay una pieza en destino eliminarla aunque sea de su color
+        if (piezaDestino && piezaDestino != pieza) {
+            eliminarPieza(piezaDestino);
+        }
+
+        pieza->SetPos(destino.fil, destino.col);
+        verificarCoronacion();
+        cambiarTurno();
+
+        // Evaluamos si el nuevo jugador está en jaque mate
+        if (estaEnJaqueMate(turno)) {
+            finPartida = true;
+            ganador = !turno; // Gana el jugador que acaba de mover
+            std::cout << "¡Jaque mate! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
+            for (auto& p : piezas) delete p;
+            piezas.clear();
+        }
+        else if (esTablasPorAhogo(turno)) {    // Evaluamos si hay tablas por ahogado
+            finPartida = true;
+            tablas = true;
+            std::cout << "TABLAS. Por rey ahogado." << "\n";
+            for (auto& p : piezas) delete p;
+            piezas.clear();
+        }
+        Sonido::reproducirMovimiento();
+
+
+        return true; //Devolvemos true si hacemos ese movimiento
     }
-
-    if (!esMovimientoValido) return false;
-
-    // Obtener la pieza en la posicion de destino
-    Pieza* piezaDestino = obtenerPieza(destino);
-
-    //Comprobacion jaque
-    bool legalconJaque = (pieza->esMovimientoLegalConJaque(piezaDestino, destino, *this));
-    if (!legalconJaque) return false;
-
-
-    // Guardar el movimiento antes de eliminar
-    guardarMovimiento(pieza, pieza->getPos(), destino,
-        piezaDestino ? piezaDestino->clonar() : nullptr); // Si el movimiento es válido se guarda una copia y si no nullptr
-
-    //Comprobar si es el rey del mismo color
-    if (piezaDestino != nullptr && piezaDestino->getTipo() == Pieza::tipo_t::REY && piezaDestino->getColor() == pieza->getColor()) {
-        eliminarPieza(piezaDestino);
-        finPartida = true;
-        ganador = !pieza->getColor();
-        std::cout << "¡Te comiste a tu propio rey! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
-        for (auto& p : piezas) delete p;
-        piezas.clear();
-        Sonido::reproducirJaqueMate();                //SONIDO DE JAQUE MATE
-        return true; // Puede o no mover, pero termina
-    }
-
-    // Si hay una pieza en destino eliminarla aunque sea de su color
-    if(piezaDestino && piezaDestino != pieza) {
-        eliminarPieza(piezaDestino);
-    }
-
-    pieza->SetPos(destino.fil, destino.col);
-    verificarCoronacion();
-    cambiarTurno();
-
-    // Evaluamos si el nuevo jugador está en jaque mate
-    if (estaEnJaqueMate(turno)) {    
-        finPartida = true;
-        ganador = !turno; // Gana el jugador que acaba de mover
-        std::cout << "¡Jaque mate! Ganan las " << (ganador ? "blancas" : "negras") << "\n";
-        for (auto& p : piezas) delete p;
-        piezas.clear();
-    }
-    else if (esTablasPorAhogo(turno)) {    // Evaluamos si hay tablas por ahogado
-        finPartida = true;
-        tablas = true;
-        std::cout << "TABLAS. Por rey ahogado." << "\n";
-        for (auto& p : piezas) delete p;
-        piezas.clear();
-    }
-    Sonido::reproducirMovimiento();
-    
-
-    return true; //Devolvemos true si hacemos ese movimiento
+    else return false;
 }
 
 void Tablero::DrawTurno() {
@@ -388,5 +409,7 @@ void Tablero_logica::printHistorial() const {
         std::cout << "\n";
     }
 }
+
+
 
 

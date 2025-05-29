@@ -2,6 +2,8 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <random>
 #include "Tablero_logica.h"
 
 int IA::valorPieza(Pieza::tipo_t tipo) const {
@@ -21,40 +23,20 @@ float IA::distancia(Posicion a, Posicion b) const {
     return std::sqrt(df * df + dc * dc);
 }
 
-void IA::elegirMejorMovimientoFacil(bool color) {
-    int mejorPuntaje = -1000000;
-    Pieza* mejorP = nullptr;
-    Posicion mejorD{ -1, -1 };
 
-    for (Pieza* p : logica->getPiezas()) {
-        if (!p || p->getColor() != iaColor) continue;   //Evitamos piezas rivales piezas o puntero sin pieza
-        auto movs = p->movimientosValidos(*logica);
-        for (auto& d : movs) {                          //recorremos movimientos 
-            if (!logica->moverPieza(p, d)) continue;    //Evitamos si el puntero al tablero logico no esta correctamente y movemos 
-            int val = AnalisisBasico();                    
-            logica->deshacerUltimoMovimiento();         //Deshacemos tras evaluar    
-            if (val > mejorPuntaje) {
-                mejorPuntaje = val;
-                mejorP = p;
-                mejorD = d;
-            }
-        }
-    }
-    if (mejorP) logica->moverPieza(mejorP, mejorD);    //Devolvemos lo mejor
-}
-
-int IA::AnalisisBasico() const {
+int IA::AnalisisBasico(Pieza* p, Posicion b, Tablero_logica* log) const {
     int score = 0;
-    for (Pieza* p : logica->getPiezas()) {
-        int v = valorPieza(p->getTipo());
+    log->moverPieza(p, b);
+    for (Pieza* p1 : log->getPiezas()) {
+        int v = valorPieza(p1->getTipo());
         // sumamos valores piezas 
-        if (p->getColor() == iaColor) score += v;
+        if (p1->getColor() == iaColor) score += v;
         else score -= v;   //asignamos puntuacion
     }
-    for (Pieza* p : logica->getPiezas()) {
-        if (!p || p->getColor() != iaColor) continue;               // solo enemigas
-        auto posEnemiga = p->getPos();
-        for (Pieza* mia : logica->getPiezas()) {
+    for (Pieza* p2 : log->getPiezas()) {
+        if (!p2 || p2->getColor() != iaColor) continue;               // solo enemigas
+        auto posEnemiga = p2->getPos();
+        for (Pieza* mia : log->getPiezas()) {
             if (!mia || mia->getColor() != iaColor) continue;      // solo propias
             auto posMia = mia->getPos();
             int df = abs(posMia.fil - posEnemiga.fil);
@@ -65,62 +47,69 @@ int IA::AnalisisBasico() const {
             score += (valorPresa * 2) / (1 + dist);               // Formula para aumentar valor segun te acercas a piezas valiosas  
         }
     }
-
     return score;
 }
 
-void IA::elegirMejorMovimientoDificil(bool iaColor) {
-    int mejorScoreGlobal = -1000000;
-    Pieza* mejorP = nullptr;
-    Posicion mejorD{ -1, -1 };
-    auto piezas1 = logica->getPiezas();  //guardamos piezas
+void IA::elegirMejorMovimiento(bool color) {
+    int indexp=0;
+    int indexm=0;
+    int scorefinal = -100000000000;
 
-    // Para cada jugada posible de la IA
-    for (Pieza* p : piezas1) {
-        if (!p || p->getColor() != iaColor) continue;  //Evitamos punteros vacios o piezas rivales
-        auto movs = p->movimientosValidos(*logica);    //Guardamos movimientos
-        for (auto& d1 : movs) {
-            // Simular primer movimiento
-            if (!logica->moverPieza(p, d1)) continue;
-            int score1 = AnalisisBasico();
-            auto piezas2 = logica->getPiezas();
-
-            // Evaluar la mejor respuesta del oponente
-            int peorScoreParaIA = 1000000;
-            for (Pieza* q : piezas2) {
-                if (!q || q->getColor() == iaColor) continue;    //evitamos piezas ia o punteros sin pieza
-                auto respuestas = q->movimientosValidos(*logica); 
-                for (auto& d2 : respuestas) {
-                    if (!logica->moverPieza(q, d2)) continue;   //salimos si no hay tablero logico y si si lo hay movemos
-                    int score2 = AnalisisBasico();
-                    logica->deshacerUltimoMovimiento();
-                    logica->cambiarTurno();  // volver al turno del rival
-
-                    // Suponemos que el oponente hace el mejor movimiento para si mismo
-                    if (score2 < peorScoreParaIA) {
-                        peorScoreParaIA = score2;
-                    }
-                }
-            }
-
-            // Sumamos ambas jugadas
-            int scoreGlobal = score1 + peorScoreParaIA;
-
-            // Deshacemos jugada
-            logica->deshacerUltimoMovimiento();
-            logica->cambiarTurno();
-
-            // Guardamos si es la mejor secuencia
-            if (scoreGlobal > mejorScoreGlobal) {
-                mejorScoreGlobal = scoreGlobal;
-                mejorP = p;
-                mejorD = d1;
-            }
+    for (int i = 0; i < 10; i++) {
+        auto piezas = logica->getPiezas();
+        int x = 0;
+        if (piezas.size())
+            x = std::rand() % piezas.size();  //pieza aleatoria
+        else x = 0;
+        while (piezas[x]->getColor() != color || !(piezas[x]->movimientosValidos(*logica)).size())x = std::rand() % piezas.size();//que tenga movimientos y sea del color adecuado 
+        auto movs = piezas[x]->movimientosValidos(*logica);
+        int indicem = std::rand() % (movs.size()); //movimiento aleatorio
+        Tablero_logica* copia = crearTableroSimulado(piezas[x], movs[indicem]);
+        auto aux = copia->getPiezas();
+        int score = AnalisisBasico(aux[x], movs[indicem], copia);
+        if (score > scorefinal) {
+            scorefinal = score;
+            indexp = x;
+            indexm = indicem;
         }
-    }
 
-    // Ejecutamos la mejor jugada
-    if (mejorP) {
-        logica->moverPieza(mejorP, mejorD);
     }
+    auto piezas = logica->getPiezas();
+    auto movs = piezas[indexp]->movimientosValidos(*logica);
+    logica->moverPieza(piezas[indexp], movs[indexm]);
+
+
 }
+
+
+
+void IA::Movimiento(bool color) {
+    auto piezas = logica->getPiezas();
+    int x = std::rand() % piezas.size();  //pieza aleatoria
+    while (piezas[x]->getColor() != color || !(piezas[x]->movimientosValidos(*logica)).size())x = std::rand() % piezas.size();//que tenga movimientos y sea del color adecuado
+    auto movs = piezas[x]->movimientosValidos(*logica);
+    int indicem = std::rand() % (movs.size());//movimiento aleatorio
+       
+    logica->moverPieza(piezas[x], movs[indicem]);
+    
+}
+
+
+Tablero_logica* IA::crearTableroSimulado(Pieza* piezaOriginal, Posicion destino) const {
+    Tablero_logica* simulado = new Tablero_logica();
+
+    auto piezas = logica->getPiezas();
+    for (int i = 0; i < piezas.size(); ++i) {
+        Pieza* p = piezas[i];
+        if (!p) continue;
+
+        Pieza* clon = p->clonar();
+        if (p == piezaOriginal) clon->SetPos(destino.fil, destino.col); // simula movimiento
+        else clon->SetPos(p->getPos().fil, p->getPos().col);
+
+        simulado->agregarPieza(clon);
+
+    }
+    return simulado;
+}
+
