@@ -14,7 +14,7 @@ public:
         else
             sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/TorreCondensador_Negro.png"); // torre negra
     }
-    vector <Posicion> movimientosValidos(Tablero_logica& tab);
+    vector <Posicion> movimientosValidos(Tablero_logica& tab, bool evitarJaque = true) override;
     Pieza* clonar() const override;
 
 };

@@ -1,11 +1,11 @@
 
 #include "Alfil.h"
 
-vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab)  {
+vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab, bool evitarJaque)  {
 
     if (!pos.esValida()) return {};//para evitar piezas fuera del tablero o cualquier otro bug
 
-    vector<Posicion> movs; // Vector de movimientos validos
+    vector<Posicion> posibles; // Vector de movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual alfil
 
     // Direcciones diagonales
@@ -23,10 +23,10 @@ vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab)  {
             Pieza* otra = tab.obtenerPieza(p); // Verificamos si hay pieza
 
             if (otra == nullptr) {
-                movs.push_back(p); // Casilla libre, movimiento valido
+                posibles.push_back(p); // Casilla libre, movimiento valido
             }
             else {
-                movs.push_back(p); // Captura cualquier color
+                posibles.push_back(p); // Captura cualquier color
 
                 break; // Si hay pieza, no se puede avanzar mas
             }
@@ -34,8 +34,17 @@ vector<Posicion> Alfil::movimientosValidos(Tablero_logica& tab)  {
             nf += d[0]; nc += d[1]; // Avanzamos en la diagonal siguiente casilla posible
         }
     }
-    movs_validos = movs;
-    return movs;
+    if (!evitarJaque) return posibles;
+
+    std::vector<Posicion> legales;
+    for (const Posicion& mov : posibles) {
+        Pieza* destino = tab.obtenerPieza(mov);
+        if (esMovimientoLegalConJaque(destino, mov, tab))
+            legales.push_back(mov);
+    }
+
+    movs_validos = legales;
+    return legales;
 }
 
 Pieza* Alfil::clonar() const {

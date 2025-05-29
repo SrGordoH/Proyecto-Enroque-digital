@@ -1,9 +1,9 @@
 
 #include "Torre.h"
-vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) {
+vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab, bool evitarJaque) {
     if (!pos.esValida()) return {};//para evitar piezas fuera del tablero o cualquier otro bug
 
-    vector<Posicion> movs; // Vector de movimientos validos
+    vector<Posicion> posibles; // Vector de movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual de la torre
 
     // Direcciones de movimiento
@@ -20,20 +20,30 @@ vector<Posicion> Torre::movimientosValidos(Tablero_logica& tab) {
 
             Pieza* otra = tab.obtenerPieza(p); // Verificamos si hay una pieza
 
-            if (otra == nullptr) {
-                movs.push_back(p); // Si no hay pieza movimiento valido
-            }
-            else {
-                movs.push_back(p); // Capturamos sea cual sea el color
-                break; 
-            }
+            posibles.push_back(p); // se puede comer cualquier pieza
+
+            if (otra != nullptr) break; // detenemos al encontrar pieza
 
             nf += d[0]; nc += d[1]; // Avanzamos en la misma direccion la siguiente casilla
         }
     }
-    movs_validos = movs;
+    // Si no hace falta filtrar por jaque, devolvemos directamente
+        if (!evitarJaque) {
+            movs_validos = posibles;
+            return posibles;
+        }
 
-    return movs; // Retornamos movimientos validos
+    // Filtrado de movimientos que evitarían dejar al rey en jaque
+    std::vector<Posicion> legales;
+    for (const Posicion& mov : posibles) {
+        Pieza* destino = tab.obtenerPieza(mov);
+        if (this->esMovimientoLegalConJaque(destino, mov, tab)) {
+            legales.push_back(mov);
+        }
+    }
+
+    movs_validos = legales;
+    return legales;
 }
 
 Pieza* Torre::clonar() const {

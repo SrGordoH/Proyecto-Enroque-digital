@@ -10,7 +10,7 @@ class Pieza
 {
 public:
 	enum class tipo_t { PEON, CABALLO, ALFIL, TORRE, DAMA, REY, NULA };
-	virtual std::vector<Posicion> movimientosValidos(Tablero_logica& tab) = 0;
+	virtual std::vector<Posicion> movimientosValidos(Tablero_logica& tab, bool evitarJaque = true) = 0;
 
 protected:                // El protected es como el private pero las clases que hereden de esta conservan las propiedades protected.
 	const tipo_t tipo;						//Nombre para identificar a la pieza

@@ -15,7 +15,7 @@ public:
         else
             sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/PeonResistencia_Negro.png"); // peon negro
     }
-    vector <Posicion> movimientosValidos(Tablero_logica &tab);
+    vector <Posicion> movimientosValidos(Tablero_logica &tab, bool evitarJaque = true) override;
     Pieza* clonar() const override;
 
 };

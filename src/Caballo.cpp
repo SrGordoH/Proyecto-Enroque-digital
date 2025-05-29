@@ -1,9 +1,9 @@
 #include "Caballo.h"
 
-vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) {
+vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab, bool evitarJaque) {
     if (!pos.esValida()) return {};//para evitar piezas fuera del tablero o cualquier otro bug
 
-    vector<Posicion> movs; // Vector donde guardamos los movimientos validos
+    vector<Posicion> posibles; // Vector donde guardamos los movimientos validos
     int f = pos.fil, c = pos.col; // Obtenemos la fila y columna actual 
 
     // Vector de vectores con los movimientos del caballo
@@ -17,12 +17,20 @@ vector<Posicion> Caballo::movimientosValidos(Tablero_logica& tab) {
 
         // Si la posicion esta dentro del tablero
         if (p.esValida()) {
-            movs.push_back(p); //puedes capturar cualquier pieza
+            posibles.push_back(p); //puedes capturar cualquier pieza
         }
     }
-    movs_validos = movs;
+    if (!evitarJaque) return posibles;
 
-    return movs; // Devolvemos movimientos validos
+    std::vector<Posicion> legales;
+    for (const Posicion& mov : posibles) {
+        Pieza* destino = tab.obtenerPieza(mov);
+        if (esMovimientoLegalConJaque(destino, mov, tab))
+            legales.push_back(mov);
+    }
+
+    movs_validos = legales;
+    return legales;
 }
 
 Pieza* Caballo::clonar() const {

@@ -46,7 +46,7 @@ bool Pieza::esMovimientoLegalConJaque(Pieza* piezaDestino, Posicion destino, Tab
 bool Pieza::estaEnJaque(Tablero_logica& tab) const {
     Posicion reyPos = tab.obtenerReyPos(color);
     for (Pieza* pieza : tab.obtenerPiezasOponente(color)) {
-        auto posiblesMovs = pieza->movimientosValidos(tab);
+        auto posiblesMovs = pieza->movimientosValidos(tab, false);
         for (const Posicion& mov : posiblesMovs) {
             if (mov.fil == reyPos.fil && mov.col == reyPos.col) {
                 return true;

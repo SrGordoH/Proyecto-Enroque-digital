@@ -15,7 +15,7 @@ public:
             sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/CaballoTransistor_Negro.png"); // caballo negro
     }
 
-    vector <Posicion> movimientosValidos(Tablero_logica& tab);
+    vector <Posicion> movimientosValidos(Tablero_logica& tab, bool evitarJaque = true) override;
     Pieza* clonar() const override;
 
 };

@@ -1,9 +1,9 @@
 #include "Rey.h"
 
-vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) {
+vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab, bool evitarJaque) {
     if (!pos.esValida()) return {};//para evitar piezas fuera del tablero o cualquier otro bug
 
-    vector<Posicion> movs; // Vector  movimientos validos
+    vector<Posicion> posibles; // Vector  movimientos validos
     int f = pos.fil, c = pos.col; // Posicion actual rey
 
     // Recorremos las 8 casillas que rodean al rey con dos bucles de tres casillas formando una cuadricula de nueve 3x3
@@ -14,12 +14,21 @@ vector<Posicion> Rey::movimientosValidos(Tablero_logica& tab) {
             Posicion p = { f + df, c + dc }; // Nueva posicion
 
             if (p.esValida()) { // Aseguremos que este dentro del tablero
-                movs.push_back(p);
+                posibles.push_back(p);
             }
         }
     }
-    movs_validos = movs;
-    return movs; // Retornamos posiciones validas
+    if (!evitarJaque) return posibles;
+
+    std::vector<Posicion> legales;
+    for (const Posicion& mov : posibles) {
+        Pieza* destino = tab.obtenerPieza(mov);
+        if (esMovimientoLegalConJaque(destino, mov, tab))
+            legales.push_back(mov);
+    }
+
+    movs_validos = legales;
+    return legales;
 }
 
 Pieza* Rey::clonar() const {
