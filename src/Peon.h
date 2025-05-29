@@ -11,11 +11,10 @@ public:
     Peon(bool color)
         : Pieza(tipo_t::PEON, color, 1) {
         if (color)
-            sprite = new ETSIDI::Sprite("imagenes/Chess_plt60.png"); // peon blanco
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/PeonRessitencia_Blanco_.png"); // peon blanco
         else
-            sprite = new ETSIDI::Sprite("imagenes/Chess_pdt60.png"); // peon negro
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/PeonResistencia_Negro.png"); // peon negro
     }
-
     vector <Posicion> movimientosValidos(Tablero_logica &tab);
     Pieza* clonar() const override;
 

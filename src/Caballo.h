@@ -10,9 +10,9 @@ public:
     Caballo(bool color)
         : Pieza(tipo_t::CABALLO, color, 3) {
         if (color)
-            sprite = new ETSIDI::Sprite("imagenes/Chess_nlt60.png"); // caballo blanco
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/CaballoTransistor_Blanco.png"); // caballo blanco
         else
-            sprite = new ETSIDI::Sprite("imagenes/Chess_ndt60.png"); // caballo negro
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/CaballoTransistor_Negro.png"); // caballo negro
     }
 
     vector <Posicion> movimientosValidos(Tablero_logica& tab);

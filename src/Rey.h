@@ -10,9 +10,9 @@ public:
     Rey(bool color)
         : Pieza(tipo_t::REY, color, 0) {
         if (color)
-            sprite = new ETSIDI::Sprite("imagenes/Chess_klt60.png"); // rey blanco
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/ReyMCU_Blanco.png"); // rey blanco
         else
-            sprite = new ETSIDI::Sprite("imagenes/Chess_kdt60.png"); // rey negro
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/ReyMCU_Negro.png"); // rey negro
     }
 
     vector <Posicion> movimientosValidos(Tablero_logica& tab);

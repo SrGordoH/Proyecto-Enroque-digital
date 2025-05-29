@@ -11,9 +11,9 @@ public:
     Dama(bool color)
         : Pieza(tipo_t::DAMA, color, 10) {
         if (color)
-            sprite = new ETSIDI::Sprite("imagenes/Chess_qlt60.png"); // dama blanca
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/DamaAO_Blanca.png"); // dama blanca
         else
-            sprite = new ETSIDI::Sprite("imagenes/Chess_qdt60.png"); // dama negra
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/DamaAO_Negra.png"); // dama negra
     }
 
     vector <Posicion> movimientosValidos(Tablero_logica& tab);

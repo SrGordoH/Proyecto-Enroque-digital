@@ -10,14 +10,12 @@ public:
     Torre(bool color)
         : Pieza(tipo_t::TORRE, color, 5) {
         if (color)
-            sprite = new ETSIDI::Sprite("imagenes/Chess_rlt60.png"); // torre blanca
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/TorreCondensador_Blanco.png"); // torre blanca
         else
-            sprite = new ETSIDI::Sprite("imagenes/Chess_rdt60.png"); // torre negra
+            sprite = new ETSIDI::Sprite("imagenes/PiezasElectronicas/TorreCondensador_Negro.png"); // torre negra
     }
-
     vector <Posicion> movimientosValidos(Tablero_logica& tab);
     Pieza* clonar() const override;
-
 
 };
 
