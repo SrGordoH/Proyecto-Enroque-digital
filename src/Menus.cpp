@@ -45,12 +45,12 @@ void Menus::coor_menus(float posX, float posY) {
 		// Clic en FACIL:
 		if (pant_menu.clic_b1(posX, posY)) {
 			set_dif(FACIL);
-			set_menu(JUEGO);
+			set_menu(MENU_MODO);
 		}
 		// Clic en DIFICIL:
 		if (pant_menu.clic_b2(posX, posY)) {
 			set_dif(DIFICIL);
-			set_menu(JUEGO);
+			set_menu(MENU_MODO);
 		}
 		if (pant_menu.clic_sal(posX, posY)) {
 			set_menu(MENU_PPAL);
