@@ -162,11 +162,13 @@ bool Tablero_logica::estaEnJaque(bool color) {
         // Se verifica si alguna pieza enemiga puede atacar al rey
         for (const Posicion& p : amenazas) {
             if (p.fil == reyPos.fil && p.col == reyPos.col) {
+                Sonido::reproducirJaque();
                 return true; // El rey esta siendo amenazado
+                
             }
         }
     }
-
+    
     return false; // No hay amenazas, el rey no esta en jaque
 }
 

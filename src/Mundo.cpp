@@ -1,7 +1,7 @@
 #include "Mundo.h"
 #include "freeglut.h"
 #include "ETSIDI.h"
-
+#include "Sonido.h"
 #include <vector>
 #include <iostream>
 
@@ -104,12 +104,14 @@ Coords2D Mundo::coorClics_to_cords2D(int x, int y) {
 void Mundo::Draw() {
 	if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO) {
 		menus.Draw();
+		Sonido::iniciarMusicaMenu();
 	}
 	else if (menus.get_menu() == JUEGO) {
 
 		tablero.Draw();
 		/*tablero.DrawTurno();
 		tablero.DrawIndices();*/
+		Sonido::detenerMusica();
 		if(tablero.get_pieza_selec()!=nullptr)
 			tablero.DrawMovsValidos();
 
