@@ -118,9 +118,13 @@ void Mundo::Draw() {
 		if (!logica.finPartida) {
 			tablero.Draw();
 			if (logica.coronacion.activa) {
-				ETSIDI::setTextColor(1, 0, 0); // rojo
-				ETSIDI::printxy("Elija una pieza a la que coronar:", 1.5f, 3.0f, 2.0f);
-				ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo (c)", 1.5f, 2.0f, 2.0f);
+				ETSIDI::setTextColor(0, 0, 0); 
+				glPushMatrix();
+				glTranslatef(0.0f, -0.2f, 0.f);
+				ETSIDI::printxy("Elija una pieza a la que coronar:", -5.0f, 3.0f, 2.0f);
+				glTranslatef(0.0f, -0.3f, 0.f);
+				ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo (c)", -5.0f, 3.0f, 2.0f);
+				glPopMatrix();
 			}
 		
 		}
