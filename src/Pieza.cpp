@@ -56,25 +56,7 @@ bool Pieza::estaEnJaque(Tablero_logica& tab) const {
     return false;
 }
 
-bool Pieza::JaqueMate(Tablero_logica& tab) const {
-    Posicion reyPos = tab.obtenerReyPos(color);
-    for (int df = -1; df <= 1; ++df) {
-        for (int dc = -1; dc <= 1; ++dc) {
-            if (df == 0 && dc == 0) continue;
 
-            Posicion p = { reyPos.fil + df, reyPos.col + dc };
-            if (p.esValida()) {
-                Pieza* otraPieza = tab.obtenerPieza(p);
-                if (otraPieza == nullptr || otraPieza->getColor() != color) {
-                    if (!estaEnJaque(tab)) {
-                        return false;
-                    }
-                }
-            }
-        }
-    }
-    return true;
-}
 
 void Pieza::Dibuja(double ancho_casilla) const {
     if (!sprite) return;
