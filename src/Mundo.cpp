@@ -58,17 +58,23 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 
 				}
 			}
-			else {
+			else if(!logica.coronacion.activa){
 				if (!casilla_clic.esValida()) return; // EVITA CLICS FUERA DEL TABLERO
 				bool ok = logica.moverPieza(seleccionada, casilla_clic); // se intenta mover directamente
 				tablero.set_pieza_selec(nullptr); // se limpia la seleccion, se haya movido o no
 				if (ok && menus.get_riv() == J_VS_IA && !logica.finPartida && !logica.coronacion.activa) {
-					ia.elegirMejorMovimiento(logica.getTurno());
+					switch (menus.get_dificultad()){
+					case FACIL:
+						ia.elegirMejorMovimientoSimple(logica.getTurno());
+						break;
+					case DIFICIL:
+						ia.elegirMejorMovimientoAvanzado(logica.getTurno());
+						break;
+					default:
+						std::cout << "Error en la eleccion de dificultad.\n";
+					}
 				}
-				
 			}
-			
-
 		}
 	}
 }
@@ -142,7 +148,7 @@ void Mundo::Reshape(int width, int height) {
 			tablero.reshape(width, height);
 		}
 		else {
-
+			tablero.reshapePantallaFin(width, height);
 		}
 	}
 
@@ -150,6 +156,9 @@ void Mundo::Reshape(int width, int height) {
 
 void Mundo::OnKeyboardDown(unsigned char key) {
 	if (key == 'H' || key == 'h') {
+		logica.printHistorial();
+	}
+	if (key == ' ') {
 		logica.printHistorial();
 	}
 	if (logica.finPartida && key == 'r') {

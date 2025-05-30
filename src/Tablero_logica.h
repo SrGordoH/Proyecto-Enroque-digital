@@ -7,6 +7,7 @@
 #include "Dama.h"
 #include "Rey.h"
 #include "Pieza.h"
+#include "Movimiento.h"
 
 class Tablero_logica {
 	friend class Mundo;
@@ -15,13 +16,7 @@ class Tablero_logica {
 
 	std::vector<Pieza*> piezas;  //vector de punteros a piezas para almacenar piezas
 	bool modo;                   //TRUE para petty FALSE para reyes esquinas opuestas
-	struct Movimiento {
-		Pieza* pieza;
-		Posicion origen;
-		Posicion destino;
-		Pieza* capturada;
-		int indiceCapturada;
-	};
+	
 	std::vector<Movimiento> historial;
 
 	struct CoronacionPendiente {
@@ -50,14 +45,14 @@ public:
 	bool estaEnJaque(bool color);
 	void guardarMovimiento(Pieza* p, Posicion origen, Posicion destino, Pieza* capturada);
 	void deshacerUltimoMovimiento();
-	void verificarCoronacion();
+	void verificarCoronacion(bool);
 	void realizarCoronacion(Pieza::tipo_t tipo);
 	bool esTablasPorAhogo(bool turnoColor);
 	void notificarMovimiento(Pieza* piezaMovida, Pieza* capturada);
 	bool reglaCincuentaMovimientos() const {return movimientosSinCaptura >= 50;}
 	void eliminarPieza(Pieza* p);
 	void cambiarTurno() { turno = !turno; }
-	bool moverPieza(Pieza* pieza, Posicion destino);
+	bool moverPieza(Pieza* pieza, Posicion destino, bool esIA=false);
 	
 
 	bool getTurno() const { return turno; } //Para despues imprimir por pantalla el turno

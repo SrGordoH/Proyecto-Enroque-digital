@@ -45,6 +45,7 @@
     <ClInclude Include="src\Dama.h" />
     <ClInclude Include="src\IA.h" />
     <ClInclude Include="src\Menus.h" />
+    <ClInclude Include="src\Movimiento.h" />
     <ClInclude Include="src\Mundo.h" />
     <ClInclude Include="src\Pantalla.h" />
     <ClInclude Include="src\Peon.h" />

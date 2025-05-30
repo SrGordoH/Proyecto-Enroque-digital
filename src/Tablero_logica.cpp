@@ -216,7 +216,7 @@ void Tablero_logica::deshacerUltimoMovimiento() {
     }
 }
 
-void Tablero_logica::verificarCoronacion() {
+void Tablero_logica::verificarCoronacion(bool esIA) {
     for (int i = 0; i < piezas.size(); ++i) {
         Pieza* p = piezas[i];
         
@@ -226,14 +226,14 @@ void Tablero_logica::verificarCoronacion() {
             bool color = p->getColor();
             // Si el peon blanco llega a la fila 1 o el negro a la fila 6
             if ((!p->getColor() && pos.fil == 1) || (p->getColor() && pos.fil == 6)) {
-
-                // Guardamos la coronación pendiente
-                coronacion = { i, pos, p->getColor(), true };
-                return;
-                //// Se elimina el peon y se sustituye por una dama
-                //delete piezas[i];
-                //piezas[i] = new Dama(color);
-                //piezas[i]->SetPos(pos.fil, pos.col);
+                if (esIA) {
+                    delete piezas[i];
+                    piezas[i] = new Dama(false);
+                    piezas[i]->SetPos(pos.fil, pos.col);
+                } else {
+                    // Guardamos la coronación pendiente
+                    coronacion = { i, pos, p->getColor(), true };
+                }
             }
         }
     }
@@ -260,6 +260,8 @@ void Tablero_logica::realizarCoronacion(Pieza::tipo_t tipo) {
 
     piezas[i]->SetPos(coronacion.pos.fil, coronacion.pos.col);
     coronacion.activa = false;  // Reseteo 
+
+    cambiarTurno(); // El turno cambia tras coronar
 }
 
 
@@ -300,7 +302,7 @@ void Tablero_logica::eliminarPieza(Pieza* p) {
     }
 }
 
-bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
+bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino, bool esIA) {
     if (pieza) {
 
         std::vector<Posicion> movs = pieza->movimientosValidos(*this);
@@ -345,8 +347,9 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino) {
         }
 
         pieza->SetPos(destino.fil, destino.col);
-        verificarCoronacion();
-        cambiarTurno();
+        verificarCoronacion(esIA);
+        if (!coronacion.activa)
+            cambiarTurno();
 
         // Evaluamos si el nuevo jugador está en jaque mate
         if (estaEnJaqueMate(turno)) {
