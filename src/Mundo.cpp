@@ -26,7 +26,7 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 		casilla_clic = pos_clic.coords_to_casilla();
 		
 
-		if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO) {
+		if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO || menus.get_menu() == MENU_IA) {
 			std::cout << "Clic 2D en: (" << pos_clic.x << ", " << pos_clic.y << ")\n";
 			menus.coor_menus(pos_clic.x, pos_clic.y);
 			logica.setearPosicionesIniciales(menus.get_modo());
@@ -62,7 +62,7 @@ void Mundo::clicPos(int button, int state, int x, int y) {
 				if (!casilla_clic.esValida()) return; // EVITA CLICS FUERA DEL TABLERO
 				bool ok = logica.moverPieza(seleccionada, casilla_clic); // se intenta mover directamente
 				tablero.set_pieza_selec(nullptr); // se limpia la seleccion, se haya movido o no
-				if (ok) {
+				if (ok && menus.get_riv() == J_VS_IA && !logica.finPartida && !logica.coronacion.activa) {
 					ia.elegirMejorMovimiento(logica.getTurno());
 				}
 				
@@ -119,9 +119,9 @@ void Mundo::Draw() {
 				ETSIDI::setTextColor(0, 0, 0); 
 				glPushMatrix();
 				glTranslatef(0.0f, -0.2f, 0.f);
-				ETSIDI::printxy("Elija una pieza a la que coronar:", -5.0f, 3.0f, 2.0f);
+				ETSIDI::printxy("Elija una pieza a la que coronar:", 0, 4, 2);
 				glTranslatef(0.0f, -0.3f, 0.f);
-				ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo (c)", -5.0f, 3.0f, 2.0f);
+				ETSIDI::printxy("Dama (d), Torre (t), Alfil (a) o Caballo (c)", 0, 4, 2);
 				glPopMatrix();
 			}
 		
@@ -129,20 +129,21 @@ void Mundo::Draw() {
 		else if (logica.finPartida) {
 			tablero.DrawFinPartida(logica.ganador, logica.tablas);
 		}
-
 	}
-
-
-
 }
 
 
 void Mundo::Reshape(int width, int height) {
-	if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO) {
+	if (menus.get_menu() == MENU_PPAL || menus.get_menu() == MENU_MODO || menus.get_menu() == MENU_IA) {
 		menus.Reshape(width, height);
 	}
 	else if (menus.get_menu() == JUEGO) {
-		tablero.reshape(width, height);
+		if (!logica.finPartida) {
+			tablero.reshape(width, height);
+		}
+		else {
+
+		}
 	}
 
 }
@@ -161,6 +162,11 @@ void Mundo::OnKeyboardDown(unsigned char key) {
 		case 't': logica.realizarCoronacion(Pieza::tipo_t::TORRE); break;
 		case 'a': logica.realizarCoronacion(Pieza::tipo_t::ALFIL); break;
 		case 'c': logica.realizarCoronacion(Pieza::tipo_t::CABALLO); break;
+		}
+
+		//Tras coronar, si el rival es IA y sigue la partida, que la IA mueva
+		if (!logica.coronacion.activa && menus.get_riv() == J_VS_IA && !logica.finPartida) {
+			ia.elegirMejorMovimiento(logica.getTurno());
 		}
 	}
 }

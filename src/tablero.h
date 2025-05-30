@@ -37,6 +37,7 @@ public:
 	bool clicDentroTablero(float ogl_x, float ogl_y);
 	void clicPos(int button, int state, int x, int y);
 	void reshape(int width, int heigth);
+	void reshapePantallaFin(int width, int height);
 	void setLogica(Tablero_logica* log) { logica = log;    std::cout << "Logica asignada\n";}
 	void DrawPiezas();
 	void DrawMovsValidos();

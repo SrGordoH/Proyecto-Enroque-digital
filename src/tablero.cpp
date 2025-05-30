@@ -240,7 +240,23 @@ void Tablero::reshape(int width, int height) {
 
 	// Aquí, el tablero se centra correctamente en la pantalla
 }
+void Tablero::reshapePantallaFin(int width, int height) {
+	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	// Mismo criterio que el reshape del tablero
+	float aspectWindow = (float)width / (float)height;
+
+	float imageHeight = 6.5f; // define una "altura lógica" constante
+	float imageWidth = imageHeight * aspectWindow;
+
+	glOrtho(-imageWidth / 2.0f, imageWidth / 2.0f, -imageHeight / 2.0f, imageHeight / 2.0f, -10.0, 10.0);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
 
 void Tablero::DrawPiezas() {
 
@@ -254,6 +270,21 @@ void Tablero::DrawPiezas() {
 	}
 }
 
+void Tablero::DrawTurno() {
+	std::string textoTurno = logica->getTurno() ? "TURNO: BLANCAS" : "TURNO: NEGRAS";
+
+	if (logica->getTurno())
+		ETSIDI::setTextColor(1, 1, 1); // texto blancas para blancas
+	else
+		ETSIDI::setTextColor(0, 0, 0); // texto negro para negras
+
+	ETSIDI::setFont("fuentes/Bitwise.ttf", 18);
+	glPushMatrix();
+	glTranslatef(0.7f, -0.3f, 0.f);
+	ETSIDI::printxy(textoTurno.c_str(), 2, 3); // Posición en la esquina superior derecha
+	glPopMatrix();
+}
+
 void Tablero::DrawMovsValidos() {
 	if (pieza_selec) {
 		pieza_selec->DibujaMovValidos(ancho_casillas);
@@ -265,88 +296,32 @@ void Tablero::DrawIndices() {
 	
 
 	ETSIDI::setTextColor(0, 0, 0); // Negro
-	ETSIDI::setFont("fuentes/Bitwise.ttf", 12);
+	ETSIDI::setFont("fuentes/Bitwise.ttf", 15);
 
 	glPushMatrix(); // Evita que el translate afecte a otras partes, guarda lo que ya hay
 	
 	glTranslatef(0.2f, -0.2f, 0.f); // Baja el texto debajo del tablero
-	ETSIDI::printxy("a", 0.0f, 0.0f);
-	ETSIDI::printxy("c", 1.0f, 0.0f);
-	ETSIDI::printxy("e", 2.0f, 0.0f);
+	ETSIDI::printxy("a", 0, 0);
+	ETSIDI::printxy("c", 1, 0);
+	ETSIDI::printxy("e", 2, 0);
 	glTranslatef(0.5f, 0.f, 0.f);
-	ETSIDI::printxy("b", 0.0f, 0.0f);
-	ETSIDI::printxy("d", 1.0f, 0.0f);
+	ETSIDI::printxy("b", 0, 0);
+	ETSIDI::printxy("d", 1, 0);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-0.2f, 0.2f, 0.f);   //Afecta a todos los numeros
-	ETSIDI::printxy("1", 0.0f, 0.0f);
-	ETSIDI::printxy("3", 0.0f, 1.0f);
-	ETSIDI::printxy("5", 0.0f, 2.0f);
+	ETSIDI::printxy("1", 0, 0);
+	ETSIDI::printxy("3", 0, 1);
+	ETSIDI::printxy("5", 0, 2);
 	glTranslatef(0.f, 0.5f, 0.f);     //Afecta solo a los tres numeros de debajo se suma al otro glTranslatef
-	ETSIDI::printxy("2", 0.0f, 0.0f);
-	ETSIDI::printxy("4", 0.0f, 1.0f);
-	ETSIDI::printxy("6", 0.0f, 2.0f);
+	ETSIDI::printxy("2", 0, 0);
+	ETSIDI::printxy("4", 0, 1);
+	ETSIDI::printxy("6", 0, 2);
 	glPopMatrix();
 }
 
 void Tablero::DrawFinPartida(bool ganador, bool tablas) {
-	/*if (tablas) {
-		// Ancho y alto iniciales:
-		float ancho = 9.0f; // valor arbitrario
-		float alto = ancho * (1024.0f / 1536.0f); // mantener proporción de la imagen
-
-		// Dibujo del fondo
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/Tablas_Ahogado.png").id);
-		glDisable(GL_LIGHTING);
-		glColor3f(1, 1, 1);
-		glBegin(GL_POLYGON);
-		glTexCoord2d(0, 1);  glVertex3d(-ancho / 2, -alto / 2, 0);
-		glTexCoord2d(1, 1);  glVertex3d(ancho / 2, -alto / 2, 0);
-		glTexCoord2d(1, 0);  glVertex3d(ancho / 2, alto / 2, 0);
-		glTexCoord2d(0, 0);  glVertex3d(-ancho / 2, alto / 2, 0);
-		glEnd();
-		glEnable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
-
-	} else if (ganador) {
-		// Ancho y alto iniciales:
-		float ancho = 9.0f; // valor arbitrario
-		float alto = ancho * (1024.0f / 1350.0f); // mantener proporción de la imagen
-
-		// Dibujo del fondo
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/JAQUEMATE_Blancas_1.png").id);
-		glDisable(GL_LIGHTING);
-		glColor3f(1, 1, 1);
-		glBegin(GL_POLYGON);
-		glTexCoord2d(0, 1);  glVertex3d(-ancho / 2, -alto / 2, 0);
-		glTexCoord2d(1, 1);  glVertex3d(ancho / 2, -alto / 2, 0);
-		glTexCoord2d(1, 0);  glVertex3d(ancho / 2, alto / 2, 0);
-		glTexCoord2d(0, 0);  glVertex3d(-ancho / 2, alto / 2, 0);
-		glEnd();
-		glEnable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
-	} else if (!ganador) {
-		// Ancho y alto iniciales:
-		float ancho = 9.0f; // valor arbitrario
-		float alto = ancho * (1024.0f / 1408.0f); // mantener proporción de la imagen
-
-		// Dibujo del fondo
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/JAQUEMATE_Negras_1.png").id);
-		glDisable(GL_LIGHTING);
-		glColor3f(1, 1, 1);
-		glBegin(GL_POLYGON);
-		glTexCoord2d(0, 1);  glVertex3d(-ancho / 2, -alto / 2, 0);
-		glTexCoord2d(1, 1);  glVertex3d(ancho / 2, -alto / 2, 0);
-		glTexCoord2d(1, 0);  glVertex3d(ancho / 2, alto / 2, 0);
-		glTexCoord2d(0, 0);  glVertex3d(-ancho / 2, alto / 2, 0);
-		glEnd();
-		glEnable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
-	}*/
 
 	//Aquí creo un fondo de color negro para diferenciarlo del fondo de la partida
 

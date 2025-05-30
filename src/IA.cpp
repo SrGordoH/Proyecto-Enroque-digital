@@ -25,14 +25,28 @@ float IA::distancia(Posicion a, Posicion b) const {
 
 
 int IA::AnalisisBasico(Pieza* p, Posicion b, Tablero_logica* log) const {
+    if (log->obtenerPieza(b) && log->obtenerPieza(b)->getColor() == p->getColor()) {
+        return -100; // Penalización severa si captura aliada
+    }
+
     int score = 0;
+
+    //if (log->obtenerPieza(b) && log->obtenerPieza(b)->getColor() == p->getColor()) {
+    //    score -= valorPieza(log->obtenerPieza(b)->getTipo()) * 5; // Penalización ajustada
+    //}
+
     log->moverPieza(p, b);
+    if (p->estaEnJaque(*log)) {
+        return -10000; // Movimiento ilegal porque deja al rey en jaque
+    }
     for (Pieza* p1 : log->getPiezas()) {
         int v = valorPieza(p1->getTipo());
         // sumamos valores piezas 
         if (p1->getColor() == iaColor) score += v;
         else score -= v;   //asignamos puntuacion
     }
+
+
     for (Pieza* p2 : log->getPiezas()) {
         if (!p2 || p2->getColor() != iaColor) continue;               // solo enemigas
         auto posEnemiga = p2->getPos();
@@ -77,10 +91,7 @@ void IA::elegirMejorMovimiento(bool color) {
     auto piezas = logica->getPiezas();
     auto movs = piezas[indexp]->movimientosValidos(*logica);
     logica->moverPieza(piezas[indexp], movs[indexm]);
-
-
 }
-
 
 
 void IA::Movimiento(bool color) {
@@ -113,3 +124,7 @@ Tablero_logica* IA::crearTableroSimulado(Pieza* piezaOriginal, Posicion destino)
     return simulado;
 }
 
+bool IA::esCapturaAliada(Pieza* p, Posicion destino) const {
+    Pieza* destinoPieza = logica->obtenerPieza(destino);
+    return destinoPieza && destinoPieza->getColor() == p->getColor();
+}

@@ -32,3 +32,11 @@ Posicion Posicion::notacionToPosicion(const std::string& casilla) {
 
 	return { fila, columna };
 }
+
+Posicion Posicion::operator - (const Posicion& v) const {
+	return { col - v.col , fil - v.fil };
+}
+
+Posicion Posicion::operator + (const Posicion& v) const {
+	return { col + v.col , fil + v.fil };
+}

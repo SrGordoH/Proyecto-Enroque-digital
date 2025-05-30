@@ -41,23 +41,20 @@ void Menus::Reshape(int width, int height) {
 
 
 void Menus::coor_menus(float posX, float posY) {
-	if (get_menu() == MENU_IA) {
-		// Clic en FACIL:
+	switch (get_menu()) {
+	case MENU_PPAL:
+		// Clic en 1 vs 1:
 		if (pant_menu.clic_b1(posX, posY)) {
-			set_dif(FACIL);
+			set_riv(J_VS_J);
 			set_menu(MENU_MODO);
 		}
-		// Clic en DIFICIL:
+		// Clic en J vs IA
 		if (pant_menu.clic_b2(posX, posY)) {
-			set_dif(DIFICIL);
-			set_menu(MENU_MODO);
+			set_riv(J_VS_IA);
+			set_menu(MENU_IA);
 		}
-		if (pant_menu.clic_sal(posX, posY)) {
-			set_menu(MENU_PPAL);
-			std::cout << "Cilc en salida." << std::endl;
-		}
-	}
-	if (get_menu() == MENU_MODO) {
+		break;
+	case MENU_MODO:
 		// Clic en Petty:
 		if (pant_menu.clic_b1(posX, posY)) {
 			set_modo(PETTY);
@@ -71,20 +68,29 @@ void Menus::coor_menus(float posX, float posY) {
 		}
 		if (pant_menu.clic_sal(posX, posY)) {
 			set_menu(MENU_PPAL);
+			set_riv(RIV_NULA);
 			std::cout << "Cilc en salida." << std::endl;
-		}
-	}
-	if (get_menu() == MENU_PPAL) {
-		// Clic en 1 vs 1:
+		}	
+		break;
+	case MENU_IA:
+		// Clic en FACIL:
 		if (pant_menu.clic_b1(posX, posY)) {
-			set_riv(J_VS_J);
+			set_dif(FACIL);
 			set_menu(MENU_MODO);
+			// std::cout << "Cilc en facil." << std::endl;
 		}
-		// Clic en J vs IA
+		// Clic en DIFICIL:
 		if (pant_menu.clic_b2(posX, posY)) {
-			set_riv(J_VS_IA);
-			set_menu(MENU_IA);
+			set_dif(DIFICIL);
+			set_menu(MENU_MODO);
+			// std::cout << "Cilc en dificil." << std::endl;
 		}
+		if (pant_menu.clic_sal(posX, posY)) {
+			set_menu(MENU_PPAL);
+			set_riv(RIV_NULA);
+			// std::cout << "Cilc en salida." << std::endl;
+		}
+		break;
 	}
 }
 

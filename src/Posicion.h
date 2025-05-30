@@ -21,6 +21,9 @@ struct Posicion
 		return (fil - 1) + COLUMNAS * (col - 1);  // devuelve un indice, siendo el indice 0 la casilla (1,1) y el indice 29 la casilla (5,6)
 	}
 
+	Posicion operator - (const Posicion&) const;  //resta de Posiciones
+	Posicion operator + (const Posicion&) const; //suma de Posiciones
+
 	// Función que devuelve el centro de la posición en coordenadas de la pantalla/raton
 	Coords2D centro_en_coords() const;
 	Coords2D esquinainf_en_coords() const;  // Igual pero recibe la esquina inferior izquierda

@@ -17,6 +17,7 @@ public:
     void Movimiento(bool color);
     Tablero_logica* crearTableroSimulado(Pieza* piezaOriginal, Posicion destino) const;
     int AnalisisBasico(Pieza* p, Posicion b, Tablero_logica* log) const;
-
+    bool esCapturaAliada(Pieza* p, Posicion destino) const;
 
 };
+
