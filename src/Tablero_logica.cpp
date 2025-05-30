@@ -144,6 +144,7 @@ bool Tablero_logica::estaEnJaqueMate(bool color) {
         }
     }
     Sonido::reproducirJaqueMate();
+    printHistorial();  // Cuando se acaba la partida se imprime el historial de la partida
     return true; // NO hay ningún movmiento legal y está en jaque
 }
 

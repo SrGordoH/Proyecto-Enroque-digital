@@ -14,11 +14,9 @@ private:
 
 public:
     void setLogica(Tablero_logica* log) { logica = log; }
-    void elegirMejorMovimiento(bool color);
-    void MovPiezaIA(bool color);
     Tablero_logica* crearTableroSimulado(Pieza* piezaOriginal, Posicion destino) const;
-    int AnalisisBasico(Pieza* p, Posicion b, Tablero_logica* log) const;
-    int AnalisisComplejo(Pieza* p, Posicion b, Tablero_logica* log) const;
+    int AnalisisBasico(Pieza* p, Posicion b, Tablero_logica* log, Pieza* capturada) const;
+    int AnalisisComplejo(Pieza* p, Posicion b, Tablero_logica* log, Pieza* capturada) const;
     bool esCapturaAliada(Pieza* p, Posicion destino) const;
     bool intentarJaqueMate(bool color);
     vector<Movimiento> movimientosLegales(bool color);

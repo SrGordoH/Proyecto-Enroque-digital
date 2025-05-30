@@ -175,7 +175,16 @@ void Mundo::OnKeyboardDown(unsigned char key) {
 
 		//Tras coronar, si el rival es IA y sigue la partida, que la IA mueva
 		if (!logica.coronacion.activa && menus.get_riv() == J_VS_IA && !logica.finPartida) {
-			ia.elegirMejorMovimiento(logica.getTurno());
+			switch (menus.get_dificultad()) {
+			case FACIL:
+				ia.elegirMejorMovimientoSimple(logica.getTurno());
+				break;
+			case DIFICIL:
+				ia.elegirMejorMovimientoAvanzado(logica.getTurno());
+				break;
+			default:
+				std::cout << "Error en la eleccion de dificultad.\n";
+			}
 		}
 	}
 }

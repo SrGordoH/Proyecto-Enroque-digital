@@ -24,24 +24,22 @@ float IA::distancia(Posicion a, Posicion b) const {
 }
 
 
-int IA::AnalisisBasico(Pieza* p, Posicion b, Tablero_logica* log) const {
+int IA::AnalisisBasico(Pieza* p, Posicion b, Tablero_logica* log, Pieza* capturada) const {
    
     int score = 0;
 
-    Pieza* objetivo = log->obtenerPieza(b);
-    if (objetivo) {
+    if (capturada) {
         // Penalización extrema si se intenta capturar a su propio rey
-        if (objetivo->getColor() == p->getColor() && objetivo->getTipo() == Pieza::tipo_t::REY) {
+        if (capturada->getColor() == p->getColor() && capturada->getTipo() == Pieza::tipo_t::REY) {
             return -100000;  // Movimiento suicida (solo caso extremo)
         }
 
         // Penalización por capturar aliada (más suave que rey)
-        if (objetivo->getColor() == p->getColor()) {
+        if (capturada->getColor() == p->getColor()) {
             return -1000;
         }
     }
 
-    log->moverPieza(p, b, true);
     log->cambiarTurno(); // Simula que ahora le toca al rival
 
     //Si el movimiento deja al oponente en jaque, priorizar
@@ -67,33 +65,37 @@ int IA::AnalisisBasico(Pieza* p, Posicion b, Tablero_logica* log) const {
     return score;
 }
 
-int IA::AnalisisComplejo(Pieza* p, Posicion b, Tablero_logica* log) const {
+int IA::AnalisisComplejo(Pieza* p, Posicion b, Tablero_logica* log, Pieza* capturada) const {
 
     int score = 0;
 
-    Pieza* objetivo = log->obtenerPieza(b);
-    if (objetivo) {
+    if (capturada) {
         // Penalización extrema si se intenta capturar a su propio rey
-        if (objetivo->getColor() == p->getColor() && objetivo->getTipo() == Pieza::tipo_t::REY) {
+        if (capturada->getColor() == p->getColor() && capturada->getTipo() == Pieza::tipo_t::REY) {
             return -100000;  // Movimiento suicida (solo caso extremo)
         }
 
         // Penalización por capturar aliada (más suave que rey)
-        if (objetivo->getColor() == p->getColor()) {
+        if (capturada->getColor() == p->getColor()) {
             return -1000;
         }
 
         // Captura enemiga: bonificación según el valor de la pieza capturada
-        int valor = valorPieza(objetivo->getTipo());
+        int valor = valorPieza(capturada->getTipo());
         score += valor * 30;  // Capturas bien recompensadas
     }
 
     log->moverPieza(p, b, true);
     log->cambiarTurno();  // Evaluamos el nuevo estado desde el turno del oponente
 
+    // Jaque mate: prioridad máxima
+    if (log->estaEnJaqueMate(!iaColor)) {
+        return 100000;
+    }
+
     //Bonificación por poner al rival en jaque
     if (log->estaEnJaque(!iaColor)) {
-        score += 1000;
+        score += 70;
     }
 
     //Bonificación adicional: acercarse a piezas valiosas enemigas
@@ -117,41 +119,9 @@ int IA::AnalisisComplejo(Pieza* p, Posicion b, Tablero_logica* log) const {
     return score;
 }
 
-void IA::elegirMejorMovimiento(bool color) {
-
-    auto piezas = logica->getPiezas();
-
-    // Prioridad máxima: jaque mate
-    if (intentarJaqueMate(color)) return;
-
-    // Segunda prioridad: asignar una puntuación a los movimientos
-    int indexp=0;
-    int indexm=0;
-    int scorefinal = -100000000;
-    for (int i = 0; i < piezas.size(); i++) {
-        if (piezas[i]->getColor() != color) continue;
-        auto piezas = logica->getPiezas();
-        int x = 0;
-        if (piezas.size())
-            x = std::rand() % piezas.size();  //pieza aleatoria
-        else x = 0;
-        while (piezas[x]->getColor() != color || !(piezas[x]->movimientosValidos(*logica)).size())x = std::rand() % piezas.size();//que tenga movimientos y sea del color adecuado 
-        auto movs = piezas[x]->movimientosValidos(*logica);
-        int indicem = std::rand() % (movs.size()); //movimiento aleatorio
-        Tablero_logica* copia = crearTableroSimulado(piezas[x], movs[indicem]);
-        auto aux = copia->getPiezas();
-        int score = AnalisisBasico(aux[x], movs[indicem], copia);
-        if (score > scorefinal) {
-            scorefinal = score;
-            indexp = x;
-            indexm = indicem;
-        }
-    }
-    auto movs = piezas.at(indexp)->movimientosValidos(*logica);
-    logica->moverPieza(piezas[indexp], movs[indexm], true);
-}
 
 Movimiento IA::mejorMovimientoSimple(bool color) {
+
     vector<Movimiento> opciones = movimientosLegales(color);
 
     if (opciones.empty()) {
@@ -172,7 +142,7 @@ Movimiento IA::mejorMovimientoSimple(bool color) {
             continue;
         }
 
-        int score = AnalisisBasico(clon, m.destino, simulado);
+        int score = AnalisisBasico(clon, m.destino, simulado, m.capturada);
         delete simulado;
 
         if (score > mejorScore) {
@@ -185,6 +155,7 @@ Movimiento IA::mejorMovimientoSimple(bool color) {
 }
 
 Movimiento IA::mejorMovimientoComplejo(bool color) { //Utiliza el analisis complejo
+
     vector<Movimiento> opciones = movimientosLegales(color);
 
     if (opciones.empty()) {
@@ -205,7 +176,7 @@ Movimiento IA::mejorMovimientoComplejo(bool color) { //Utiliza el analisis compl
             continue;
         }
 
-        int score = AnalisisComplejo(clon, m.destino, simulado);
+        int score = AnalisisComplejo(clon, m.destino, simulado, m.capturada);
         delete simulado;
 
         if (score > mejorScore) {
@@ -218,6 +189,8 @@ Movimiento IA::mejorMovimientoComplejo(bool color) { //Utiliza el analisis compl
 }
 
 void IA::elegirMejorMovimientoSimple(bool color) {
+    //if (intentarJaqueMate(color)) return;
+
     Movimiento mejor = mejorMovimientoSimple(color);
 
     if (mejor.pieza) {
@@ -229,6 +202,8 @@ void IA::elegirMejorMovimientoSimple(bool color) {
 }
 
 void IA::elegirMejorMovimientoAvanzado(bool color) { // Utiliza el movimiento complejo
+    //if (intentarJaqueMate(color)) return;
+    
     Movimiento mejor = mejorMovimientoComplejo(color);
 
     if (mejor.pieza) {
@@ -291,7 +266,6 @@ bool IA::intentarJaqueMate(bool color) {
             delete copia;
         }
     }
-
     return false; // No encontró mate
 }
 
