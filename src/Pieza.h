@@ -10,7 +10,6 @@ class Pieza
 {
 public:
 	enum class tipo_t { PEON, CABALLO, ALFIL, TORRE, DAMA, REY, NULA };
-	virtual std::vector<Posicion> movimientosValidos(Tablero_logica& tab, bool evitarJaque = true) = 0;
 
 protected:                // El protected es como el private pero las clases que hereden de esta conservan las propiedades protected.
 	const tipo_t tipo;						//Nombre para identificar a la pieza
@@ -35,13 +34,13 @@ public:
 	bool getColor() const { return color; }
 	tipo_t getTipo() const { return tipo; }
 	std::string nombrePieza(Pieza::tipo_t tipo) const;
+	virtual std::vector<Posicion> movimientosValidos(Tablero_logica& tab, bool evitarJaque = true) = 0;
 
 
 	virtual Pieza* clonar() const =0;
 
 	bool esMovimientoLegalConJaque(Pieza* piezaDestino, Posicion destino, Tablero_logica& tab);
 	bool estaEnJaque(Tablero_logica& tab) const;
-	bool JaqueMate(Tablero_logica& tab) const;
 
 	virtual void Dibuja(double ancho_casilla) const;
 	void DibujaMovValidos(double ancho_casilla) const;

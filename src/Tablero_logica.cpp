@@ -152,7 +152,7 @@ bool Tablero_logica::estaEnJaque(bool color) {
     // Se obtiene la posicion del rey del jugador del color actual
     Posicion reyPos = obtenerReyPos(color);
 
-    // Se recorre la lista de piezas del oponente
+    // Se recorre la lista de piezas
     for (Pieza* pieza : piezas) {
         if (!pieza || pieza->getColor() == color)
             continue; // Se ignoran piezas del mismo color
