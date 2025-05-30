@@ -60,8 +60,8 @@ bool Pieza::estaEnJaque(Tablero_logica& tab) const {
 
 void Pieza::Dibuja(double ancho_casilla) const {
     if (!sprite) return;
-    sprite->setPos(coords.x-ancho_casilla/2, coords.y - ancho_casilla / 2);
-    sprite->setSize(ancho_casilla, ancho_casilla); // tamano acorde a casilla
+    sprite->setPos((float)(coords.x - ancho_casilla / 2), (float)(coords.y - ancho_casilla / 2));
+    sprite->setSize((float)ancho_casilla, (float)ancho_casilla); // tamano acorde a casilla
    
     sprite->draw();                              // dibuja el sprite
    // sprite->setCenter(0, 0);         // posicion central del sprite
@@ -76,7 +76,7 @@ void Pieza::DibujaMovValidos(double ancho_casilla) const {
         ETSIDI::Sprite sprite("imagenes/MovimientosValidos.png");
         sprite.setCenter(0, 0);
         sprite.setPos(coord.x, coord.y);
-        sprite.setSize(ancho_casilla, ancho_casilla);
+        sprite.setSize((float)ancho_casilla, (float)ancho_casilla);
         sprite.draw();
     }
 }

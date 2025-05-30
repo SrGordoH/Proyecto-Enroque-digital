@@ -176,7 +176,7 @@ bool Tablero_logica::estaEnJaque(bool color) {
 
 void Tablero_logica::guardarMovimiento(Pieza* p, Posicion origen, Posicion destino, Pieza* capturada) {
     Movimiento m;
-    m.pieza = p;
+    m.pieza = p ? p->clonar() : nullptr; // Si no es un nullptr se clona
     m.origen = origen;
     m.destino = destino;
     m.capturada = capturada;
