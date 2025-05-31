@@ -40,3 +40,4 @@ Posicion Posicion::operator - (const Posicion& v) const {
 Posicion Posicion::operator + (const Posicion& v) const {
 	return { col + v.col , fil + v.fil };
 }
+

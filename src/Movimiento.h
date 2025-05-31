@@ -17,5 +17,12 @@ public:
     }
 
     bool esCaptura() const { return capturada != nullptr; }
+
+    bool operator==(const Movimiento &m2) const;
+
 };
 
+inline bool Movimiento::operator==(const Movimiento& m2) const{
+    return pieza == m2.pieza && origen == m2.origen && destino == m2.destino && ((capturada == nullptr && m2.capturada == nullptr) ||
+            (capturada != nullptr && m2.capturada != nullptr && capturada == m2.capturada));
+}

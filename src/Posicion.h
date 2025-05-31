@@ -23,6 +23,7 @@ struct Posicion
 
 	Posicion operator - (const Posicion&) const;  //resta de Posiciones
 	Posicion operator + (const Posicion&) const; //suma de Posiciones
+	bool operator==(const Posicion&)const;
 
 	// Función que devuelve el centro de la posición en coordenadas de la pantalla/raton
 	Coords2D centro_en_coords() const;
@@ -71,4 +72,8 @@ inline Coords2D Coords2D::operator + (const Coords2D& v) const {
 
 inline Coords2D Coords2D::operator *(float real) const {
 	return { x * real, y * real };
+}
+
+inline bool Posicion::operator==(const Posicion& p2)const {
+	return fil == p2.fil && col == p2.col;
 }

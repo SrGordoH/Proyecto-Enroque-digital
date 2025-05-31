@@ -50,6 +50,7 @@ public:
 	bool esTablasPorAhogo(bool turnoColor);
 	void notificarMovimiento(Pieza* piezaMovida, Pieza* capturada);
 	bool reglaCincuentaMovimientos() const {return movimientosSinCaptura >= 50;}
+
 	void eliminarPieza(Pieza* p);
 	void cambiarTurno() { turno = !turno; }
 	bool moverPieza(Pieza* pieza, Posicion destino, bool esIA=false);

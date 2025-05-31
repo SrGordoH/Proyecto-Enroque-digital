@@ -285,6 +285,7 @@ bool Tablero_logica::esTablasPorAhogo(bool turnoColor) {
     return true; // no hay movimientos legales y no esta en jaque
 }
 
+
 void Tablero_logica::notificarMovimiento(Pieza* piezaMovida, Pieza* capturada) {
     if (capturada || piezaMovida->getTipo() == Pieza::tipo_t::PEON)
         movimientosSinCaptura = 0;
@@ -347,6 +348,9 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino, bool esIA) {
             eliminarPieza(piezaDestino);
         }
 
+        notificarMovimiento(pieza, piezaDestino);
+
+
         pieza->SetPos(destino.fil, destino.col);
         verificarCoronacion(esIA);
         if (!coronacion.activa)
@@ -367,6 +371,15 @@ bool Tablero_logica::moverPieza(Pieza* pieza, Posicion destino, bool esIA) {
             for (auto& p : piezas) delete p;
             piezas.clear();
         }
+        else if (reglaCincuentaMovimientos()) {
+            finPartida = true;
+            tablas = true;
+            std::cout << "TABLAS. Por regla de los 50 movimientos sin captura." << "\n";
+            for (auto& p : piezas) delete p;
+            piezas.clear();
+            return true;
+        }
+        
         Sonido::reproducirMovimiento();
 
 
